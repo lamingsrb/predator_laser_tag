@@ -408,6 +408,100 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
 })();
 
 // ===================================
+// MOBILE GALLERY PAGINATION (≤768px)
+// ===================================
+(() => {
+  const masonry = document.getElementById('masonry');
+  const pager = document.getElementById('masonry-pager');
+  const dotsEl = document.getElementById('masonry-pager-dots');
+  if (!masonry || !pager || !dotsEl) return;
+
+  const items = Array.from(masonry.querySelectorAll('.masonry-item'));
+  const PER_PAGE = 6;
+  const pageCount = Math.ceil(items.length / PER_PAGE);
+  const prevBtn = pager.querySelector('.masonry-pager-prev');
+  const nextBtn = pager.querySelector('.masonry-pager-next');
+  const mq = window.matchMedia('(max-width: 768px)');
+
+  let current = 0;
+  let enabled = false;
+
+  dotsEl.innerHTML = '';
+  for (let i = 0; i < pageCount; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'masonry-pager-dot';
+    dot.setAttribute('aria-label', `Strana ${i + 1}`);
+    dot.addEventListener('click', () => show(i));
+    dotsEl.appendChild(dot);
+  }
+
+  function show(n) {
+    current = Math.max(0, Math.min(pageCount - 1, n));
+    const start = current * PER_PAGE;
+    const end = start + PER_PAGE;
+    items.forEach((el, i) => el.classList.toggle('page-show', i >= start && i < end));
+    dotsEl.querySelectorAll('.masonry-pager-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === pageCount - 1;
+    // scroll masonry back into view smoothly on page change (only if near)
+    const rect = masonry.getBoundingClientRect();
+    if (rect.top < 0) {
+      masonry.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function enable() {
+    if (enabled) return;
+    enabled = true;
+    masonry.dataset.paged = '1';
+    show(0);
+  }
+
+  function disable() {
+    if (!enabled) return;
+    enabled = false;
+    delete masonry.dataset.paged;
+    items.forEach(el => el.classList.remove('page-show'));
+  }
+
+  function syncToViewport() {
+    if (mq.matches) enable(); else disable();
+  }
+
+  prevBtn.addEventListener('click', () => show(current - 1));
+  nextBtn.addEventListener('click', () => show(current + 1));
+
+  // Touch swipe on the masonry itself
+  let touchStartX = 0;
+  let touchStartY = 0;
+  masonry.addEventListener('touchstart', (e) => {
+    if (!enabled) return;
+    touchStartX = e.changedTouches[0].clientX;
+    touchStartY = e.changedTouches[0].clientY;
+  }, { passive: true });
+  masonry.addEventListener('touchend', (e) => {
+    if (!enabled) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx < 0) show(current + 1);
+      else show(current - 1);
+    }
+  });
+
+  // Keyboard
+  pager.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') { show(current - 1); e.preventDefault(); }
+    else if (e.key === 'ArrowRight') { show(current + 1); e.preventDefault(); }
+  });
+
+  syncToViewport();
+  mq.addEventListener('change', syncToViewport);
+})();
+
+// ===================================
 // REVIEWS (Google) — fetch + rAF-driven marquee + arrow nav
 // ===================================
 (async () => {
