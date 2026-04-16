@@ -669,13 +669,15 @@ button:hover ~ #cursor-dot,
   color: var(--white);
   border: 1px solid rgba(255, 255, 255, 0.3);
   font-family: var(--font-heading);
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
   letter-spacing: 3px;
-  padding: 0.8rem 2rem;
+  padding: 1rem 2.5rem;
   cursor: none;
   transition: all 0.3s;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
@@ -1661,14 +1663,14 @@ button:hover ~ #cursor-dot,
   text-shadow: 0 0 14px rgba(139, 0, 255, 0.45) !important;
 }
 
-/* Purple button variant */
+/* Purple button variant — same size as .btn + .btn-primary */
 .btn-venue {
   background: var(--purple);
   color: #fff;
-  border: 2px solid var(--purple);
+  border: none;
   font-family: var(--font-heading);
-  padding: 0.9rem 1.8rem;
-  font-size: 0.85rem;
+  padding: 1rem 2.5rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 3px;
   cursor: pointer;
@@ -1935,16 +1937,66 @@ button:hover ~ #cursor-dot,
 }
 
 /* ===================================
-   GALLERY GRID — uniform cells (bento-style)
+   GALLERY MARQUEE — horizontal continuous scroll (like reviews)
    =================================== */
+.masonry-stage {
+  position: relative;
+}
+
+.masonry-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid rgba(255, 0, 64, 0.35);
+  color: var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+.masonry-prev { left: 0; }
+.masonry-next { right: 0; }
+
+.masonry-nav:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+  box-shadow: 0 0 22px rgba(255, 0, 64, 0.55);
+}
+
+.masonry-nav:active { transform: translateY(-50%) scale(0.95); }
+
 .masonry {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  position: relative;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  padding: 0.5rem 0;
+}
+
+.masonry-track {
+  display: flex;
   gap: 1rem;
+  width: max-content;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+.masonry-track.snap {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .masonry-item {
   position: relative;
+  flex: 0 0 300px;
   aspect-ratio: 4 / 3;
   overflow: hidden;
 }
@@ -2835,6 +2887,7 @@ body.lightbox-open {
 .map-wrapper iframe {
   display: block;
   filter: grayscale(100%) invert(92%) contrast(85%);
+  pointer-events: none;
 }
 
 .map-overlay-border {
@@ -2975,9 +3028,7 @@ body.lightbox-open {
     grid-template-columns: 1fr;
   }
 
-  .masonry {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  .masonry-item { flex: 0 0 260px; }
 
   .birthday-grid-2 {
     grid-template-columns: 1fr;
@@ -3084,14 +3135,7 @@ body.lightbox-open {
 
   .birthday-price { font-size: 1.5rem; }
 
-  .masonry {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-  }
-
-  /* Mobile pagination active: show only current page of tiles */
-  .masonry[data-paged="1"] .masonry-item { display: none; }
-  .masonry[data-paged="1"] .masonry-item.page-show { display: block; }
+  .masonry-item { flex: 0 0 220px; }
 
   .masonry-pager { display: flex; }
 
@@ -3302,10 +3346,8 @@ body.lightbox-open {
   }
 
   /* --- Layout --- */
-  .masonry {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
-  }
+  .masonry-item { flex: 0 0 200px; }
+  .masonry-nav { width: 36px; height: 36px; }
 
   /* Reviews mobile (<= 480px) */
   .reviews-topbar {
