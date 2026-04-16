@@ -1158,9 +1158,17 @@ button:hover ~ #cursor-dot,
 
 .packages-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
   align-items: start;
+}
+
+@media (min-width: 1025px) and (max-width: 1350px) {
+  .packages-grid { gap: 1rem; }
+  .package-card { padding: 2.25rem 1.25rem; }
+  .package-card h3 { font-size: 0.95rem; }
+  .package-price { font-size: 1.75rem; }
+  .package-features li { font-size: 0.85rem; }
 }
 
 .package-card {
@@ -1203,6 +1211,44 @@ button:hover ~ #cursor-dot,
 
 .package-card.featured:hover {
   transform: scale(1.05) translateY(-8px);
+}
+
+/* Venue-rental variant — purple accent, different service */
+.package-card-venue {
+  border-color: rgba(139, 0, 255, 0.25);
+}
+
+.package-card-venue:hover {
+  border-color: var(--purple);
+  box-shadow: 0 15px 40px rgba(139, 0, 255, 0.15);
+}
+
+.package-card-venue::before {
+  background: linear-gradient(180deg, rgba(139, 0, 255, 0.07) 0%, transparent 50%);
+}
+
+.package-card-venue .package-price-unit {
+  color: var(--purple);
+}
+
+.package-sub {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--purple);
+  color: var(--purple);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  background: rgba(139, 0, 255, 0.08);
+  position: relative;
+  z-index: 1;
+}
+
+.package-divider-purple {
+  background: var(--purple);
+  box-shadow: 0 0 10px rgba(139, 0, 255, 0.5);
 }
 
 .package-badge {
@@ -1347,49 +1393,49 @@ button:hover ~ #cursor-dot,
   gap: 2rem;
 }
 
-.birthday-grid-4 {
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
+.birthday-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
 }
 
-.birthday-grid-4 .birthday-card-header {
+.birthday-grid-3 .birthday-card-header {
   padding: 1.5rem 1.25rem 1rem;
 }
 
-.birthday-grid-4 .birthday-card-header h3 {
+.birthday-grid-3 .birthday-card-header h3 {
   font-size: 1rem;
   letter-spacing: 1.5px;
 }
 
-.birthday-grid-4 .birthday-number {
+.birthday-grid-3 .birthday-number {
   font-size: 2.2rem;
 }
 
-.birthday-grid-4 .birthday-tag {
+.birthday-grid-3 .birthday-tag {
   font-size: 0.55rem;
   letter-spacing: 2px;
   padding: 0.25rem 0.7rem;
 }
 
-.birthday-grid-4 .birthday-card-body {
+.birthday-grid-3 .birthday-card-body {
   padding: 0 1.25rem 1.25rem;
 }
 
-.birthday-grid-4 .birthday-features li {
+.birthday-grid-3 .birthday-features li {
   padding: 0.55rem 0;
   gap: 0.7rem;
 }
 
-.birthday-grid-4 .birthday-features strong {
+.birthday-grid-3 .birthday-features strong {
   font-size: 0.85rem;
 }
 
-.birthday-grid-4 .birthday-features p {
+.birthday-grid-3 .birthday-features p {
   font-size: 0.75rem;
   color: var(--gray);
 }
 
-.birthday-grid-4 .birthday-price {
+.birthday-grid-3 .birthday-price {
   font-size: 1.6rem;
   padding: 0.3rem 1.25rem 0.8rem;
 }
@@ -2599,8 +2645,23 @@ body.lightbox-open {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .birthday-grid-4 {
+  .birthday-grid-3 {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .packages-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .package-card.featured {
+    transform: none;
+  }
+
+  .package-card.featured:hover {
+    transform: translateY(-8px);
   }
 }
 
@@ -2660,7 +2721,7 @@ body.lightbox-open {
   }
 
   .birthday-grid,
-  .birthday-grid-4 {
+  .birthday-grid-3 {
     grid-template-columns: 1fr;
   }
 
