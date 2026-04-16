@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PREDATOR Laser Tag | Beograd - Mesto gde adrenalin preuzima kontrolu</title>
   <meta name="description" content="Predator Laser Tag - Najmodernija laser tag arena u Beogradu. Rođendani, team building, individualne igre. 280m² arene sa unikatnim dizajnom.">
-  <link rel="icon" href="https://lasertagpredator.rs/assets/img/icon-white32.png" type="image/png">
+  <link rel="icon" href="/assets/img/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -26,7 +26,7 @@
   <nav id="navbar">
     <div class="nav-container">
       <a href="#hero" class="nav-logo">
-        <img src="https://lasertagpredator.rs/assets/img/header_logo.png" alt="Predator Laser Tag" class="nav-logo-img">
+        <img src="/assets/img/logo.png" alt="Predator Laser Tag" class="nav-logo-img">
       </a>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span><span></span><span></span>
@@ -38,6 +38,7 @@
         <li><a href="#packages" data-text="PAKETI">PAKETI</a></li>
         <li><a href="#birthdays" data-text="ROĐENDANI">ROĐENDANI</a></li>
         <li><a href="#gallery" data-text="GALERIJA">GALERIJA</a></li>
+        <li><a href="#reviews" data-text="RECENZIJE">RECENZIJE</a></li>
         <li><a href="#contact" data-text="KONTAKT">KONTAKT</a></li>
         <li><a href="tel:+381645257777" class="nav-cta">POZOVI NAS</a></li>
       </ul>
@@ -47,6 +48,14 @@
   <!-- HERO SECTION -->
   <section id="hero" class="hero">
     <div class="hero-bg-image"></div>
+    <div class="hero-video-wrap" aria-hidden="true">
+      <video class="hero-video" autoplay muted loop playsinline
+             preload="metadata" poster="/assets/video/showreel-poster.webp">
+        <source src="/assets/video/showreel.webm" type="video/webm">
+        <source src="/assets/video/showreel.mp4" type="video/mp4">
+      </video>
+      <div class="hero-video-overlay"></div>
+    </div>
     <div class="hero-fog"></div>
     <div class="hero-grid"></div>
     <div class="laser-beam laser-beam-1"></div>
@@ -102,7 +111,7 @@
       <div class="about-grid">
         <div class="about-visual" data-animate="fade-right">
           <div class="about-image-frame">
-            <img src="https://lasertagpredator.rs/assets/admin/uploads/thumbs/onama-puske.jpg" alt="Predator Laser Tag oprema" class="about-img">
+            <img src="/assets/img/about-arena.webp" alt="Predator Laser Tag oprema" class="about-img">
             <div class="frame-corner frame-corner-tl"></div>
             <div class="frame-corner frame-corner-tr"></div>
             <div class="frame-corner frame-corner-bl"></div>
@@ -440,63 +449,243 @@
         <h2 class="section-title">ZAVIRITI U <span class="text-glow">ARENU</span></h2>
         <div class="section-line"></div>
       </div>
-      <div class="gallery-grid">
-        <div class="gallery-item gallery-item-large" data-animate="fade-up" data-delay="0.1">
-          <div class="gallery-image-wrap">
-            <img src="https://lasertagpredator.rs/assets/admin/uploads/thumbs/slide_1.jpg" alt="Predator Arena" loading="lazy">
-            <div class="gallery-img-overlay">
-              <span class="gallery-label">ARENA</span>
+      <div class="masonry" id="masonry">
+        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/01-arena-neon.jpg" data-lb-caption="Arena pod UV svetlom">
+          <div class="masonry-media">
+            <img src="/assets/img/gallery/01-arena-neon.webp" alt="Arena pod UV svetlom" loading="lazy">
+            <div class="masonry-overlay"><span class="masonry-label">ARENA</span></div>
+            <div class="masonry-zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
             </div>
-            <div class="gallery-frame"></div>
+            <div class="masonry-frame"></div>
           </div>
         </div>
-        <div class="gallery-item" data-animate="fade-up" data-delay="0.2">
-          <div class="gallery-image-wrap">
-            <img src="https://lasertagpredator.rs/uploads/1549018719_1.jpg" alt="Laser Tag akcija" loading="lazy">
-            <div class="gallery-img-overlay">
-              <span class="gallery-label">AKCIJA</span>
-            </div>
-            <div class="gallery-frame"></div>
+
+        <div class="masonry-item masonry-item-video" data-animate="fade-up" data-lb-type="video" data-lb-src="/assets/video/gallery-action-1.mp4" data-lb-caption="Laser Tag u akciji">
+          <div class="masonry-media">
+            <video muted loop playsinline preload="metadata" poster="/assets/video/gallery-action-1-poster.webp">
+              <source src="/assets/video/gallery-action-1.webm" type="video/webm">
+              <source src="/assets/video/gallery-action-1.mp4" type="video/mp4">
+            </video>
+            <div class="masonry-overlay"><span class="masonry-label"><span class="live-dot"></span> LIVE AKCIJA</span></div>
+            <div class="masonry-frame"></div>
           </div>
         </div>
-        <div class="gallery-item" data-animate="fade-up" data-delay="0.3">
-          <div class="gallery-image-wrap">
-            <img src="https://lasertagpredator.rs/uploads/1549018720_2.jpg" alt="Laser Tag oprema" loading="lazy">
-            <div class="gallery-img-overlay">
-              <span class="gallery-label">OPREMA</span>
+
+        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/03-vojnik-neon.jpg" data-lb-caption="PREDATOR avatar">
+          <div class="masonry-media">
+            <img src="/assets/img/gallery/03-vojnik-neon.webp" alt="PREDATOR avatar" loading="lazy">
+            <div class="masonry-overlay"><span class="masonry-label">PREDATOR</span></div>
+            <div class="masonry-zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
             </div>
-            <div class="gallery-frame"></div>
+            <div class="masonry-frame"></div>
           </div>
         </div>
-        <div class="gallery-item" data-animate="fade-up" data-delay="0.4">
-          <div class="gallery-image-wrap">
-            <img src="https://lasertagpredator.rs/uploads/1549018721_3.jpg" alt="Laser Tag tim" loading="lazy">
-            <div class="gallery-img-overlay">
-              <span class="gallery-label">TIMOVI</span>
+
+        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/04-weapons-red.jpg" data-lb-caption="Oprema u crvenom svetlu">
+          <div class="masonry-media">
+            <img src="/assets/img/gallery/04-weapons-red.webp" alt="Oprema - puške" loading="lazy">
+            <div class="masonry-overlay"><span class="masonry-label">OPREMA</span></div>
+            <div class="masonry-zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
             </div>
-            <div class="gallery-frame"></div>
+            <div class="masonry-frame"></div>
           </div>
         </div>
-        <div class="gallery-item gallery-item-wide" data-animate="fade-up" data-delay="0.5">
-          <div class="gallery-image-wrap">
-            <img src="https://lasertagpredator.rs/assets/admin/uploads/thumbs/slide_21.jpg" alt="Predator arena pogled" loading="lazy">
-            <div class="gallery-img-overlay">
-              <span class="gallery-label">PREDATOR ZONA</span>
+
+        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/02-arena-lasers.jpg" data-lb-caption="Laserski snopovi kroz arenu">
+          <div class="masonry-media">
+            <img src="/assets/img/gallery/02-arena-lasers.webp" alt="Laserski snopovi" loading="lazy">
+            <div class="masonry-overlay"><span class="masonry-label">LASERI</span></div>
+            <div class="masonry-zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
             </div>
-            <div class="gallery-frame"></div>
+            <div class="masonry-frame"></div>
           </div>
         </div>
-        <div class="gallery-item" data-animate="fade-up" data-delay="0.6">
-          <div class="gallery-image-wrap">
-            <img src="https://lasertagpredator.rs/uploads/1555345986_IMG_20190415_175750.jpg" alt="Zabava u areni" loading="lazy">
-            <div class="gallery-img-overlay">
-              <span class="gallery-label">ZABAVA</span>
+
+        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/10-birthday-group.jpg" data-lb-caption="Rođendanska ekipa">
+          <div class="masonry-media">
+            <img src="/assets/img/gallery/10-birthday-group.webp" alt="Rođendanska ekipa" loading="lazy">
+            <div class="masonry-overlay"><span class="masonry-label">ROĐENDAN</span></div>
+            <div class="masonry-zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
             </div>
-            <div class="gallery-frame"></div>
+            <div class="masonry-frame"></div>
+          </div>
+        </div>
+
+        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/06-player-aim.jpg" data-lb-caption="Nišanjenje">
+          <div class="masonry-media">
+            <img src="/assets/img/gallery/06-player-aim.webp" alt="Igrač nišani" loading="lazy">
+            <div class="masonry-overlay"><span class="masonry-label">IGRAČ</span></div>
+            <div class="masonry-zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+            </div>
+            <div class="masonry-frame"></div>
+          </div>
+        </div>
+
+        <div class="masonry-item masonry-item-video" data-animate="fade-up" data-lb-type="video" data-lb-src="/assets/video/gallery-action-2.mp4" data-lb-caption="Proslava u areni">
+          <div class="masonry-media">
+            <video muted loop playsinline preload="metadata" poster="/assets/video/gallery-action-2-poster.webp">
+              <source src="/assets/video/gallery-action-2.webm" type="video/webm">
+              <source src="/assets/video/gallery-action-2.mp4" type="video/mp4">
+            </video>
+            <div class="masonry-overlay"><span class="masonry-label"><span class="live-dot"></span> LIVE PROSLAVA</span></div>
+            <div class="masonry-frame"></div>
+          </div>
+        </div>
+
+        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/05-weapons-green.jpg" data-lb-caption="Stanica sa opremom">
+          <div class="masonry-media">
+            <img src="/assets/img/gallery/05-weapons-green.webp" alt="Stanica - puške" loading="lazy">
+            <div class="masonry-overlay"><span class="masonry-label">STANICA</span></div>
+            <div class="masonry-zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+            </div>
+            <div class="masonry-frame"></div>
+          </div>
+        </div>
+
+        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/11-players-action.jpg" data-lb-caption="Tim u akciji">
+          <div class="masonry-media">
+            <img src="/assets/img/gallery/11-players-action.webp" alt="Tim u akciji" loading="lazy">
+            <div class="masonry-overlay"><span class="masonry-label">TIM</span></div>
+            <div class="masonry-zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+            </div>
+            <div class="masonry-frame"></div>
+          </div>
+        </div>
+
+        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/07-arena-long.jpg" data-lb-caption="Predator Zona">
+          <div class="masonry-media">
+            <img src="/assets/img/gallery/07-arena-long.webp" alt="Predator Zona" loading="lazy">
+            <div class="masonry-overlay"><span class="masonry-label">PREDATOR ZONA</span></div>
+            <div class="masonry-zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+            </div>
+            <div class="masonry-frame"></div>
+          </div>
+        </div>
+
+        <div class="masonry-item masonry-item-video" data-animate="fade-up" data-lb-type="video" data-lb-src="/assets/video/gallery-action-3.mp4" data-lb-caption="Ekipa u areni">
+          <div class="masonry-media">
+            <video muted loop playsinline preload="metadata" poster="/assets/video/gallery-action-3-poster.webp">
+              <source src="/assets/video/gallery-action-3.webm" type="video/webm">
+              <source src="/assets/video/gallery-action-3.mp4" type="video/mp4">
+            </video>
+            <div class="masonry-overlay"><span class="masonry-label"><span class="live-dot"></span> LIVE TIM</span></div>
+            <div class="masonry-frame"></div>
+          </div>
+        </div>
+
+        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/08-arena-barriers.jpg" data-lb-caption="Pregrade u areni">
+          <div class="masonry-media">
+            <img src="/assets/img/gallery/08-arena-barriers.webp" alt="Pregrade u areni" loading="lazy">
+            <div class="masonry-overlay"><span class="masonry-label">PREGRADE</span></div>
+            <div class="masonry-zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+            </div>
+            <div class="masonry-frame"></div>
+          </div>
+        </div>
+
+        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/09-vojnik-2.jpg" data-lb-caption="Avatar - neon">
+          <div class="masonry-media">
+            <img src="/assets/img/gallery/09-vojnik-2.webp" alt="Neon avatar" loading="lazy">
+            <div class="masonry-overlay"><span class="masonry-label">AVATAR</span></div>
+            <div class="masonry-zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+            </div>
+            <div class="masonry-frame"></div>
+          </div>
+        </div>
+
+        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/12-team-ready.jpg" data-lb-caption="Spremni za igru">
+          <div class="masonry-media">
+            <img src="/assets/img/gallery/12-team-ready.webp" alt="Spremni za igru" loading="lazy">
+            <div class="masonry-overlay"><span class="masonry-label">SPREMNI</span></div>
+            <div class="masonry-zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+            </div>
+            <div class="masonry-frame"></div>
+          </div>
+        </div>
+
+        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/13-cosmic-kids.jpg" data-lb-caption="Kosmička proslava">
+          <div class="masonry-media">
+            <img src="/assets/img/gallery/13-cosmic-kids.webp" alt="Deca na kosmičkom zidu" loading="lazy">
+            <div class="masonry-overlay"><span class="masonry-label">KOSMOS</span></div>
+            <div class="masonry-zoom" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+            </div>
+            <div class="masonry-frame"></div>
           </div>
         </div>
       </div>
-      <p class="gallery-note" data-animate="fade-up">Pogledajte našu galeriju i uverite se u izraze zadovoljstva na licima igrača!</p>
+      <p class="gallery-note" data-animate="fade-up">Klikni na bilo koju fotografiju ili snimak za pun prikaz. Dobrodošli u arenu.</p>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Galerija">
+      <button class="lightbox-close" aria-label="Zatvori">&times;</button>
+      <button class="lightbox-nav lightbox-prev" aria-label="Prethodno">&#8249;</button>
+      <button class="lightbox-nav lightbox-next" aria-label="Sledeće">&#8250;</button>
+      <div class="lightbox-stage"></div>
+      <div class="lightbox-bottom">
+        <div class="lightbox-caption"></div>
+        <div class="lightbox-counter"><span id="lb-current">1</span><span class="lb-sep">/</span><span id="lb-total">1</span></div>
+      </div>
+      <div class="lightbox-scan"></div>
+    </div>
+  </section>
+
+  <!-- REVIEWS SECTION -->
+  <section id="reviews" class="section reviews">
+    <div class="section-bg-grid"></div>
+    <div class="container">
+      <div class="section-header" data-animate="fade-up">
+        <span class="section-tag">// 06</span>
+        <h2 class="section-title">ŠTA KAŽU <span class="text-glow">IGRAČI</span></h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="reviews-topbar" data-animate="fade-up">
+        <div class="reviews-badge">
+          <svg class="g-logo" viewBox="0 0 48 48" width="36" height="36" aria-hidden="true">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          <div class="reviews-badge-text">
+            <div class="reviews-rating">
+              <span class="reviews-rating-num" id="reviews-avg">—</span>
+              <span class="reviews-stars" id="reviews-stars"></span>
+            </div>
+            <div class="reviews-meta">
+              <span><span id="reviews-count">—</span> recenzija na Google-u</span>
+            </div>
+          </div>
+        </div>
+        <a id="reviews-write-cta" href="#" target="_blank" rel="noopener" class="btn btn-primary reviews-write-btn">
+          <span class="btn-icon">★</span> OSTAVI RECENZIJU
+        </a>
+      </div>
+
+      <div class="reviews-marquee" aria-label="Google recenzije">
+        <div class="reviews-track" id="reviews-track"></div>
+      </div>
+
+      <div class="reviews-footer" data-animate="fade-up">
+        <a id="reviews-all-link" href="#" target="_blank" rel="noopener" class="reviews-all-link">
+          Pogledaj sve recenzije na Google Maps
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -504,7 +693,7 @@
   <section id="contact" class="section contact">
     <div class="container">
       <div class="section-header" data-animate="fade-up">
-        <span class="section-tag">// 06</span>
+        <span class="section-tag">// 07</span>
         <h2 class="section-title">STUPI U <span class="text-glow">KONTAKT</span></h2>
         <div class="section-line"></div>
       </div>
@@ -543,13 +732,22 @@
             <div>
               <h4>Pratite Nas</h4>
               <div class="social-links">
-                <a href="https://www.facebook.com/Predator-Laser-tag" target="_blank" class="social-link" aria-label="Facebook">
+                <a href="https://www.facebook.com/share/1PN8Z7H1XF/" target="_blank" rel="noopener" class="social-link" aria-label="Facebook">
                   <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
                 </a>
-                <a href="https://www.instagram.com/lasertagpredator" target="_blank" class="social-link" aria-label="Instagram">
+                <a href="https://www.instagram.com/lasertagpredator?igsh=MTNidXFoYzl2NDhwdA==" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
                   <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
                 </a>
-                <a href="https://www.youtube.com/channel/UC_Nmv_rO8yzTrQKIjaPHCKA" target="_blank" class="social-link" aria-label="YouTube">
+                <a href="https://www.tiktok.com/@predatorlasertagbeograd?_r=1&amp;_t=ZS-95ZwiMjVJmG" target="_blank" rel="noopener" class="social-link" aria-label="TikTok">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005.8 20.1a6.34 6.34 0 0010.86-4.43V8.12a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.84-.55z"/></svg>
+                </a>
+                <a href="https://www.threads.com/@lasertagpredator" target="_blank" rel="noopener" class="social-link" aria-label="Threads">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17.08 11.16c-.09-.04-.18-.08-.27-.12-.16-2.94-1.77-4.63-4.47-4.64h-.04c-1.62 0-2.96.69-3.79 1.94l1.49 1.02c.62-.94 1.58-1.14 2.3-1.14h.03c.9 0 1.58.26 2.02.78.32.38.54.9.64 1.57-.78-.13-1.62-.17-2.52-.12-2.53.15-4.16 1.62-4.05 3.66.06 1.04.57 1.93 1.45 2.52.74.49 1.7.74 2.7.68 1.32-.07 2.36-.57 3.08-1.49.55-.7.9-1.6 1.05-2.73.63.38 1.1.88 1.36 1.48.44 1.02.47 2.69-.9 4.06-1.19 1.19-2.63 1.71-4.79 1.72-2.4-.02-4.22-.79-5.41-2.29C5.06 16.76 4.5 14.78 4.48 12c.02-2.78.58-4.76 1.68-6.11C7.35 4.39 9.17 3.62 11.57 3.6c2.42.02 4.26.79 5.49 2.32.6.74 1.06 1.68 1.36 2.79l1.87-.5c-.37-1.37-.95-2.55-1.72-3.5C17 2.75 14.68 1.78 11.58 1.77h-.01c-3.09.02-5.38.98-6.81 2.86C3.4 6.32 2.71 8.68 2.68 11.99v.02c.03 3.31.72 5.67 2.08 7.36 1.43 1.88 3.72 2.84 6.81 2.86h.01c2.75-.02 4.69-.74 6.29-2.34 2.09-2.08 2.03-4.69 1.34-6.29-.48-1.14-1.41-2.07-2.68-2.65zm-4.35 3.61c-1.1.06-2.25-.44-2.31-1.51-.04-.79.56-1.67 2.38-1.77h.27c.75 0 1.45.07 2.08.21-.24 2.92-1.6 3.01-2.42 3.07z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/predator-laser-tag-beograd-76209438a" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05a3.75 3.75 0 013.37-1.85c3.61 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 11.01-4.13 2.06 2.06 0 010 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+                </a>
+                <a href="https://www.youtube.com/channel/UC_Nmv_rO8yzTrQKIjaPHCKA" target="_blank" rel="noopener" class="social-link" aria-label="YouTube">
                   <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19.1c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.43z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#0a0a0a"/></svg>
                 </a>
               </div>
@@ -576,7 +774,7 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-brand">
-          <img src="https://lasertagpredator.rs/assets/img/foooter_logo.png" alt="Predator Laser Tag" class="footer-logo-img">
+          <img src="/assets/img/footer-logo.png" alt="Predator Laser Tag" class="footer-logo-img">
         </div>
         <div class="footer-links">
           <a href="tel:+381645257777">+381 64 525 7777</a>
@@ -584,9 +782,12 @@
           <span>Koste Nađa 12d, Mirijevlje, Beograd</span>
         </div>
         <div class="footer-social">
-          <a href="https://www.facebook.com/Predator-Laser-tag" target="_blank" aria-label="Facebook">FB</a>
-          <a href="https://www.instagram.com/lasertagpredator" target="_blank" aria-label="Instagram">IG</a>
-          <a href="https://www.youtube.com/channel/UC_Nmv_rO8yzTrQKIjaPHCKA" target="_blank" aria-label="YouTube">YT</a>
+          <a href="https://www.facebook.com/share/1PN8Z7H1XF/" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+          <a href="https://www.instagram.com/lasertagpredator?igsh=MTNidXFoYzl2NDhwdA==" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+          <a href="https://www.tiktok.com/@predatorlasertagbeograd?_r=1&amp;_t=ZS-95ZwiMjVJmG" target="_blank" rel="noopener" aria-label="TikTok">TT</a>
+          <a href="https://www.threads.com/@lasertagpredator" target="_blank" rel="noopener" aria-label="Threads">TH</a>
+          <a href="https://www.linkedin.com/in/predator-laser-tag-beograd-76209438a" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+          <a href="https://www.youtube.com/channel/UC_Nmv_rO8yzTrQKIjaPHCKA" target="_blank" rel="noopener" aria-label="YouTube">YT</a>
         </div>
         <p class="footer-copy">&copy; 2026 Predator Laser Tag. Sva prava zadržana.</p>
       </div>

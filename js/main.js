@@ -222,11 +222,11 @@ scrollReveal('.birthday-card',
   { staggerDelay: 0.3, trigger: '.birthday-grid' }
 );
 
-// --- Gallery items ---
-scrollReveal('.gallery-item',
-  { opacity: 0, scale: 0.85 },
-  { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.5)' },
-  { staggerDelay: 0.1 }
+// --- Masonry gallery items ---
+scrollReveal('.masonry-item',
+  { opacity: 0, y: 40, scale: 0.92 },
+  { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.3)' },
+  { staggerDelay: 0.06, trigger: '.masonry', start: 'top 85%' }
 );
 
 // --- Contact section ---
@@ -251,7 +251,7 @@ scrollReveal('.section-header',
 // SAFETY FALLBACK — force-show after 3s
 // ===================================
 setTimeout(() => {
-  const selectors = '.exp-card, .package-card, .birthday-card, .gallery-item, .contact-item, .about-image-frame, .about-content, .about-badge, .map-wrapper, .section-header';
+  const selectors = '.exp-card, .package-card, .birthday-card, .masonry-item, .contact-item, .about-image-frame, .about-content, .about-badge, .map-wrapper, .section-header';
   document.querySelectorAll(selectors).forEach(el => {
     const style = getComputedStyle(el);
     if (style.opacity === '0' || parseFloat(style.opacity) < 0.1) {
@@ -364,6 +364,254 @@ document.addEventListener('click', (e) => {
     });
   }
 });
+
+// ===================================
+// HERO VIDEO PARALLAX (desktop only)
+// ===================================
+const heroVideoWrap = document.querySelector('.hero-video-wrap');
+const heroSection = document.querySelector('.hero');
+if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matches) {
+  gsap.to(heroVideoWrap, {
+    yPercent: 15,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: heroSection,
+      start: 'top top',
+      end: 'bottom top',
+      scrub: true
+    }
+  });
+}
+
+// ===================================
+// VIDEO PLAY/PAUSE ON VISIBILITY (perf + bandwidth)
+// ===================================
+(() => {
+  const videos = document.querySelectorAll('.hero-video, .masonry-item-video video');
+  if (!videos.length || !('IntersectionObserver' in window)) {
+    videos.forEach(v => { v.play?.().catch(() => {}); });
+    return;
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const v = entry.target;
+      if (entry.isIntersecting) {
+        v.play?.().catch(() => {});
+      } else {
+        v.pause?.();
+      }
+    });
+  }, { threshold: 0.2 });
+
+  videos.forEach(v => obs.observe(v));
+})();
+
+// ===================================
+// REVIEWS (Google) — fetch JSON + render infinite marquee
+// ===================================
+(async () => {
+  const track = document.getElementById('reviews-track');
+  if (!track) return;
+
+  const avgEl = document.getElementById('reviews-avg');
+  const countEl = document.getElementById('reviews-count');
+  const starsEl = document.getElementById('reviews-stars');
+  const writeCta = document.getElementById('reviews-write-cta');
+  const allLink = document.getElementById('reviews-all-link');
+
+  const avatarColors = [
+    'linear-gradient(135deg, #ff0040, #cc0033)',
+    'linear-gradient(135deg, #00f0ff, #0077aa)',
+    'linear-gradient(135deg, #00ff88, #008855)',
+    'linear-gradient(135deg, #8b00ff, #5500aa)',
+    'linear-gradient(135deg, #ff6b00, #cc4400)',
+  ];
+
+  function initials(name) {
+    return name.split(/\s+/).map(p => p[0]).slice(0, 2).join('').toUpperCase();
+  }
+
+  function starsMarkup(rating) {
+    const full = Math.round(rating);
+    let html = '';
+    for (let i = 1; i <= 5; i++) {
+      html += i <= full ? '★' : '<span class="star-empty">★</span>';
+    }
+    return html;
+  }
+
+  function renderCard(r, idx) {
+    const card = document.createElement('article');
+    card.className = 'review-card';
+    const avatarBg = avatarColors[idx % avatarColors.length];
+    card.innerHTML = `
+      <div class="review-head">
+        <div class="review-avatar" style="background:${avatarBg}">${initials(r.author)}</div>
+        <div>
+          <div class="review-author">${r.author}</div>
+          <span class="review-stars" aria-label="${r.rating} od 5">${starsMarkup(r.rating)}</span>
+        </div>
+      </div>
+      <p class="review-text">${r.text}</p>
+      <div class="review-footer">
+        <span class="review-date">${r.relativeTime}</span>
+        <span class="review-source">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Google
+        </span>
+      </div>
+    `;
+    return card;
+  }
+
+  try {
+    const res = await fetch('/reviews.json', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('reviews fetch failed');
+    const data = await res.json();
+
+    avgEl.textContent = data.averageRating.toFixed(1);
+    countEl.textContent = data.totalReviews;
+    starsEl.innerHTML = starsMarkup(data.averageRating);
+
+    if (data.writeReviewUrl) writeCta.href = data.writeReviewUrl;
+    if (data.mapsUrl) allLink.href = data.mapsUrl;
+
+    // Render each review twice — needed for seamless infinite marquee
+    const frag = document.createDocumentFragment();
+    data.reviews.forEach((r, i) => frag.appendChild(renderCard(r, i)));
+    data.reviews.forEach((r, i) => {
+      const clone = renderCard(r, i);
+      clone.setAttribute('aria-hidden', 'true');
+      frag.appendChild(clone);
+    });
+    track.appendChild(frag);
+  } catch (err) {
+    track.innerHTML = '<div class="review-card" style="flex:0 0 100%; text-align:center; color:#888">Recenzije trenutno nisu dostupne.</div>';
+    console.warn('[reviews]', err);
+  }
+})();
+
+// ===================================
+// LIGHTBOX
+// ===================================
+(() => {
+  const lightbox = document.getElementById('lightbox');
+  const masonry = document.getElementById('masonry');
+  if (!lightbox || !masonry) return;
+
+  const stage = lightbox.querySelector('.lightbox-stage');
+  const captionEl = lightbox.querySelector('.lightbox-caption');
+  const currentEl = lightbox.querySelector('#lb-current');
+  const totalEl = lightbox.querySelector('#lb-total');
+  const closeBtn = lightbox.querySelector('.lightbox-close');
+  const prevBtn = lightbox.querySelector('.lightbox-prev');
+  const nextBtn = lightbox.querySelector('.lightbox-next');
+
+  const items = Array.from(masonry.querySelectorAll('.masonry-item'));
+  const data = items.map(el => ({
+    type: el.dataset.lbType || 'image',
+    src: el.dataset.lbSrc,
+    caption: el.dataset.lbCaption || ''
+  }));
+  totalEl.textContent = data.length;
+
+  let index = 0;
+  let lastFocus = null;
+
+  function render(i) {
+    const item = data[i];
+    if (!item) return;
+    stage.innerHTML = '';
+
+    if (item.type === 'video') {
+      const v = document.createElement('video');
+      v.src = item.src;
+      v.controls = true;
+      v.autoplay = true;
+      v.loop = true;
+      v.playsInline = true;
+      stage.appendChild(v);
+    } else {
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.alt = item.caption;
+      stage.appendChild(img);
+    }
+    captionEl.textContent = item.caption;
+    currentEl.textContent = i + 1;
+  }
+
+  function open(i) {
+    index = (i + data.length) % data.length;
+    lastFocus = document.activeElement;
+    render(index);
+    lightbox.classList.add('active');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('lightbox-open');
+    closeBtn.focus();
+  }
+
+  function close() {
+    lightbox.classList.remove('active');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('lightbox-open');
+    // stop any playing video
+    const v = stage.querySelector('video');
+    if (v) v.pause();
+    setTimeout(() => { stage.innerHTML = ''; }, 400);
+    lastFocus?.focus?.();
+  }
+
+  function next() { open(index + 1); }
+  function prev() { open(index - 1); }
+
+  items.forEach((el, i) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      open(i);
+    });
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('role', 'button');
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        open(i);
+      }
+    });
+  });
+
+  closeBtn.addEventListener('click', close);
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) close();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowRight') next();
+    else if (e.key === 'ArrowLeft') prev();
+  });
+
+  // Swipe (mobile)
+  let touchStartX = 0;
+  let touchStartY = 0;
+  lightbox.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].clientX;
+    touchStartY = e.changedTouches[0].clientY;
+  }, { passive: true });
+  lightbox.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx > 0) prev(); else next();
+    } else if (dy < -80) {
+      close();
+    }
+  });
+})();
 
 // ===================================
 // PRELOADER (simple)
