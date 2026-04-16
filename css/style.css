@@ -348,12 +348,7 @@ button:hover ~ #cursor-dot,
 }
 
 .hero-bg-image {
-  position: absolute;
-  inset: 0;
-  background: url('/assets/img/hero-bg.webp') center/cover no-repeat;
-  opacity: 0.35;
-  filter: blur(2px) brightness(0.55) saturate(1.1);
-  z-index: 0;
+  display: none;
 }
 
 /* Looping video backdrop — sits just above bg-image, below fog/grid/particles */
@@ -647,7 +642,6 @@ button:hover ~ #cursor-dot,
 .btn-primary {
   background: var(--red);
   color: var(--white);
-  clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
 }
 
 .btn-primary:hover {
@@ -661,7 +655,6 @@ button:hover ~ #cursor-dot,
   background: transparent;
   color: var(--white);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 15px 100%, 0 calc(100% - 15px));
 }
 
 .btn-secondary:hover {
@@ -2138,13 +2131,29 @@ button:hover ~ #cursor-dot,
   letter-spacing: 0.5px;
 }
 
-/* Mobile pagination — hidden on desktop */
+/* Pagination — visible on all viewports */
 .masonry-pager {
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.9rem;
   margin-top: 1.5rem;
+}
+
+/* Smooth fade tranzicija kad se menjaju stranice */
+.masonry[data-paged="1"] .masonry-item {
+  display: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.masonry[data-paged="1"] .masonry-item.page-show {
+  display: block;
+  animation: galleryTileFadeIn 0.45s ease-out;
+}
+
+@keyframes galleryTileFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .masonry-pager-btn {
@@ -2799,16 +2808,22 @@ body.lightbox-open {
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  color: var(--gray);
+  background: rgba(0, 0, 0, 0.35);
   transition: all 0.3s;
+  position: relative;
 }
 
 .social-link:hover {
-  border-color: var(--red);
-  color: var(--red);
-  box-shadow: 0 0 15px rgba(255, 0, 64, 0.3);
   transform: translateY(-3px);
 }
+
+/* Brand-colored hover glows (ikonice su uvek u pravoj boji, SVG ih već boji) */
+.social-fb:hover      { border-color: #1877F2; box-shadow: 0 0 18px rgba(24, 119, 242, 0.5); }
+.social-ig:hover      { border-color: #dc2743; box-shadow: 0 0 18px rgba(220, 39, 67, 0.5); }
+.social-tt:hover      { border-color: #FE2C55; box-shadow: 0 0 18px rgba(254, 44, 85, 0.5); }
+.social-threads:hover { border-color: #ffffff; box-shadow: 0 0 18px rgba(255, 255, 255, 0.45); }
+.social-in:hover      { border-color: #0A66C2; box-shadow: 0 0 18px rgba(10, 102, 194, 0.5); }
+.social-yt:hover      { border-color: #FF0000; box-shadow: 0 0 18px rgba(255, 0, 0, 0.5); }
 
 /* Map */
 .map-wrapper {

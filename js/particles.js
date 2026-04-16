@@ -41,7 +41,7 @@ class ParticleSystem {
   }
 
   createParticles() {
-    const count = this.isMobile ? 120 : 400;
+    const count = this.isMobile ? 50 : 180;
     this.particleCount = count;
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);

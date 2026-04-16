@@ -24,7 +24,7 @@ await page.waitForTimeout(1500);
 await page.screenshot({ path: 'scripts/shot-01-hero.png', fullPage: false });
 
 // Hero with video — wait a beat for video to load + play
-await page.waitForTimeout(2000);
+await page.waitForTimeout(2500);
 await page.screenshot({ path: 'scripts/shot-02-hero-video.png', fullPage: false });
 
 // Full gallery — scroll to start + screenshot whole section element
@@ -33,7 +33,15 @@ await page.waitForTimeout(1500);
 await page.screenshot({ path: 'scripts/shot-03-gallery.png', fullPage: false });
 const gallerySection = await page.$('#gallery');
 if (gallerySection) {
-  await gallerySection.screenshot({ path: 'scripts/shot-03b-gallery-full.png' });
+  await gallerySection.screenshot({ path: 'scripts/shot-03b-gallery-page1.png' });
+}
+
+// Click next arrow and screenshot page 2
+const nextBtn = await page.$('.masonry-pager-next');
+if (nextBtn) {
+  await nextBtn.click();
+  await page.waitForTimeout(600);
+  if (gallerySection) await gallerySection.screenshot({ path: 'scripts/shot-03c-gallery-page2.png' });
 }
 
 // Contact section (social links)

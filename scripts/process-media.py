@@ -30,7 +30,7 @@ FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 IMAGE_JOBS = [
     # (source, output_name_no_ext, max_width, description)
     (STUDIO / "arena najbolja slika.jpg",       OUT_IMG / "hero-bg",            1920, "Hero background — UV neon arena"),
-    (STUDIO / "puske crvena poz..jpg",          OUT_IMG / "about-arena",        1600, "About section — weapons red"),
+    (STUDIO / "arena najbolja slika.jpg",       OUT_IMG / "about-arena",        1600, "About section — UV neon arena"),
     (STUDIO / "arena sa krivudavim laserom.jpg", OUT_IMG / "showreel-poster",   1920, "Showreel poster frame fallback"),
 
     (STUDIO / "arena najbolja slika.jpg",        OUT_GAL / "01-arena-neon",     1600, "Arena UV neon wide"),
@@ -46,16 +46,56 @@ IMAGE_JOBS = [
     (RAW / "IMG-20260402-WA0011.jpg",            OUT_GAL / "11-players-action", 1400, "Players in action"),
     (RAW / "IMG-20260320-WA0003.jpg",            OUT_GAL / "12-team-ready",     1400, "Team ready"),
     (RAW / "IMG-20260402-WA0001.jpg",            OUT_GAL / "13-cosmic-kids",    1400, "Birthday kids cosmic wall"),
+    # --- Expansion: +35 tiles for full paginated gallery ---
+    (RAW / "IMG-20260314-WA0025.jpg",            OUT_GAL / "14-bday-14-a",      1400, "Birthday group 14-03 a"),
+    (RAW / "IMG-20260314-WA0026.jpg",            OUT_GAL / "15-bday-14-b",      1400, "Birthday group 14-03 b"),
+    (RAW / "IMG-20260314-WA0027.jpg",            OUT_GAL / "16-bday-14-c",      1400, "Birthday group 14-03 c"),
+    (RAW / "IMG-20260314-WA0028.jpg",            OUT_GAL / "17-bday-14-d",      1400, "Birthday group 14-03 d"),
+    (RAW / "IMG-20260314-WA0031.jpg",            OUT_GAL / "18-bday-14-e",      1400, "Birthday group 14-03 e"),
+    (RAW / "IMG-20260320-WA0001.jpg",            OUT_GAL / "19-bday-20-a",      1400, "Birthday group 20-03 a"),
+    (RAW / "IMG-20260320-WA0002.jpg",            OUT_GAL / "20-bday-20-b",      1400, "Birthday group 20-03 b"),
+    (RAW / "IMG-20260320-WA0005.jpg",            OUT_GAL / "21-bday-20-c",      1400, "Birthday group 20-03 c"),
+    (RAW / "IMG-20260402-WA0000.jpg",            OUT_GAL / "22-cosmic-room-a",  1400, "Cosmic room a"),
+    (RAW / "IMG-20260402-WA0002.jpg",            OUT_GAL / "23-cosmic-room-b",  1400, "Cosmic room b"),
+    (RAW / "IMG-20260402-WA0003.jpg",            OUT_GAL / "24-cosmic-room-c",  1400, "Cosmic room c"),
+    (RAW / "IMG-20260402-WA0010.jpg",            OUT_GAL / "25-cosmic-room-d",  1400, "Cosmic room d"),
+    (RAW / "IMG-20260402-WA0012.jpg",            OUT_GAL / "26-cosmic-room-e",  1400, "Cosmic room e"),
+    (RAW / "IMG-20260402-WA0013.jpg",            OUT_GAL / "27-cosmic-room-f",  1400, "Cosmic room f"),
+    (RAW / "IMG-20260413-WA0000.jpg",            OUT_GAL / "28-team-13-a",      1400, "Team 13-04 a"),
+    (RAW / "IMG-20260413-WA0001.jpg",            OUT_GAL / "29-team-13-b",      1400, "Team 13-04 b"),
+    (RAW / "IMG-20260413-WA0002.jpg",            OUT_GAL / "30-team-13-c",      1400, "Team 13-04 c"),
+    (RAW / "IMG-20260413-WA0003.jpg",            OUT_GAL / "31-team-13-d",      1400, "Team 13-04 d"),
+    (RAW / "IMG-20260208-WA0028.jpg",            OUT_GAL / "32-feb-a",          1400, "Februar a"),
+    (RAW / "IMG-20260208-WA0029.jpg",            OUT_GAL / "33-feb-b",          1400, "Februar b"),
+    (RAW / "IMG-20260214-WA0011.jpg",            OUT_GAL / "34-feb-14-a",       1400, "Februar 14 a"),
+    (RAW / "IMG-20260214-WA0012.jpg",            OUT_GAL / "35-feb-14-b",       1400, "Februar 14 b"),
+    (RAW / "20260307_190117.jpg",                OUT_GAL / "36-arena-action-a", 1400, "Arena candid a"),
+    (RAW / "20260307_191148.jpg",                OUT_GAL / "37-arena-action-b", 1400, "Arena candid b"),
+    (RAW / "20260307_194351.jpg",                OUT_GAL / "38-arena-action-c", 1400, "Arena candid c"),
+    (RAW / "20260314_154122.jpg",                OUT_GAL / "39-arena-day",      1400, "Arena day shot"),
+    (RAW / "20260320_195920.jpg",                OUT_GAL / "40-arena-evening",  1400, "Arena evening"),
+    (RAW / "20260320_195930.jpg",                OUT_GAL / "41-arena-evening-b",1400, "Arena evening b"),
+    (RAW / "20260328_143626.jpg",                OUT_GAL / "42-arena-group",    1400, "Arena group"),
+    (RAW / "20260328_161250.jpg",                OUT_GAL / "43-arena-late",     1400, "Arena late"),
+    (RAW / "20260413_162208.jpg",                OUT_GAL / "44-arena-13a",      1400, "Arena 13-04 a"),
+    (RAW / "20260413_162220.jpg",                OUT_GAL / "45-arena-13b",      1400, "Arena 13-04 b"),
+    (RAW / "20260413_162241.jpg",                OUT_GAL / "46-arena-13c",      1400, "Arena 13-04 c"),
+    (RAW / "20260307_192514.jpg",                OUT_GAL / "47-arena-307",      1400, "Arena 307"),
+    (RAW / "20260314_163046.jpg",                OUT_GAL / "48-arena-1403",     1400, "Arena 14-03"),
 ]
 
 # Video jobs: (source, output_basename, start_sec, duration_sec, target_w, target_h, crf, description)
 VIDEO_JOBS = [
-    # Showreel — longer, higher quality, 720p
-    (RAW / "VID-20260314-WA0017.mp4", OUT_VID / "showreel", 0, 14, 1280, 720, 26, "Main showreel"),
+    # Showreel — dinamičniji action snippet, 720p
+    (RAW / "20260214_193243.mp4", OUT_VID / "showreel", 2, 14, 1280, 720, 26, "Main showreel — action"),
     # Gallery loop tiles — shorter, 540p
     (RAW / "VID-20260307-WA0020.mp4", OUT_VID / "gallery-action-1", 0, 6, 960, 540, 28, "Gallery tile 1 — action"),
     (RAW / "VID-20260328-WA0005.mp4", OUT_VID / "gallery-action-2", 0, 6, 960, 540, 28, "Gallery tile 2 — birthday"),
     (RAW / "VID-20260413-WA0009.mp4", OUT_VID / "gallery-action-3", 0, 6, 960, 540, 28, "Gallery tile 3 — team"),
+    (RAW / "VID-20260314-WA0033.mp4", OUT_VID / "gallery-action-4", 0, 6, 960, 540, 28, "Gallery tile 4 — action"),
+    (RAW / "VID-20260328-WA0006.mp4", OUT_VID / "gallery-action-5", 0, 6, 960, 540, 28, "Gallery tile 5 — birthday"),
+    (RAW / "VID-20260402-WA0006.mp4", OUT_VID / "gallery-action-6", 0, 6, 960, 540, 28, "Gallery tile 6 — cosmic"),
+    (RAW / "VID-20260413-WA0010.mp4", OUT_VID / "gallery-action-7", 0, 6, 960, 540, 28, "Gallery tile 7 — team 13"),
 ]
 
 

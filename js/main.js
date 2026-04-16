@@ -441,7 +441,7 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
 })();
 
 // ===================================
-// MOBILE GALLERY PAGINATION (≤768px)
+// GALLERY PAGINATION — desktop 16/page, mobile 6/page + auto-advance 15s
 // ===================================
 (() => {
   const masonry = document.getElementById('masonry');
@@ -450,88 +450,105 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
   if (!masonry || !pager || !dotsEl) return;
 
   const items = Array.from(masonry.querySelectorAll('.masonry-item'));
-  const PER_PAGE = 6;
-  const pageCount = Math.ceil(items.length / PER_PAGE);
   const prevBtn = pager.querySelector('.masonry-pager-prev');
   const nextBtn = pager.querySelector('.masonry-pager-next');
-  const mq = window.matchMedia('(max-width: 768px)');
+  const AUTO_MS = 15000;
 
   let current = 0;
-  let enabled = false;
+  let perPage = computePerPage();
+  let pageCount = Math.ceil(items.length / perPage);
+  let autoTimer = null;
+  let hovering = false;
 
-  dotsEl.innerHTML = '';
-  for (let i = 0; i < pageCount; i++) {
-    const dot = document.createElement('button');
-    dot.className = 'masonry-pager-dot';
-    dot.setAttribute('aria-label', `Strana ${i + 1}`);
-    dot.addEventListener('click', () => show(i));
-    dotsEl.appendChild(dot);
+  function computePerPage() {
+    return window.innerWidth <= 768 ? 6 : 16;
+  }
+
+  function buildDots() {
+    dotsEl.innerHTML = '';
+    for (let i = 0; i < pageCount; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'masonry-pager-dot';
+      dot.setAttribute('aria-label', `Strana ${i + 1}`);
+      dot.addEventListener('click', () => { show(i); resetAuto(); });
+      dotsEl.appendChild(dot);
+    }
   }
 
   function show(n) {
-    current = Math.max(0, Math.min(pageCount - 1, n));
-    const start = current * PER_PAGE;
-    const end = start + PER_PAGE;
+    current = ((n % pageCount) + pageCount) % pageCount;
+    const start = current * perPage;
+    const end = start + perPage;
     items.forEach((el, i) => el.classList.toggle('page-show', i >= start && i < end));
     dotsEl.querySelectorAll('.masonry-pager-dot').forEach((d, i) => {
       d.classList.toggle('active', i === current);
     });
-    prevBtn.disabled = current === 0;
-    nextBtn.disabled = current === pageCount - 1;
-    // scroll masonry back into view smoothly on page change (only if near)
-    const rect = masonry.getBoundingClientRect();
-    if (rect.top < 0) {
-      masonry.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    // disable arrows only when at edges without wrap (we wrap, so keep enabled)
+    prevBtn.disabled = false;
+    nextBtn.disabled = false;
   }
 
-  function enable() {
-    if (enabled) return;
-    enabled = true;
-    masonry.dataset.paged = '1';
-    show(0);
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(() => {
+      if (!hovering && !document.body.classList.contains('lightbox-open')) {
+        show(current + 1);
+      }
+    }, AUTO_MS);
   }
 
-  function disable() {
-    if (!enabled) return;
-    enabled = false;
-    delete masonry.dataset.paged;
-    items.forEach(el => el.classList.remove('page-show'));
+  function stopAuto() { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } }
+  function resetAuto() { stopAuto(); startAuto(); }
+
+  function relayout() {
+    const newPerPage = computePerPage();
+    if (newPerPage === perPage) return;
+    perPage = newPerPage;
+    pageCount = Math.ceil(items.length / perPage);
+    current = Math.min(current, pageCount - 1);
+    buildDots();
+    show(current);
   }
 
-  function syncToViewport() {
-    if (mq.matches) enable(); else disable();
-  }
+  masonry.dataset.paged = '1';
+  buildDots();
+  show(0);
+  startAuto();
 
-  prevBtn.addEventListener('click', () => show(current - 1));
-  nextBtn.addEventListener('click', () => show(current + 1));
+  prevBtn.addEventListener('click', () => { show(current - 1); resetAuto(); });
+  nextBtn.addEventListener('click', () => { show(current + 1); resetAuto(); });
 
-  // Touch swipe on the masonry itself
-  let touchStartX = 0;
-  let touchStartY = 0;
+  // Pause on hover (desktop)
+  masonry.addEventListener('mouseenter', () => { hovering = true; });
+  masonry.addEventListener('mouseleave', () => { hovering = false; });
+
+  // Touch swipe (mobile) — pause auto briefly
+  let touchStartX = 0, touchStartY = 0;
   masonry.addEventListener('touchstart', (e) => {
-    if (!enabled) return;
     touchStartX = e.changedTouches[0].clientX;
     touchStartY = e.changedTouches[0].clientY;
+    hovering = true;
   }, { passive: true });
   masonry.addEventListener('touchend', (e) => {
-    if (!enabled) return;
     const dx = e.changedTouches[0].clientX - touchStartX;
     const dy = e.changedTouches[0].clientY - touchStartY;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-      if (dx < 0) show(current + 1);
-      else show(current - 1);
+      if (dx < 0) show(current + 1); else show(current - 1);
+      resetAuto();
     }
+    setTimeout(() => { hovering = false; }, 1500);
   });
 
-  // Keyboard
   pager.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') { show(current - 1); e.preventDefault(); }
-    else if (e.key === 'ArrowRight') { show(current + 1); e.preventDefault(); }
+    if (e.key === 'ArrowLeft') { show(current - 1); resetAuto(); e.preventDefault(); }
+    else if (e.key === 'ArrowRight') { show(current + 1); resetAuto(); e.preventDefault(); }
   });
 
-  syncToViewport();
-  mq.addEventListener('change', syncToViewport);
+  let resizeT;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(relayout, 150);
+  });
 })();
 
 // ===================================
@@ -555,7 +572,7 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
     'linear-gradient(135deg, #00f0ff, #0077aa)',
     'linear-gradient(135deg, #00ff88, #008855)',
     'linear-gradient(135deg, #8b00ff, #5500aa)',
-    'linear-gradient(135deg, #ff6b00, #cc4400)',
+    'linear-gradient(135deg, #ff0088, #b3005a)',
   ];
 
   const initials = name => name.split(/\s+/).map(p => p[0]).slice(0, 2).join('').toUpperCase();
