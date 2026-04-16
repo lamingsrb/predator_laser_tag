@@ -20,9 +20,9 @@ ROOT = Path(__file__).resolve().parent.parent
 MEDIA_RAW = ROOT / "Media_RAW" / "predator LaKI"
 STUDIO = MEDIA_RAW / "sa maila laki"
 RAW = MEDIA_RAW / "predator LaKI"
-OUT_IMG = ROOT / "assets" / "img"
+OUT_IMG = ROOT / "public" / "assets" / "img"
 OUT_GAL = OUT_IMG / "gallery"
-OUT_VID = ROOT / "assets" / "video"
+OUT_VID = ROOT / "public" / "assets" / "video"
 
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 

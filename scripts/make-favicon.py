@@ -14,8 +14,8 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC_LOGO = ROOT / "assets" / "img" / "logo.png"
-OUT = ROOT / "assets" / "img"
+SRC_LOGO = ROOT / "public" / "assets" / "img" / "logo.png"
+OUT = ROOT / "public" / "assets" / "img"
 
 # Build a clean favicon square from the logo
 # 1. crop just the shield (top area, square)
