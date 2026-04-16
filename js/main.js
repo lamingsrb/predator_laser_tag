@@ -284,6 +284,39 @@ if (!('ontouchstart' in window)) document.querySelectorAll('[data-tilt]').forEac
 });
 
 // ===================================
+// RESERVATION BUTTONS — desktop scrolls to #contact, mobile dials
+// ===================================
+(() => {
+  const RESERVE_PHONE = '+381645257777';
+  // Match every tel: link pointing at the reservation number
+  const links = document.querySelectorAll(`a[href="tel:${RESERVE_PHONE}"]`);
+  if (!links.length) return;
+
+  // 'fine' pointer + 'hover' capability = desktop with mouse
+  const isDesktop = () =>
+    window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+    window.innerWidth > 768;
+
+  links.forEach(a => {
+    a.addEventListener('click', (e) => {
+      if (!isDesktop()) return; // mobile: let tel: dial open
+      e.preventDefault();
+      const contact = document.getElementById('contact');
+      if (!contact) return;
+      const offset = 80;
+      const top = contact.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+      // briefly highlight the phone link to draw attention
+      const phoneLink = contact.querySelector('a.contact-link');
+      if (phoneLink) {
+        phoneLink.classList.add('contact-link-flash');
+        setTimeout(() => phoneLink.classList.remove('contact-link-flash'), 2400);
+      }
+    });
+  });
+})();
+
+// ===================================
 // SMOOTH SCROLL
 // ===================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
