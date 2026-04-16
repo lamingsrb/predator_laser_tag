@@ -408,11 +408,14 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
 })();
 
 // ===================================
-// REVIEWS (Google) — fetch JSON + render infinite marquee
+// REVIEWS (Google) — fetch + rAF-driven marquee + arrow nav
 // ===================================
 (async () => {
   const track = document.getElementById('reviews-track');
-  if (!track) return;
+  const marquee = track?.parentElement;
+  const prevBtn = document.getElementById('reviews-prev');
+  const nextBtn = document.getElementById('reviews-next');
+  if (!track || !marquee) return;
 
   const avgEl = document.getElementById('reviews-avg');
   const countEl = document.getElementById('reviews-count');
@@ -428,9 +431,7 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
     'linear-gradient(135deg, #ff6b00, #cc4400)',
   ];
 
-  function initials(name) {
-    return name.split(/\s+/).map(p => p[0]).slice(0, 2).join('').toUpperCase();
-  }
+  const initials = name => name.split(/\s+/).map(p => p[0]).slice(0, 2).join('').toUpperCase();
 
   function starsMarkup(rating) {
     const full = Math.round(rating);
@@ -444,10 +445,9 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
   function renderCard(r, idx) {
     const card = document.createElement('article');
     card.className = 'review-card';
-    const avatarBg = avatarColors[idx % avatarColors.length];
     card.innerHTML = `
       <div class="review-head">
-        <div class="review-avatar" style="background:${avatarBg}">${initials(r.author)}</div>
+        <div class="review-avatar" style="background:${avatarColors[idx % avatarColors.length]}">${initials(r.author)}</div>
         <div>
           <div class="review-author">${r.author}</div>
           <span class="review-stars" aria-label="${r.rating} od 5">${starsMarkup(r.rating)}</span>
@@ -465,31 +465,87 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
     return card;
   }
 
+  let data;
   try {
     const res = await fetch('/reviews.json', { cache: 'no-cache' });
-    if (!res.ok) throw new Error('reviews fetch failed');
-    const data = await res.json();
-
-    avgEl.textContent = data.averageRating.toFixed(1);
-    countEl.textContent = data.totalReviews;
-    starsEl.innerHTML = starsMarkup(data.averageRating);
-
-    if (data.writeReviewUrl) writeCta.href = data.writeReviewUrl;
-    if (data.mapsUrl) allLink.href = data.mapsUrl;
-
-    // Render each review twice — needed for seamless infinite marquee
-    const frag = document.createDocumentFragment();
-    data.reviews.forEach((r, i) => frag.appendChild(renderCard(r, i)));
-    data.reviews.forEach((r, i) => {
-      const clone = renderCard(r, i);
-      clone.setAttribute('aria-hidden', 'true');
-      frag.appendChild(clone);
-    });
-    track.appendChild(frag);
+    if (!res.ok) throw new Error('http ' + res.status);
+    data = await res.json();
   } catch (err) {
-    track.innerHTML = '<div class="review-card" style="flex:0 0 100%; text-align:center; color:#888">Recenzije trenutno nisu dostupne.</div>';
+    track.innerHTML = '<div class="review-card" style="flex:0 0 100%; text-align:center; color:#888; padding:2rem">Recenzije trenutno nisu dostupne.</div>';
     console.warn('[reviews]', err);
+    return;
   }
+
+  if (avgEl) avgEl.textContent = data.averageRating.toFixed(1);
+  if (countEl) countEl.textContent = data.totalReviews;
+  if (starsEl) starsEl.innerHTML = starsMarkup(data.averageRating);
+  if (data.writeReviewUrl && writeCta) writeCta.href = data.writeReviewUrl;
+  if (data.mapsUrl && allLink) allLink.href = data.mapsUrl;
+
+  // Render reviews twice for seamless loop
+  const frag = document.createDocumentFragment();
+  data.reviews.forEach((r, i) => frag.appendChild(renderCard(r, i)));
+  data.reviews.forEach((r, i) => {
+    const clone = renderCard(r, i);
+    clone.setAttribute('aria-hidden', 'true');
+    frag.appendChild(clone);
+  });
+  track.appendChild(frag);
+
+  // rAF-driven auto-scroll
+  let offset = 0;
+  let halfWidth = 0;
+  let speed = 0.35; // px per frame ~ 21 px/sec at 60fps
+  let paused = false;
+  let manualHoldUntil = 0;
+
+  function measure() {
+    // half = width of original (non-clone) set
+    halfWidth = track.scrollWidth / 2;
+  }
+
+  function applyOffset() {
+    track.style.transform = `translate3d(${offset}px, 0, 0)`;
+  }
+
+  function tick(ts) {
+    if (!paused && ts >= manualHoldUntil) {
+      track.classList.remove('snap');
+      offset -= speed;
+      if (offset <= -halfWidth) offset += halfWidth;
+      applyOffset();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function jump(direction) {
+    const card = track.querySelector('.review-card');
+    if (!card) return;
+    const step = card.offsetWidth + 20; // card + gap
+    track.classList.add('snap');
+    offset += direction * step;
+    // normalize offset into [-halfWidth, 0]
+    if (offset > 0) offset -= halfWidth;
+    if (offset <= -halfWidth) offset += halfWidth;
+    applyOffset();
+    manualHoldUntil = performance.now() + 4000; // pause auto 4s
+  }
+
+  // pause on hover / touch
+  marquee.addEventListener('mouseenter', () => { paused = true; });
+  marquee.addEventListener('mouseleave', () => { paused = false; });
+  marquee.addEventListener('touchstart', () => { paused = true; }, { passive: true });
+  marquee.addEventListener('touchend',   () => { setTimeout(() => { paused = false; }, 2000); });
+
+  prevBtn?.addEventListener('click', () => jump(1));  // move content right => show previous
+  nextBtn?.addEventListener('click', () => jump(-1)); // move content left => show next
+
+  // initial measurement (wait a frame so layout settles)
+  requestAnimationFrame(() => { measure(); requestAnimationFrame(tick); });
+  window.addEventListener('resize', () => {
+    const newHalf = track.scrollWidth / 2;
+    if (newHalf && newHalf !== halfWidth) halfWidth = newHalf;
+  });
 })();
 
 // ===================================

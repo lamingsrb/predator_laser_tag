@@ -1898,12 +1898,48 @@ body.lightbox-open {
   white-space: nowrap;
 }
 
-/* Marquee */
+/* Stage wrapper — arrows + marquee in one row */
+.reviews-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reviews-nav {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: rgba(10, 10, 10, 0.7);
+  border: 1px solid rgba(255, 0, 64, 0.35);
+  color: var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 5;
+}
+
+.reviews-nav:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+  box-shadow: 0 0 22px rgba(255, 0, 64, 0.55);
+}
+
+.reviews-nav:active {
+  transform: scale(0.95);
+}
+
 .reviews-marquee {
   position: relative;
   overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  flex: 1;
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
   padding: 1rem 0;
 }
 
@@ -1911,17 +1947,12 @@ body.lightbox-open {
   display: flex;
   gap: 1.25rem;
   width: max-content;
-  animation: reviewsMarquee 55s linear infinite;
   will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
-.reviews-marquee:hover .reviews-track {
-  animation-play-state: paused;
-}
-
-@keyframes reviewsMarquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+.reviews-track.snap {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .review-card {
