@@ -1248,6 +1248,56 @@ button:hover ~ #cursor-dot,
   z-index: 1;
 }
 
+.package-price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 0.4rem 0 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.package-price-from {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: var(--gray);
+  text-transform: uppercase;
+}
+
+.package-price {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: 1px;
+  text-shadow: 0 0 18px rgba(255, 255, 255, 0.1);
+}
+
+.package-card.featured .package-price {
+  color: #fff;
+  text-shadow: 0 0 18px rgba(255, 0, 64, 0.55);
+}
+
+.package-price-unit {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--red);
+  margin-left: 0.25rem;
+}
+
+.package-features li strong {
+  color: #fff;
+  font-weight: 700;
+  margin-left: auto;
+  font-family: var(--font-heading);
+  letter-spacing: 0.5px;
+  font-size: 0.85rem;
+}
+
 .package-divider {
   width: 40px;
   height: 2px;
@@ -1295,6 +1345,141 @@ button:hover ~ #cursor-dot,
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
+}
+
+.birthday-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+.birthday-grid-4 .birthday-card-header {
+  padding: 1.5rem 1.25rem 1rem;
+}
+
+.birthday-grid-4 .birthday-card-header h3 {
+  font-size: 1rem;
+  letter-spacing: 1.5px;
+}
+
+.birthday-grid-4 .birthday-number {
+  font-size: 2.2rem;
+}
+
+.birthday-grid-4 .birthday-tag {
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  padding: 0.25rem 0.7rem;
+}
+
+.birthday-grid-4 .birthday-card-body {
+  padding: 0 1.25rem 1.25rem;
+}
+
+.birthday-grid-4 .birthday-features li {
+  padding: 0.55rem 0;
+  gap: 0.7rem;
+}
+
+.birthday-grid-4 .birthday-features strong {
+  font-size: 0.85rem;
+}
+
+.birthday-grid-4 .birthday-features p {
+  font-size: 0.75rem;
+  color: var(--gray);
+}
+
+.birthday-grid-4 .birthday-price {
+  font-size: 1.6rem;
+  padding: 0.3rem 1.25rem 0.8rem;
+}
+
+/* Info stats strip above cards */
+.birthday-info {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 0 auto 2.5rem;
+  max-width: 900px;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+
+.birthday-info::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 60px; height: 2px;
+  background: var(--red);
+  box-shadow: 0 0 10px var(--red);
+}
+
+.birthday-info::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 60px; height: 2px;
+  background: var(--cyan);
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+.birthday-info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.25rem;
+}
+
+.bi-num {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--red);
+  line-height: 1;
+  text-shadow: 0 0 14px rgba(255, 0, 64, 0.4);
+}
+
+.bi-label {
+  font-size: 0.7rem;
+  color: var(--gray);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Price badge inside birthday cards */
+.birthday-price {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  padding: 0.5rem 1.5rem 1rem;
+  letter-spacing: 1px;
+  line-height: 1;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.1);
+}
+
+.birthday-price .bp-unit {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--red);
+  margin-left: 0.25rem;
+}
+
+.birthday-card-premium .birthday-price {
+  text-shadow: 0 0 16px rgba(255, 0, 64, 0.5);
+}
+
+.birthday-price-custom {
+  font-size: 1.2rem;
+  color: var(--cyan);
+  text-shadow: 0 0 14px rgba(0, 240, 255, 0.4);
+  font-style: italic;
+  letter-spacing: 2px;
 }
 
 .birthday-card {
@@ -2413,6 +2598,10 @@ body.lightbox-open {
   .masonry {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .birthday-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
@@ -2470,9 +2659,21 @@ body.lightbox-open {
     transform: translateY(-8px);
   }
 
-  .birthday-grid {
+  .birthday-grid,
+  .birthday-grid-4 {
     grid-template-columns: 1fr;
   }
+
+  .birthday-info {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .bi-num { font-size: 1.2rem; }
+  .bi-label { font-size: 0.65rem; }
+
+  .birthday-price { font-size: 1.5rem; }
 
   .masonry {
     grid-template-columns: repeat(2, 1fr);
