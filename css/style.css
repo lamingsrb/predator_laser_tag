@@ -2417,7 +2417,7 @@ body.lightbox-open {
     gap: 0.75rem;
   }
 
-  /* Reviews tablet */
+  /* Reviews tablet + mobile */
   .reviews-topbar {
     flex-direction: column;
     text-align: center;
@@ -2429,7 +2429,31 @@ body.lightbox-open {
     justify-content: center;
   }
 
-  .review-card { flex: 0 0 320px; }
+  /* Stack: marquee on top, arrows centered below */
+  .reviews-stage {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .reviews-stage .reviews-prev { order: 2; }
+  .reviews-stage .reviews-marquee { order: 1; width: 100%; }
+  .reviews-stage .reviews-next { order: 3; }
+
+  .reviews-prev, .reviews-next {
+    position: absolute;
+    bottom: -4px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .reviews-prev { left: calc(50% - 52px); }
+  .reviews-next { left: calc(50% + 8px); }
+
+  .reviews-marquee {
+    padding-bottom: 3.5rem;
+  }
+
+  .review-card { flex: 0 0 88vw; max-width: 360px; }
 
   .reviews-track { animation-duration: 45s; }
 
@@ -2592,13 +2616,18 @@ body.lightbox-open {
     height: 44px;
   }
 
+  .social-links {
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
   /* --- Layout --- */
   .masonry {
     grid-template-columns: repeat(2, 1fr);
     gap: 0.5rem;
   }
 
-  /* Reviews mobile */
+  /* Reviews mobile (<= 480px) */
   .reviews-topbar {
     padding: 1rem;
     gap: 1rem;
@@ -2606,14 +2635,23 @@ body.lightbox-open {
 
   .reviews-rating-num { font-size: 1.55rem; }
 
+  .reviews-write-btn { width: 100%; justify-content: center; }
+
   .review-card {
-    flex: 0 0 280px;
+    flex: 0 0 calc(100vw - 2.5rem);
+    max-width: none;
     padding: 1.15rem;
   }
 
-  .review-text { font-size: 0.85rem; }
+  .review-text { font-size: 0.88rem; }
 
   .reviews-track { animation-duration: 38s; }
+
+  .reviews-marquee {
+    mask-image: none;
+    -webkit-mask-image: none;
+    padding: 0.5rem 0 3.5rem;
+  }
 
   /* Hero video — swap for static poster on mobile (perf + bandwidth) */
   .hero-video {
