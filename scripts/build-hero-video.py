@@ -18,18 +18,21 @@ RAW = ROOT / "Media_RAW" / "predator LaKI" / "predator LaKI"
 OUT = ROOT / "public" / "assets" / "video"
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
-# (source, start_offset, trim_duration) — svi landscape 1080p
+# (source, start_offset, trim_duration) — mix landscape 1080p + 2 nova
+NEW = RAW / "novi"
 SEGMENTS = [
-    (RAW / "20260328_143655.mp4",  1, 4),   # kids
-    (RAW / "20260214_193243.mp4",  3, 4),   # arena action
-    (RAW / "20260413_165828.mp4",  2, 4),   # team
-    (RAW / "20260320_201345.mp4",  5, 4),   # arena laser
-    (RAW / "20260208_165421.mp4", 10, 4),   # birthday session
-    (RAW / "20260214_192943.mp4",  4, 4),   # arena intense
-    (RAW / "20260320_200546.mp4",  6, 4),   # group
+    (RAW / "20260328_143655.mp4",                                                       1, 4),   # kids
+    (RAW / "20260214_193243.mp4",                                                       3, 4),   # arena action
+    (NEW / "0-02-05-a2f02b275e0deb09c268a55ff884cf163f4741892466688c5588b5063e97362f_cdd9ac927fceb769.mp4", 2, 4),   # NOVI 1
+    (RAW / "20260413_165828.mp4",                                                       2, 4),   # team
+    (RAW / "20260320_201345.mp4",                                                       5, 4),   # arena laser
+    (NEW / "0-02-05-eb1d23b1a670d61d4ae50a96d55b4e799cedc43d2662e186d695658ca5454498_ce44b7393ecc3d20.mp4", 10, 4),  # NOVI 2
+    (RAW / "20260208_165421.mp4",                                                      10, 4),   # birthday
+    (RAW / "20260214_192943.mp4",                                                       4, 4),   # arena intense
+    (RAW / "20260320_200546.mp4",                                                       6, 4),   # group
 ]
 
-TRANSITIONS = ["radial", "pixelize", "smoothleft", "circleopen", "wipeleft", "zoomin"]
+TRANSITIONS = ["radial", "pixelize", "smoothleft", "circleopen", "wipeleft", "zoomin", "slidedown", "fadegrays"]
 XFADE_DUR = 0.6
 
 
@@ -45,9 +48,8 @@ def run(cmd, desc=""):
 # Each segment gets scaled + cropped to 1280x720
 segment_filters = []
 for i, (_src, _start, _dur) in enumerate(SEGMENTS):
-    # All dark arena segments get strong brightness boost.
-    # Segments 0, 2, 4 assumed brighter (kids/group), 1, 3, 5, 6 are dark arena.
-    is_dark = i in (1, 3, 5, 6)
+    # Dark arena indices (1, 4, 7, 8); bright/social on 0, 2, 3, 5, 6.
+    is_dark = i in (1, 4, 7, 8)
     brightness = 0.22 if is_dark else 0.12
     gamma = 0.70 if is_dark else 0.85
     contrast = 1.25 if is_dark else 1.12
