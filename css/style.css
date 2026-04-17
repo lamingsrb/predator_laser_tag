@@ -1283,6 +1283,18 @@ button:hover ~ #cursor-dot,
   box-shadow: 0 8px 25px rgba(139, 0, 255, 0.2);
 }
 
+/* Centered venue callout under the 2 birthday cards */
+.birthday-venue-cta {
+  display: flex;
+  justify-content: center;
+  margin: 2rem auto 0;
+  max-width: 720px;
+}
+
+.birthday-venue-cta .package-callout {
+  width: 100%;
+}
+
 /* Section intro — descriptive paragraph above info strip */
 .section-intro {
   max-width: 820px;
