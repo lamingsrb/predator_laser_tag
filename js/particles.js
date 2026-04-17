@@ -107,7 +107,7 @@ class ParticleSystem {
     geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
 
     const material = new THREE.PointsMaterial({
-      size: 0.5,
+      size: 0.35,
       vertexColors: true,
       transparent: true,
       opacity: 0.5,
@@ -117,6 +117,13 @@ class ParticleSystem {
 
     this.particles = new THREE.Points(geometry, material);
     this.scene.add(this.particles);
+
+    // Particles are smaller + more opaque on hero, larger + dimmer further down.
+    // Hero height ≈ 100vh; we interpolate between HERO and REST based on scroll.
+    this.particleAppearance = {
+      hero:  { size: 0.35, opacity: 0.5 },
+      rest:  { size: 1.15, opacity: 0.28 }
+    };
   }
 
   createLaserLines() {
@@ -590,6 +597,19 @@ class ParticleSystem {
   animate() {
     requestAnimationFrame(() => this.animate());
     this.time += 0.01;
+
+    // Scroll-driven size/opacity split: small+visible on hero, larger+dimmer elsewhere.
+    if (this.particles && this.particleAppearance) {
+      const heroEl = document.querySelector('.hero');
+      const heroH = heroEl ? heroEl.offsetHeight : window.innerHeight;
+      const t = Math.min(1, Math.max(0, (window.scrollY - heroH * 0.3) / (heroH * 0.7)));
+      const { hero, rest } = this.particleAppearance;
+      const targetSize    = hero.size    + (rest.size    - hero.size)    * t;
+      const targetOpacity = hero.opacity + (rest.opacity - hero.opacity) * t;
+      // Ease toward target so changes feel smooth mid-scroll
+      this.particles.material.size    += (targetSize    - this.particles.material.size)    * 0.1;
+      this.particles.material.opacity += (targetOpacity - this.particles.material.opacity) * 0.1;
+    }
 
     // Rotate particles
     if (this.particles) {
