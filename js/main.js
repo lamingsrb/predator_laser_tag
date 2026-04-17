@@ -348,11 +348,11 @@ document.addEventListener('click', (e) => {
     top: ${e.clientY}px;
     width: 4px;
     height: 4px;
-    background: #ff0040;
+    background: #ff0088;
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
-    box-shadow: 0 0 10px #ff0040, 0 0 20px #ff0040, 0 0 40px #ff0040;
+    box-shadow: 0 0 10px #ff0088, 0 0 20px #ff0088, 0 0 40px #ff0088;
   `;
   document.body.appendChild(shot);
 
@@ -380,7 +380,7 @@ document.addEventListener('click', (e) => {
       top: ${e.clientY}px;
       width: 2px;
       height: 2px;
-      background: ${['#ff0040', '#00f0ff', '#00ff88'][i % 3]};
+      background: ${['#ff0088', '#00f0ff', '#00ff88'][i % 3]};
       border-radius: 50%;
       pointer-events: none;
       z-index: 9999;
@@ -525,7 +525,7 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
   const allLink = document.getElementById('reviews-all-link');
 
   const avatarColors = [
-    'linear-gradient(135deg, #ff0040, #cc0033)',
+    'linear-gradient(135deg, #ff0088, #cc0033)',
     'linear-gradient(135deg, #00f0ff, #0077aa)',
     'linear-gradient(135deg, #00ff88, #008855)',
     'linear-gradient(135deg, #8b00ff, #5500aa)',
