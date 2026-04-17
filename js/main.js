@@ -86,6 +86,7 @@ class Typewriter {
 }
 
 new Typewriter(document.getElementById('typewriter'), [
+  'PARKING obezbeđen za SVE posetioce.',
   'Mesto gde adrenalin preuzima kontrolu.',
   'Najmodernija laser tag arena u Beogradu.',
   'Nezaboravno iskustvo za celu porodicu.',
