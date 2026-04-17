@@ -2069,6 +2069,247 @@ button:hover ~ #cursor-dot,
 }
 
 /* ===================================
+   TERMINI & TEAM BUILDING SECTION
+   =================================== */
+.termini {
+  background: rgba(10, 10, 10, 0.55);
+  position: relative;
+}
+
+.termini-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 3rem auto 0;
+}
+
+.termini-card {
+  position: relative;
+  background: linear-gradient(145deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s, border-color 0.4s, box-shadow 0.4s;
+  overflow: hidden;
+}
+.termini-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 60px; height: 2px;
+  background: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+}
+.termini-card-team::before {
+  background: var(--red);
+  box-shadow: 0 0 12px var(--red);
+}
+.termini-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 60px; height: 2px;
+  background: rgba(255,255,255,0.25);
+}
+.termini-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 240, 255, 0.35);
+  box-shadow: 0 16px 40px rgba(0, 240, 255, 0.12);
+}
+.termini-card-team:hover {
+  border-color: rgba(255, 0, 136, 0.45);
+  box-shadow: 0 16px 40px rgba(255, 0, 136, 0.18);
+}
+
+.termini-card-header {
+  margin-bottom: 1.5rem;
+}
+.termini-tag {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  color: var(--cyan);
+  margin-bottom: 0.8rem;
+}
+.termini-tag.team {
+  border-color: rgba(255, 0, 136, 0.45);
+  color: var(--red);
+}
+.termini-card-header h3 {
+  font-family: var(--font-heading);
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 1px;
+}
+.th-sub {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--cyan);
+  letter-spacing: 2px;
+  margin-left: 0.5rem;
+}
+.termini-card-team .th-sub {
+  color: var(--red);
+}
+
+/* Individualna: simple price list */
+.termini-list {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+.termini-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+}
+.termini-list li:last-child {
+  border-bottom: none;
+}
+.tl-duration {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+  min-width: 80px;
+}
+.tl-dots {
+  flex: 1;
+  height: 1px;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.18);
+}
+.tl-price {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--cyan);
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.35);
+  letter-spacing: 0.5px;
+}
+.tl-price small {
+  font-size: 0.7rem;
+  color: var(--light);
+  font-weight: 600;
+  margin-left: 0.25rem;
+  text-shadow: none;
+}
+
+.termini-footnote {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  padding: 0.9rem 1rem;
+  background: rgba(0, 240, 255, 0.06);
+  border-left: 2px solid var(--cyan);
+  color: var(--light);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+.termini-footnote strong {
+  color: #fff;
+  font-weight: 700;
+}
+.tf-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* Team Building: richer tiers */
+.termini-tiers {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.termini-tiers li {
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.015);
+  border-radius: 3px;
+  transition: border-color 0.3s, background 0.3s;
+}
+.termini-tiers li:hover {
+  border-color: rgba(255, 0, 136, 0.35);
+  background: rgba(255, 0, 136, 0.04);
+}
+.termini-tiers li.tt-highlight {
+  border-color: rgba(255, 0, 136, 0.45);
+  background: linear-gradient(90deg, rgba(255, 0, 136, 0.08), rgba(255, 0, 136, 0.02));
+  box-shadow: 0 0 14px rgba(255, 0, 136, 0.1) inset;
+}
+.tt-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.3rem;
+}
+.tt-players {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+.tt-price {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--red);
+  text-shadow: 0 0 10px rgba(255, 0, 136, 0.35);
+  letter-spacing: 0.5px;
+}
+.tt-price small {
+  font-size: 0.7rem;
+  color: var(--light);
+  font-weight: 600;
+  margin-left: 0.2rem;
+  text-shadow: none;
+}
+.tt-incl {
+  font-size: 0.82rem;
+  color: #bbb;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+.tt-icon {
+  font-size: 0.95rem;
+}
+.tt-sep {
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0 0.15rem;
+}
+
+@media (max-width: 960px) {
+  .termini-grid {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+  }
+}
+@media (max-width: 480px) {
+  .termini-card { padding: 2rem 1.3rem 1.5rem; }
+  .termini-card-header h3 { font-size: 1.4rem; }
+  .tl-duration { min-width: 70px; font-size: 0.9rem; }
+  .tl-price { font-size: 1.05rem; }
+  .tt-price { font-size: 1.1rem; }
+  .tt-players { font-size: 0.85rem; }
+}
+
+/* ===================================
    INVITATIONS SECTION
    =================================== */
 .invitations {
