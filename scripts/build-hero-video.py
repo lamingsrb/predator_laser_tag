@@ -20,13 +20,16 @@ FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
 # (source, start_offset, trim_duration) — svi landscape 1080p
 SEGMENTS = [
-    (RAW / "20260328_143655.mp4",  1, 5),   # bright kids outside arena
-    (RAW / "20260214_193243.mp4",  3, 5),   # dark arena action/laser
-    (RAW / "20260413_165828.mp4",  2, 5),   # team / bright
-    (RAW / "20260320_200546.mp4",  4, 5),   # dark arena
+    (RAW / "20260328_143655.mp4",  1, 4),   # kids
+    (RAW / "20260214_193243.mp4",  3, 4),   # arena action
+    (RAW / "20260413_165828.mp4",  2, 4),   # team
+    (RAW / "20260320_201345.mp4",  5, 4),   # arena laser
+    (RAW / "20260208_165421.mp4", 10, 4),   # birthday session
+    (RAW / "20260214_192943.mp4",  4, 4),   # arena intense
+    (RAW / "20260320_200546.mp4",  6, 4),   # group
 ]
 
-TRANSITIONS = ["radial", "pixelize", "smoothleft"]
+TRANSITIONS = ["radial", "pixelize", "smoothleft", "circleopen", "wipeleft", "zoomin"]
 XFADE_DUR = 0.6
 
 
@@ -42,16 +45,17 @@ def run(cmd, desc=""):
 # Each segment gets scaled + cropped to 1280x720
 segment_filters = []
 for i, (_src, _start, _dur) in enumerate(SEGMENTS):
-    # Dark arena segments (odd indices 1, 3) need extra brightness boost
-    is_dark = i in (1, 3)
-    brightness = 0.12 if is_dark else 0.05
-    gamma = 0.82 if is_dark else 0.9
-    contrast = 1.15 if is_dark else 1.08
+    # All dark arena segments get strong brightness boost.
+    # Segments 0, 2, 4 assumed brighter (kids/group), 1, 3, 5, 6 are dark arena.
+    is_dark = i in (1, 3, 5, 6)
+    brightness = 0.22 if is_dark else 0.12
+    gamma = 0.70 if is_dark else 0.85
+    contrast = 1.25 if is_dark else 1.12
     segment_filters.append(
         f"[{i}:v]trim=duration={_dur},setpts=PTS-STARTPTS,"
         f"scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,"
         f"fps=30,format=yuv420p,setsar=1,"
-        f"eq=brightness={brightness}:contrast={contrast}:saturation=1.2:gamma={gamma}[v{i}]"
+        f"eq=brightness={brightness}:contrast={contrast}:saturation=1.3:gamma={gamma}[v{i}]"
     )
 
 # Chain xfades — cumulative offset calculation
