@@ -158,7 +158,7 @@
     </div>
   </section>
 
-  <!-- PACKAGES SECTION -->
+  <!-- PACKAGES SECTION (4-tab interface) -->
   <section id="packages" class="section packages">
     <div class="section-bg-grid"></div>
     <div class="container">
@@ -168,175 +168,205 @@
         <div class="section-line"></div>
         <p class="section-subtitle">Izaberite svoje lasersko iskustvo</p>
       </div>
-      <div class="birthday-info" data-animate="fade-up">
-        <div class="birthday-info-item"><span class="bi-num">2h</span><span class="bi-label">Trajanje</span></div>
-        <div class="birthday-info-item"><span class="bi-num">16</span><span class="bi-label">Dece (+1.300 RSD po detetu)</span></div>
-        <div class="birthday-info-item"><span class="bi-num">300m²</span><span class="bi-label">Arena</span></div>
-        <div class="birthday-info-item"><span class="bi-num">✓</span><span class="bi-label">Parking obezbeđen</span></div>
+
+      <div class="pkg-tabs" role="tablist" aria-label="Paketi" data-animate="fade-up">
+        <button class="pkg-tab is-active" role="tab" data-tab="birthdays" aria-selected="true" aria-controls="pkg-birthdays">
+          <span class="pt-icon">🎂</span><span class="pt-label">Rođendani</span>
+        </button>
+        <button class="pkg-tab" role="tab" data-tab="teambuild" aria-selected="false" aria-controls="pkg-teambuild">
+          <span class="pt-icon">👥</span><span class="pt-label">Team Building</span>
+        </button>
+        <button class="pkg-tab" role="tab" data-tab="individual" aria-selected="false" aria-controls="pkg-individual">
+          <span class="pt-icon">🎯</span><span class="pt-label">Individualni</span>
+        </button>
+        <button class="pkg-tab" role="tab" data-tab="venue" aria-selected="false" aria-controls="pkg-venue">
+          <span class="pt-icon">🏛️</span><span class="pt-label">Iznajmljivanje</span>
+        </button>
       </div>
 
-      <p class="packages-intro" data-animate="fade-up">
-        Trajanje rođendana: <strong>2 sata</strong>. Svaki paket obuhvata do <strong>16 dece</strong>, a za svako sledeće dete doplata <strong>1.300 RSD</strong>. Naše osoblje sve vreme vodi računa o deci i organizaciji rođendana, uz profesionalnog instruktora za laser tag opremu.
-        <span class="pi-highlight">Dekoracija prostora je uključena u cenu.<br>PARKING MESTA OBEZBEĐENA ZA SVE.</span>
-      </p>
+      <!-- PANEL 1: Rođendani -->
+      <div class="pkg-panel is-active" id="pkg-birthdays" role="tabpanel" data-panel="birthdays" aria-labelledby="tab-birthdays">
+        <div class="birthday-info">
+          <div class="birthday-info-item"><span class="bi-num">2h</span><span class="bi-label">Trajanje</span></div>
+          <div class="birthday-info-item"><span class="bi-num">16</span><span class="bi-label">Dece (+1.300 RSD po detetu)</span></div>
+          <div class="birthday-info-item"><span class="bi-num">300m²</span><span class="bi-label">Arena</span></div>
+          <div class="birthday-info-item"><span class="bi-num">✓</span><span class="bi-label">Parking obezbeđen</span></div>
+        </div>
 
-      <div class="birthday-grid birthday-grid-2">
-        <div class="birthday-card" data-animate="fade-up" data-delay="0.05">
-          <div class="birthday-card-header">
-            <span class="birthday-number">01</span>
-            <h3>Standard</h3>
-            <div class="birthday-tag">STANDARD</div>
+        <p class="packages-intro">
+          Trajanje rođendana: <strong>2 sata</strong>. Svaki paket obuhvata do <strong>16 dece</strong>, a za svako sledeće dete doplata <strong>1.300 RSD</strong>. Naše osoblje sve vreme vodi računa o deci i organizaciji rođendana, uz profesionalnog instruktora za laser tag opremu.
+          <span class="pi-highlight">Dekoracija prostora je uključena u cenu.<br>PARKING MESTA OBEZBEĐENA ZA SVE.</span>
+        </p>
+
+        <div class="birthday-grid birthday-grid-2">
+          <div class="birthday-card">
+            <div class="birthday-card-header">
+              <span class="birthday-number">01</span>
+              <h3>Standard</h3>
+              <div class="birthday-tag">STANDARD</div>
+            </div>
+            <div class="birthday-price">31.000 <span class="bp-unit">RSD</span></div>
+            <div class="birthday-card-body">
+              <ul class="birthday-features birthday-features-plain">
+                <li><span class="bf-icon">🥤</span><span class="bf-text"><strong>NEOGRANIČENO</strong> piće za decu</span></li>
+                <li><span class="bf-icon">🍕</span><span class="bf-text"><strong>2 XL PICE</strong> <span class="bf-note">(dodatna pica — doplata 1.500 RSD)</span></span></li>
+                <li><span class="bf-icon">✉️</span><span class="bf-text">rođendanske pozivnice</span></li>
+                <li><span class="bf-icon">🥇</span><span class="bf-text">zlatna medalja za najbolje</span></li>
+                <li><span class="bf-icon">🥂</span><span class="bf-text">roditelji slavljenice/slavljenika dobijaju po jedno piće po izboru, a pića za odrasle plaćaju se po <strong>NAŠEM CENOVNIKU</strong></span></li>
+              </ul>
+              <a href="tel:+381645257777" class="btn btn-outline btn-block">REZERVIŠI</a>
+            </div>
           </div>
-          <div class="birthday-price">31.000 <span class="bp-unit">RSD</span></div>
-          <div class="birthday-card-body">
-            <ul class="birthday-features birthday-features-plain">
-              <li><span class="bf-icon">🥤</span><span class="bf-text"><strong>NEOGRANIČENO</strong> piće za decu</span></li>
-              <li><span class="bf-icon">🍕</span><span class="bf-text"><strong>2 XL PICE</strong> <span class="bf-note">(dodatna pica — doplata 1.500 RSD)</span></span></li>
-              <li><span class="bf-icon">✉️</span><span class="bf-text">rođendanske pozivnice</span></li>
-              <li><span class="bf-icon">🥇</span><span class="bf-text">zlatna medalja za najbolje</span></li>
-              <li><span class="bf-icon">🥂</span><span class="bf-text">roditelji slavljenice/slavljenika dobijaju po jedno piće po izboru, a pića za odrasle plaćaju se po <strong>NAŠEM CENOVNIKU</strong></span></li>
+
+          <div class="birthday-card birthday-card-premium">
+            <div class="birthday-card-header">
+              <span class="birthday-number">02</span>
+              <h3>LUX</h3>
+              <div class="birthday-tag premium">NAJPOPULARNIJI</div>
+            </div>
+            <div class="birthday-price">36.000 <span class="bp-unit">RSD</span></div>
+            <div class="birthday-card-body">
+              <ul class="birthday-features birthday-features-plain">
+                <li><span class="bf-icon">🥤</span><span class="bf-text"><strong>NEOGRANIČENO</strong> piće za decu</span></li>
+                <li><span class="bf-icon">🍕</span><span class="bf-text"><strong>2 XL PICE</strong> <span class="bf-note">(dodatna pica — doplata 1.500 RSD)</span></span></li>
+                <li><span class="bf-icon">✉️</span><span class="bf-text">rođendanske pozivnice</span></li>
+                <li><span class="bf-icon">🥇</span><span class="bf-text">zlatna medalja za najbolje</span></li>
+                <li class="bf-highlight"><span class="bf-icon">🍻</span><span class="bf-text"><strong>NEOGRANIČENO piće za roditelje i sve goste:</strong> kafe, sokovi u limenci, voda, alkoholna pića&hellip;</span></li>
+              </ul>
+              <a href="tel:+381645257777" class="btn btn-primary btn-block">REZERVIŠI</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 2: Team Building -->
+      <div class="pkg-panel" id="pkg-teambuild" role="tabpanel" data-panel="teambuild" aria-labelledby="tab-teambuild" hidden>
+        <div class="pkg-panel-centered">
+          <div id="team-building" class="termini-card termini-card-team">
+            <div class="termini-card-header">
+              <span class="termini-tag team">TEAM BUILDING</span>
+              <h3>Grupni Paketi <span class="th-sub">120 min</span></h3>
+            </div>
+            <ul class="termini-tiers">
+              <li>
+                <div class="tt-top"><span class="tt-players">do 8 igrača</span><span class="tt-price">24.600 <small>RSD</small></span></div>
+                <div class="tt-incl"><span class="tt-icon">🍕</span> 2 XL pica <span class="tt-sep">+</span> <span class="tt-icon">🥤</span> 1 piće po izboru</div>
+              </li>
+              <li>
+                <div class="tt-top"><span class="tt-players">do 12 igrača</span><span class="tt-price">32.000 <small>RSD</small></span></div>
+                <div class="tt-incl"><span class="tt-icon">🍕</span> 3 XL pica <span class="tt-sep">+</span> <span class="tt-icon">🥤</span> 1 piće po izboru</div>
+              </li>
+              <li>
+                <div class="tt-top"><span class="tt-players">do 16 igrača</span><span class="tt-price">42.700 <small>RSD</small></span></div>
+                <div class="tt-incl"><span class="tt-icon">🍕</span> 4 XL pica <span class="tt-sep">+</span> <span class="tt-icon">🥤</span> 1 piće po izboru</div>
+              </li>
+              <li>
+                <div class="tt-top"><span class="tt-players">do 24 igrača</span><span class="tt-price">55.800 <small>RSD</small></span></div>
+                <div class="tt-incl"><span class="tt-icon">🍕</span> 6 XL pica <span class="tt-sep">+</span> <span class="tt-icon">🥤</span> 1 piće po izboru</div>
+              </li>
+              <li class="tt-highlight">
+                <div class="tt-top"><span class="tt-players">do 32 igrača</span><span class="tt-price">74.500 <small>RSD</small></span></div>
+                <div class="tt-incl"><span class="tt-icon">🍕</span> 8 XL pica <span class="tt-sep">+</span> <span class="tt-icon">🥤</span> 1 piće po izboru</div>
+              </li>
             </ul>
-            <a href="tel:+381645257777" class="btn btn-outline btn-block">REZERVIŠI</a>
+            <a href="tel:+381645257777" class="btn btn-primary btn-block">REZERVIŠI TEAM BUILDING</a>
           </div>
         </div>
+      </div>
 
-        <div class="birthday-card birthday-card-premium" data-animate="fade-up" data-delay="0.1">
-          <div class="birthday-card-header">
-            <span class="birthday-number">02</span>
-            <h3>LUX</h3>
-            <div class="birthday-tag premium">NAJPOPULARNIJI</div>
-          </div>
-          <div class="birthday-price">36.000 <span class="bp-unit">RSD</span></div>
-          <div class="birthday-card-body">
-            <ul class="birthday-features birthday-features-plain">
-              <li><span class="bf-icon">🥤</span><span class="bf-text"><strong>NEOGRANIČENO</strong> piće za decu</span></li>
-              <li><span class="bf-icon">🍕</span><span class="bf-text"><strong>2 XL PICE</strong> <span class="bf-note">(dodatna pica — doplata 1.500 RSD)</span></span></li>
-              <li><span class="bf-icon">✉️</span><span class="bf-text">rođendanske pozivnice</span></li>
-              <li><span class="bf-icon">🥇</span><span class="bf-text">zlatna medalja za najbolje</span></li>
-              <li class="bf-highlight"><span class="bf-icon">🍻</span><span class="bf-text"><strong>NEOGRANIČENO piće za roditelje i sve goste:</strong> kafe, sokovi u limenci, voda, alkoholna pića&hellip;</span></li>
+      <!-- PANEL 3: Individualni termini -->
+      <div class="pkg-panel" id="pkg-individual" role="tabpanel" data-panel="individual" aria-labelledby="tab-individual" hidden>
+        <div class="pkg-panel-centered">
+          <div id="individualna" class="termini-card termini-card-individual">
+            <div class="termini-card-header">
+              <span class="termini-tag">INDIVIDUALNI TERMINI</span>
+              <h3>Individualna Igra</h3>
+            </div>
+            <ul class="termini-list">
+              <li>
+                <span class="tl-duration">15 min</span>
+                <span class="tl-dots"></span>
+                <span class="tl-price">900 <small>RSD</small></span>
+              </li>
+              <li>
+                <span class="tl-duration">30 min</span>
+                <span class="tl-dots"></span>
+                <span class="tl-price">1.100 <small>RSD</small></span>
+              </li>
+              <li>
+                <span class="tl-duration">60 min</span>
+                <span class="tl-dots"></span>
+                <span class="tl-price">1.600 <small>RSD</small></span>
+              </li>
             </ul>
-            <a href="tel:+381645257777" class="btn btn-primary btn-block">REZERVIŠI</a>
+            <div class="termini-footnote">
+              <span class="tf-icon">🥤</span>
+              <span>U cenu je uključeno <strong>1 piće po izboru</strong>. Minimalno <strong>6 igrača</strong>.</span>
+            </div>
+            <a href="tel:+381645257777" class="btn btn-outline btn-block">REZERVIŠI TERMIN</a>
           </div>
         </div>
       </div>
 
-
-      <div class="packages-callouts" data-animate="fade-up" data-delay="0.2">
-        <a href="#individualna" class="package-callout package-callout-individual">
-          <div class="callout-icon">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>
-            </svg>
-          </div>
-          <div class="callout-text">
-            <strong>Individualna Igra</strong>
-            <span>15/30/60 min &mdash; od 900 RSD &bull; min 6 igrača</span>
-          </div>
-          <span class="callout-arrow">→</span>
-        </a>
-        <a href="#team-building" class="package-callout package-callout-team">
-          <div class="callout-icon">
-            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="9" cy="8" r="4"/><circle cx="17" cy="8" r="3"/>
-              <path d="M3 21c0-3 3-6 6-6s6 3 6 6M15 21c0-2 3-4 6-4"/>
-            </svg>
-          </div>
-          <div class="callout-text">
-            <strong>Team Building</strong>
-            <span>8&ndash;32 igrača &mdash; od 24.600 RSD &bull; 120 min + pica</span>
-          </div>
-          <span class="callout-arrow">→</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- TERMINI & TEAM BUILDING SECTION -->
-  <section id="termini" class="section termini">
-    <div class="section-bg-grid"></div>
-    <div class="container">
-      <div class="section-header" data-animate="fade-up">
-        <span class="section-tag">// 03</span>
-        <h2 class="section-title">TERMINI I <span class="text-glow">TEAM BUILDING</span></h2>
-        <div class="section-line"></div>
-        <p class="section-subtitle">Individualni termini i grupni team building paketi</p>
-      </div>
-
-      <div class="termini-grid">
-        <!-- INDIVIDUALNI TERMINI -->
-        <div id="individualna" class="termini-card termini-card-individual" data-animate="fade-up" data-delay="0.05">
-          <div class="termini-card-header">
-            <span class="termini-tag">INDIVIDUALNI TERMINI</span>
-            <h3>Individualna Igra</h3>
-          </div>
-          <ul class="termini-list">
-            <li>
-              <span class="tl-duration">15 min</span>
-              <span class="tl-dots"></span>
-              <span class="tl-price">900 <small>RSD</small></span>
-            </li>
-            <li>
-              <span class="tl-duration">30 min</span>
-              <span class="tl-dots"></span>
-              <span class="tl-price">1.100 <small>RSD</small></span>
-            </li>
-            <li>
-              <span class="tl-duration">60 min</span>
-              <span class="tl-dots"></span>
-              <span class="tl-price">1.600 <small>RSD</small></span>
-            </li>
-          </ul>
-          <div class="termini-footnote">
-            <span class="tf-icon">🥤</span>
-            <span>U cenu je uključeno <strong>1 piće po izboru</strong>. Minimalno <strong>6 igrača</strong>.</span>
-          </div>
-          <a href="tel:+381645257777" class="btn btn-outline btn-block">REZERVIŠI TERMIN</a>
+      <!-- PANEL 4: Iznajmljivanje prostora -->
+      <div class="pkg-panel" id="pkg-venue" role="tabpanel" data-panel="venue" aria-labelledby="tab-venue" hidden>
+        <div class="section-intro section-intro-venue">
+          <p>
+            Iznajmite naš <strong>100m² prostor</strong> za bilo koju proslavu — rođendan, godišnjicu, krštenje,
+            firmin event. U cenu su uključeni <strong>inventar</strong> (čaše, tanjiri, escajg), <strong>dekoracija i muzika</strong>,
+            mesta za <strong>15 odraslih i 20 dece</strong>, kao i parking. Birate između dve opcije:
+            <strong>Standard</strong> (donosite svoj ketering) ili <strong>All-Inclusive</strong> (mi se brinemo za sve, meni se
+            dogovara sa vama).
+          </p>
         </div>
 
-        <!-- TEAM BUILDING -->
-        <div id="team-building" class="termini-card termini-card-team" data-animate="fade-up" data-delay="0.1">
-          <div class="termini-card-header">
-            <span class="termini-tag team">TEAM BUILDING</span>
-            <h3>Grupni Paketi <span class="th-sub">120 min</span></h3>
+        <div class="venue-info">
+          <div class="birthday-info-item"><span class="bi-num venue-num">100m²</span><span class="bi-label">Prostor za goste</span></div>
+          <div class="birthday-info-item"><span class="bi-num venue-num">15+20</span><span class="bi-label">Mesta odrasli + deca</span></div>
+          <div class="birthday-info-item"><span class="bi-num venue-num">✓</span><span class="bi-label">Inventar uključen</span></div>
+          <div class="birthday-info-item"><span class="bi-num venue-num">✓</span><span class="bi-label">Parking obezbeđen</span></div>
+        </div>
+
+        <div id="iznajmljivanje" class="birthday-grid birthday-grid-2 venue-grid">
+          <div class="birthday-card venue-card">
+            <div class="birthday-card-header">
+              <span class="birthday-number">01</span>
+              <h3>Standard Iznajmljivanje</h3>
+              <div class="birthday-tag venue-tag">PROSTOR</div>
+            </div>
+            <div class="birthday-price venue-price">25.000 <span class="bp-unit">RSD</span></div>
+            <div class="birthday-card-body">
+              <ul class="birthday-features">
+                <li><span class="bf-icon venue-icon">&#9635;</span><div><strong>100m² prostor za vaše goste</strong><p>15 mesta odrasli + 20 mesta deca</p></div></li>
+                <li><span class="bf-icon venue-icon">&#9635;</span><div><strong>Inventar uključen</strong><p>Čaše, tanjiri, escajg za sve</p></div></li>
+                <li><span class="bf-icon venue-icon">&#9635;</span><div><strong>Dekoracija &amp; muzika</strong><p>Kompletna priprema prostora</p></div></li>
+                <li><span class="bf-icon venue-icon">&#9635;</span><div><strong>Donesite svoj ketering</strong><p>Hrana, piće i torta po izboru</p></div></li>
+                <li><span class="bf-icon venue-icon">&#9635;</span><div><strong>Konobari po potrebi</strong><p>Posluživanje po dogovoru</p></div></li>
+                <li><span class="bf-icon venue-icon">&#9635;</span><div><strong>Sloboda u organizaciji</strong><p>Vi planirate, mi obezbeđujemo prostor</p></div></li>
+              </ul>
+              <a href="tel:+381645257777" class="btn btn-outline btn-block">REZERVIŠI</a>
+            </div>
           </div>
-          <ul class="termini-tiers">
-            <li>
-              <div class="tt-top">
-                <span class="tt-players">do 8 igrača</span>
-                <span class="tt-price">24.600 <small>RSD</small></span>
-              </div>
-              <div class="tt-incl"><span class="tt-icon">🍕</span> 2 XL pica <span class="tt-sep">+</span> <span class="tt-icon">🥤</span> 1 piće po izboru</div>
-            </li>
-            <li>
-              <div class="tt-top">
-                <span class="tt-players">do 12 igrača</span>
-                <span class="tt-price">32.000 <small>RSD</small></span>
-              </div>
-              <div class="tt-incl"><span class="tt-icon">🍕</span> 3 XL pica <span class="tt-sep">+</span> <span class="tt-icon">🥤</span> 1 piće po izboru</div>
-            </li>
-            <li>
-              <div class="tt-top">
-                <span class="tt-players">do 16 igrača</span>
-                <span class="tt-price">42.700 <small>RSD</small></span>
-              </div>
-              <div class="tt-incl"><span class="tt-icon">🍕</span> 4 XL pica <span class="tt-sep">+</span> <span class="tt-icon">🥤</span> 1 piće po izboru</div>
-            </li>
-            <li>
-              <div class="tt-top">
-                <span class="tt-players">do 24 igrača</span>
-                <span class="tt-price">55.800 <small>RSD</small></span>
-              </div>
-              <div class="tt-incl"><span class="tt-icon">🍕</span> 6 XL pica <span class="tt-sep">+</span> <span class="tt-icon">🥤</span> 1 piće po izboru</div>
-            </li>
-            <li class="tt-highlight">
-              <div class="tt-top">
-                <span class="tt-players">do 32 igrača</span>
-                <span class="tt-price">74.500 <small>RSD</small></span>
-              </div>
-              <div class="tt-incl"><span class="tt-icon">🍕</span> 8 XL pica <span class="tt-sep">+</span> <span class="tt-icon">🥤</span> 1 piće po izboru</div>
-            </li>
-          </ul>
-          <a href="tel:+381645257777" class="btn btn-primary btn-block">REZERVIŠI TEAM BUILDING</a>
+
+          <div class="birthday-card venue-card venue-card-premium">
+            <div class="birthday-card-header">
+              <span class="birthday-number">02</span>
+              <h3>All-Inclusive Iznajmljivanje</h3>
+              <div class="birthday-tag venue-tag-premium">FULL SERVICE</div>
+            </div>
+            <div class="birthday-price birthday-price-custom venue-price-custom">Po dogovoru</div>
+            <div class="birthday-card-body">
+              <ul class="birthday-features">
+                <li><span class="bf-icon venue-icon">&#9733;</span><div><strong>Sve iz Standard paketa</strong><p>Prostor, inventar, dekoracija</p></div></li>
+                <li><span class="bf-icon venue-icon">&#9733;</span><div><strong>Ketering po želji</strong><p>Meni dogovaramo sa vama</p></div></li>
+                <li><span class="bf-icon venue-icon">&#9733;</span><div><strong>Kompletno osoblje</strong><p>Konobari, animator, muzika</p></div></li>
+                <li><span class="bf-icon venue-icon">&#9733;</span><div><strong>Posluživanje</strong><p>Naručivanje, dostava, aranžiranje</p></div></li>
+                <li><span class="bf-icon venue-icon">&#9733;</span><div><strong>Donesite svoju tortu</strong><p>Po vašem izboru</p></div></li>
+                <li><span class="bf-icon venue-icon">&#9733;</span><div><strong>Samo dovedite goste</strong><p>Sve ostalo je naš posao</p></div></li>
+              </ul>
+              <a href="tel:+381645257777" class="btn btn-venue btn-block">POZOVI ZA PONUDU</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -347,7 +377,7 @@
     <div class="section-bg-grid"></div>
     <div class="container">
       <div class="section-header" data-animate="fade-up">
-        <span class="section-tag">// 04</span>
+        <span class="section-tag">// 03</span>
         <h2 class="section-title">ROĐENDANSKE <span class="text-glow">POZIVNICE</span></h2>
         <div class="section-line"></div>
         <p class="section-subtitle">Prelepe pozivnice uključene u svaki paket — personalizovane po vašem izboru</p>
@@ -374,7 +404,7 @@
     <div class="section-bg-grid"></div>
     <div class="container">
       <div class="section-header" data-animate="fade-up">
-        <span class="section-tag">// 05</span>
+        <span class="section-tag">// 04</span>
         <h2 class="section-title">ZAVIRI U <span class="text-glow">ARENU</span></h2>
         <div class="section-line"></div>
       </div>
@@ -1066,84 +1096,13 @@
     </div>
   </section>
 
-  <!-- IZNAJMLJIVANJE PROSTORA SECTION -->
-  <section id="iznajmljivanje" class="section venue-rental">
-    <div class="section-bg-grid"></div>
-    <div class="container">
-      <div class="section-header" data-animate="fade-up">
-        <span class="section-tag">// 06</span>
-        <h2 class="section-title">IZNAJMLJIVANJE <span class="text-glow venue-glow">PROSTORA</span></h2>
-        <div class="section-line venue-line"></div>
-        <p class="section-subtitle">Samo prostor za vašu proslavu — bez korišćenja laser tag arene</p>
-      </div>
-
-      <div class="section-intro section-intro-venue" data-animate="fade-up">
-        <p>
-          Iznajmite naš <strong>100m² prostor</strong> za bilo koju proslavu — rođendan, godišnjicu, krštenje,
-          firmin event. U cenu su uključeni <strong>inventar</strong> (čaše, tanjiri, escajg), <strong>dekoracija i muzika</strong>,
-          mesta za <strong>15 odraslih i 20 dece</strong>, kao i parking. Birate između dve opcije:
-          <strong>Standard</strong> (donosite svoj ketering) ili <strong>All-Inclusive</strong> (mi se brinemo za sve, meni se
-          dogovara sa vama). Za laser tag rođendane pogledaj <a href="#packages" class="link-red">Naši paketi</a>.
-        </p>
-      </div>
-
-      <div class="venue-info">
-        <div class="birthday-info-item"><span class="bi-num venue-num">100m²</span><span class="bi-label">Prostor za goste</span></div>
-        <div class="birthday-info-item"><span class="bi-num venue-num">15+20</span><span class="bi-label">Mesta odrasli + deca</span></div>
-        <div class="birthday-info-item"><span class="bi-num venue-num">✓</span><span class="bi-label">Inventar uključen</span></div>
-        <div class="birthday-info-item"><span class="bi-num venue-num">✓</span><span class="bi-label">Parking obezbeđen</span></div>
-      </div>
-
-      <div class="birthday-grid birthday-grid-2 venue-grid">
-        <div class="birthday-card venue-card" data-animate="fade-up" data-delay="0.05">
-          <div class="birthday-card-header">
-            <span class="birthday-number">01</span>
-            <h3>Standard Iznajmljivanje</h3>
-            <div class="birthday-tag venue-tag">PROSTOR</div>
-          </div>
-          <div class="birthday-price venue-price">25.000 <span class="bp-unit">RSD</span></div>
-          <div class="birthday-card-body">
-            <ul class="birthday-features">
-              <li><span class="bf-icon venue-icon">&#9635;</span><div><strong>100m² prostor za vaše goste</strong><p>15 mesta odrasli + 20 mesta deca</p></div></li>
-              <li><span class="bf-icon venue-icon">&#9635;</span><div><strong>Inventar uključen</strong><p>Čaše, tanjiri, escajg za sve</p></div></li>
-              <li><span class="bf-icon venue-icon">&#9635;</span><div><strong>Dekoracija &amp; muzika</strong><p>Kompletna priprema prostora</p></div></li>
-              <li><span class="bf-icon venue-icon">&#9635;</span><div><strong>Donesite svoj ketering</strong><p>Hrana, piće i torta po izboru</p></div></li>
-              <li><span class="bf-icon venue-icon">&#9635;</span><div><strong>Konobari po potrebi</strong><p>Posluživanje po dogovoru</p></div></li>
-              <li><span class="bf-icon venue-icon">&#9635;</span><div><strong>Sloboda u organizaciji</strong><p>Vi planirate, mi obezbeđujemo prostor</p></div></li>
-            </ul>
-            <a href="tel:+381645257777" class="btn btn-outline btn-block">REZERVIŠI</a>
-          </div>
-        </div>
-
-        <div class="birthday-card venue-card venue-card-premium" data-animate="fade-up" data-delay="0.1">
-          <div class="birthday-card-header">
-            <span class="birthday-number">02</span>
-            <h3>All-Inclusive Iznajmljivanje</h3>
-            <div class="birthday-tag venue-tag-premium">FULL SERVICE</div>
-          </div>
-          <div class="birthday-price birthday-price-custom venue-price-custom">Po dogovoru</div>
-          <div class="birthday-card-body">
-            <ul class="birthday-features">
-              <li><span class="bf-icon venue-icon">&#9733;</span><div><strong>Sve iz Standard paketa</strong><p>Prostor, inventar, dekoracija</p></div></li>
-              <li><span class="bf-icon venue-icon">&#9733;</span><div><strong>Ketering po želji</strong><p>Meni dogovaramo sa vama</p></div></li>
-              <li><span class="bf-icon venue-icon">&#9733;</span><div><strong>Kompletno osoblje</strong><p>Konobari, animator, muzika</p></div></li>
-              <li><span class="bf-icon venue-icon">&#9733;</span><div><strong>Posluživanje</strong><p>Naručivanje, dostava, aranžiranje</p></div></li>
-              <li><span class="bf-icon venue-icon">&#9733;</span><div><strong>Donesite svoju tortu</strong><p>Po vašem izboru</p></div></li>
-              <li><span class="bf-icon venue-icon">&#9733;</span><div><strong>Samo dovedite goste</strong><p>Sve ostalo je naš posao</p></div></li>
-            </ul>
-            <a href="tel:+381645257777" class="btn btn-venue btn-block">POZOVI ZA PONUDU</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- EXPERIENCE SECTION -->
   <section id="experience" class="section experience">
     <div class="experience-bg-image"></div>
     <div class="container">
       <div class="section-header" data-animate="fade-up">
-        <span class="section-tag">// 07</span>
+        <span class="section-tag">// 05</span>
         <h2 class="section-title">ISKUSTVO <span class="text-glow">ARENE</span></h2>
         <div class="section-line"></div>
       </div>
@@ -1218,7 +1177,7 @@
     <div class="section-bg-grid"></div>
     <div class="container">
       <div class="section-header" data-animate="fade-up">
-        <span class="section-tag">// 08</span>
+        <span class="section-tag">// 06</span>
         <h2 class="section-title">O <span class="text-glow">NAMA</span></h2>
         <div class="section-line"></div>
       </div>
@@ -1287,7 +1246,7 @@
   <section id="contact" class="section contact">
     <div class="container">
       <div class="section-header" data-animate="fade-up">
-        <span class="section-tag">// 09</span>
+        <span class="section-tag">// 07</span>
         <h2 class="section-title">STUPI U <span class="text-glow">KONTAKT</span></h2>
         <div class="section-line"></div>
       </div>
@@ -1302,7 +1261,7 @@
             </div>
             <div>
               <h4>Lokacija</h4>
-              <p>Čarobne frule 36<br>Mirijevo, Beograd</p>
+              <p>Čarobne frule 36<br>Zvezdara - Mirijevo, Beograd</p>
               <a href="https://www.google.com/maps/place/%C4%8Carobne+frule+36,+Beograd+11000/@44.7931981,20.5365076,17z/data=!3m1!4b1!4m6!3m5!1s0x475a7a088ed1a697:0x7fd0bea15a467758!8m2!3d44.7931981!4d20.5365076!16s%2Fg%2F11n3mwz4h9?hl=en-US&amp;entry=ttu" class="contact-link" style="font-size:0.85rem; text-decoration:underline; cursor:pointer;">📍 Otvori u Google Maps →</a>
             </div>
           </div>
@@ -1378,15 +1337,7 @@
         <div class="footer-links">
           <a href="tel:+381645257777">+381 64 525 7777</a>
           <span class="footer-dot">&#8226;</span>
-          <span>Čarobne frule 36, Mirijevo, Beograd</span>
-        </div>
-        <div class="footer-social">
-          <a href="https://www.facebook.com/share/1PN8Z7H1XF/" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
-          <a href="https://www.instagram.com/lasertagpredator?igsh=MTNidXFoYzl2NDhwdA==" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
-          <a href="https://www.tiktok.com/@predatorlasertagbeograd?_r=1&amp;_t=ZS-95ZwiMjVJmG" target="_blank" rel="noopener" aria-label="TikTok">TT</a>
-          <a href="https://www.threads.com/@lasertagpredator" target="_blank" rel="noopener" aria-label="Threads">TH</a>
-          <a href="https://www.linkedin.com/in/predator-laser-tag-beograd-76209438a" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
-          <a href="https://www.youtube.com/channel/UC_Nmv_rO8yzTrQKIjaPHCKA" target="_blank" rel="noopener" aria-label="YouTube">YT</a>
+          <span>Čarobne frule 36, Zvezdara - Mirijevo, Beograd</span>
         </div>
         <p class="footer-copy">&copy; 2026 Predator Laser Tag. Sva prava zadržana.</p>
       </div>

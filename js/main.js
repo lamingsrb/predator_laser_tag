@@ -39,6 +39,96 @@ navLinks?.querySelectorAll('a').forEach(link => {
   });
 });
 
+// ===================================
+// STAFF "GAME OVER" ANNOUNCEMENT
+// Staff long-press the header logo (~650ms) → plays Serbian voice-over
+// through the site's audio output (venue speakers pipe from this).
+// Short click still navigates to #hero as usual.
+// ===================================
+(() => {
+  const logo = document.querySelector('.nav-logo');
+  if (!logo) return;
+  const audio = new Audio('/assets/audio/game-over.mp3');
+  audio.preload = 'auto';
+  let holdTimer = null;
+  let longPressed = false;
+
+  const HOLD_MS = 650;
+  const flash = () => {
+    logo.classList.add('game-over-flash');
+    setTimeout(() => logo.classList.remove('game-over-flash'), 1400);
+  };
+
+  const startHold = (e) => {
+    longPressed = false;
+    clearTimeout(holdTimer);
+    holdTimer = setTimeout(() => {
+      longPressed = true;
+      flash();
+      try { audio.currentTime = 0; audio.play(); } catch {}
+    }, HOLD_MS);
+  };
+  const cancelHold = () => { clearTimeout(holdTimer); };
+
+  logo.addEventListener('mousedown',  startHold);
+  logo.addEventListener('touchstart', startHold, { passive: true });
+  logo.addEventListener('mouseup',    cancelHold);
+  logo.addEventListener('mouseleave', cancelHold);
+  logo.addEventListener('touchend',   cancelHold);
+  logo.addEventListener('touchcancel', cancelHold);
+
+  // If long-press fired, swallow the click so it doesn't also scroll to #hero.
+  logo.addEventListener('click', (e) => {
+    if (longPressed) {
+      e.preventDefault();
+      e.stopPropagation();
+      longPressed = false;
+    }
+  });
+})();
+
+// ===================================
+// PACKAGES TABS (Rođendani / Team Building / Individualni / Iznajmljivanje)
+// ===================================
+(() => {
+  const tabs = Array.from(document.querySelectorAll('.pkg-tab'));
+  const panels = Array.from(document.querySelectorAll('.pkg-panel'));
+  if (!tabs.length || !panels.length) return;
+
+  function activate(tabName, scrollToPackages = false) {
+    tabs.forEach(t => {
+      const on = t.dataset.tab === tabName;
+      t.classList.toggle('is-active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    panels.forEach(p => {
+      const on = p.dataset.panel === tabName;
+      p.classList.toggle('is-active', on);
+      if (on) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');
+    });
+    if (scrollToPackages) {
+      document.getElementById('packages')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.tab)));
+
+  // Anchor deep-link: #individualna, #team-building, #iznajmljivanje pick the matching tab
+  const anchorToTab = {
+    'individualna':   'individual',
+    'team-building':  'teambuild',
+    'iznajmljivanje': 'venue',
+    'packages':       'birthdays'
+  };
+  function applyHash() {
+    const h = (location.hash || '').replace('#', '');
+    if (anchorToTab[h]) activate(anchorToTab[h], h !== 'packages');
+  }
+  window.addEventListener('hashchange', applyHash);
+  // Initial load
+  applyHash();
+})();
+
 // Scroll-spy: highlight nav link for the section currently in view
 (() => {
   const sectionLinks = Array.from(navLinks?.querySelectorAll('a[href^="#"]') || [])

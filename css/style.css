@@ -207,6 +207,19 @@ button:hover ~ #cursor-dot,
 .nav-logo {
   display: flex;
   align-items: center;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Brief visual cue when staff triggers the Game Over announcement */
+.nav-logo.game-over-flash {
+  animation: goFlash 1.2s ease-out;
+}
+@keyframes goFlash {
+  0%   { filter: none; }
+  20%  { filter: drop-shadow(0 0 18px #ff0088) drop-shadow(0 0 34px #ff0088) brightness(1.4); }
+  100% { filter: none; }
 }
 
 .nav-logo-img {
@@ -2069,7 +2082,74 @@ button:hover ~ #cursor-dot,
 }
 
 /* ===================================
-   TERMINI & TEAM BUILDING SECTION
+   PACKAGES TABS (4-way paketi navigator)
+   =================================== */
+.pkg-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  max-width: 900px;
+  margin: 2.5rem auto 2rem;
+  padding: 0.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 4px;
+}
+.pkg-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.85rem 0.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  color: var(--light);
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+.pkg-tab .pt-icon { font-size: 1.4rem; line-height: 1; }
+.pkg-tab .pt-label { font-weight: 700; }
+.pkg-tab:hover {
+  background: rgba(255, 0, 136, 0.08);
+  color: #fff;
+}
+.pkg-tab.is-active {
+  background: rgba(255, 0, 136, 0.15);
+  color: var(--red);
+  box-shadow: 0 0 16px rgba(255, 0, 136, 0.2) inset,
+              0 4px 18px rgba(255, 0, 136, 0.1);
+  text-shadow: 0 0 12px rgba(255, 0, 136, 0.5);
+}
+.pkg-panel {
+  animation: pkgFadeIn 0.4s ease;
+}
+.pkg-panel[hidden] { display: none; }
+.pkg-panel-centered {
+  max-width: 640px;
+  margin: 0 auto;
+}
+@keyframes pkgFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+  .pkg-tabs { grid-template-columns: repeat(2, 1fr); max-width: 440px; }
+  .pkg-tab { padding: 0.7rem 0.3rem; font-size: 0.7rem; }
+  .pkg-tab .pt-icon { font-size: 1.15rem; }
+}
+@media (max-width: 380px) {
+  .pkg-tab { font-size: 0.62rem; letter-spacing: 1px; }
+}
+
+/* ===================================
+   TERMINI & TEAM BUILDING (now inside Paketi panels)
    =================================== */
 .termini {
   background: rgba(10, 10, 10, 0.55);
@@ -3351,7 +3431,6 @@ body.lightbox-open #navbar {
 
 .map-wrapper iframe {
   display: block;
-  filter: grayscale(100%) invert(92%) contrast(85%);
 }
 
 .map-wrapper {
