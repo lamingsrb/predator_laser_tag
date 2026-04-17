@@ -398,7 +398,7 @@ button:hover ~ #cursor-dot,
   background:
     radial-gradient(ellipse at 20% 50%, rgba(255, 0, 136, 0.08) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 50%, rgba(0, 240, 255, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 100%, rgba(139, 0, 255, 0.08) 0%, transparent 50%);
+    radial-gradient(ellipse at 50% 100%, rgba(255, 0, 136, 0.08) 0%, transparent 50%);
   animation: fogPulse 8s ease-in-out infinite;
 }
 
@@ -1288,10 +1288,10 @@ button:hover ~ #cursor-dot,
   box-shadow: 0 8px 25px rgba(255, 0, 136, 0.2);
 }
 
-.package-callout-venue { color: var(--purple); border-color: rgba(139, 0, 255, 0.3); }
+.package-callout-venue { color: var(--red); border-color: rgba(255, 0, 136, 0.3); }
 .package-callout-venue:hover {
-  border-color: var(--purple);
-  box-shadow: 0 8px 25px rgba(139, 0, 255, 0.2);
+  border-color: var(--red);
+  box-shadow: 0 8px 25px rgba(255, 0, 136, 0.2);
 }
 
 /* Centered venue callout under the 2 birthday cards */
@@ -1344,8 +1344,8 @@ button:hover ~ #cursor-dot,
 }
 
 .section-intro-venue {
-  background: linear-gradient(135deg, rgba(139, 0, 255, 0.05), rgba(139, 0, 255, 0.01));
-  border-left-color: var(--purple);
+  background: linear-gradient(135deg, rgba(255, 0, 136, 0.05), rgba(255, 0, 136, 0.01));
+  border-left-color: var(--red);
 }
 
 .section-intro-venue a.link-red {
@@ -1354,12 +1354,12 @@ button:hover ~ #cursor-dot,
 }
 
 .section-intro a.link-purple {
-  color: var(--purple);
-  border-bottom-color: rgba(139, 0, 255, 0.5);
+  color: var(--red);
+  border-bottom-color: rgba(255, 0, 136, 0.5);
 }
 
 .section-intro a.link-purple:hover {
-  text-shadow: 0 0 12px rgba(139, 0, 255, 0.6);
+  text-shadow: 0 0 12px rgba(255, 0, 136, 0.6);
 }
 
 /* Birthday cards — equal heights via flex layout */
@@ -1412,20 +1412,20 @@ button:hover ~ #cursor-dot,
 
 /* Venue-rental variant — purple accent, different service */
 .package-card-venue {
-  border-color: rgba(139, 0, 255, 0.25);
+  border-color: rgba(255, 0, 136, 0.25);
 }
 
 .package-card-venue:hover {
-  border-color: var(--purple);
-  box-shadow: 0 15px 40px rgba(139, 0, 255, 0.15);
+  border-color: var(--red);
+  box-shadow: 0 15px 40px rgba(255, 0, 136, 0.15);
 }
 
 .package-card-venue::before {
-  background: linear-gradient(180deg, rgba(139, 0, 255, 0.07) 0%, transparent 50%);
+  background: linear-gradient(180deg, rgba(255, 0, 136, 0.07) 0%, transparent 50%);
 }
 
 .package-card-venue .package-price-unit {
-  color: var(--purple);
+  color: var(--red);
 }
 
 .package-sub {
@@ -1434,18 +1434,18 @@ button:hover ~ #cursor-dot,
   font-size: 0.6rem;
   letter-spacing: 2px;
   padding: 0.25rem 0.75rem;
-  border: 1px solid var(--purple);
-  color: var(--purple);
+  border: 1px solid var(--red);
+  color: var(--red);
   margin-bottom: 1rem;
   text-transform: uppercase;
-  background: rgba(139, 0, 255, 0.08);
+  background: rgba(255, 0, 136, 0.08);
   position: relative;
   z-index: 1;
 }
 
 .package-divider-purple {
-  background: var(--purple);
-  box-shadow: 0 0 10px rgba(139, 0, 255, 0.5);
+  background: var(--red);
+  box-shadow: 0 0 10px rgba(255, 0, 136, 0.5);
 }
 
 .package-badge {
@@ -1611,14 +1611,14 @@ button:hover ~ #cursor-dot,
 }
 
 .venue-glow {
-  color: var(--purple) !important;
-  text-shadow: 0 0 20px rgba(139, 0, 255, 0.6),
-               0 0 40px rgba(139, 0, 255, 0.3);
+  color: var(--red) !important;
+  text-shadow: 0 0 20px rgba(255, 0, 136, 0.6),
+               0 0 40px rgba(255, 0, 136, 0.3);
 }
 
 .venue-line {
-  background: var(--purple) !important;
-  box-shadow: 0 0 12px rgba(139, 0, 255, 0.5) !important;
+  background: var(--red) !important;
+  box-shadow: 0 0 12px rgba(255, 0, 136, 0.5) !important;
 }
 
 .venue-info {
@@ -1628,8 +1628,8 @@ button:hover ~ #cursor-dot,
   margin: 0 auto 2.5rem;
   max-width: 900px;
   padding: 1.25rem 1.5rem;
-  background: linear-gradient(135deg, rgba(139, 0, 255, 0.06), rgba(139, 0, 255, 0.01));
-  border: 1px solid rgba(139, 0, 255, 0.18);
+  background: linear-gradient(135deg, rgba(255, 0, 136, 0.06), rgba(255, 0, 136, 0.01));
+  border: 1px solid rgba(255, 0, 136, 0.18);
   position: relative;
 }
 
@@ -1638,8 +1638,8 @@ button:hover ~ #cursor-dot,
   position: absolute;
   top: 0; left: 0;
   width: 60px; height: 2px;
-  background: var(--purple);
-  box-shadow: 0 0 10px var(--purple);
+  background: var(--red);
+  box-shadow: 0 0 10px var(--red);
 }
 
 .venue-info::after {
@@ -1652,33 +1652,33 @@ button:hover ~ #cursor-dot,
 }
 
 .venue-num {
-  color: var(--purple) !important;
-  text-shadow: 0 0 14px rgba(139, 0, 255, 0.5) !important;
+  color: var(--red) !important;
+  text-shadow: 0 0 14px rgba(255, 0, 136, 0.5) !important;
 }
 
 /* Venue card variant */
 .venue-card {
-  border-color: rgba(139, 0, 255, 0.2);
+  border-color: rgba(255, 0, 136, 0.2);
 }
 
 .venue-card:hover {
-  border-color: rgba(139, 0, 255, 0.5);
-  box-shadow: 0 10px 30px rgba(139, 0, 255, 0.12);
+  border-color: rgba(255, 0, 136, 0.5);
+  box-shadow: 0 10px 30px rgba(255, 0, 136, 0.12);
 }
 
 .venue-card-premium {
-  border-color: rgba(139, 0, 255, 0.45);
-  background: linear-gradient(135deg, rgba(139, 0, 255, 0.06), rgba(139, 0, 255, 0.01));
+  border-color: rgba(255, 0, 136, 0.45);
+  background: linear-gradient(135deg, rgba(255, 0, 136, 0.06), rgba(255, 0, 136, 0.01));
 }
 
 .venue-card-premium:hover {
-  border-color: var(--purple);
-  box-shadow: 0 12px 35px rgba(139, 0, 255, 0.2);
+  border-color: var(--red);
+  box-shadow: 0 12px 35px rgba(255, 0, 136, 0.2);
 }
 
 .venue-tag {
-  border-color: var(--purple) !important;
-  color: var(--purple) !important;
+  border-color: var(--red) !important;
+  color: var(--red) !important;
 }
 
 .venue-tag-premium {
@@ -1687,31 +1687,31 @@ button:hover ~ #cursor-dot,
   font-size: 0.6rem;
   letter-spacing: 3px;
   padding: 0.3rem 1rem;
-  border: 1px solid var(--purple);
-  color: var(--purple);
-  background: rgba(139, 0, 255, 0.12);
+  border: 1px solid var(--red);
+  color: var(--red);
+  background: rgba(255, 0, 136, 0.12);
 }
 
 .venue-icon {
-  color: var(--purple) !important;
+  color: var(--red) !important;
 }
 
 .venue-price {
-  text-shadow: 0 0 16px rgba(139, 0, 255, 0.4);
+  text-shadow: 0 0 16px rgba(255, 0, 136, 0.4);
 }
 
 .venue-price .bp-unit {
-  color: var(--purple);
+  color: var(--red);
 }
 
 .venue-price-custom {
-  color: var(--purple) !important;
-  text-shadow: 0 0 14px rgba(139, 0, 255, 0.45) !important;
+  color: var(--red) !important;
+  text-shadow: 0 0 14px rgba(255, 0, 136, 0.45) !important;
 }
 
 /* Purple button variant — same size as .btn + .btn-primary */
 .btn-venue {
-  background: var(--purple);
+  background: var(--red);
   color: #fff;
   border: none;
   font-family: var(--font-heading);
@@ -1732,9 +1732,9 @@ button:hover ~ #cursor-dot,
 
 .btn-venue:hover {
   background: transparent;
-  color: var(--purple);
-  box-shadow: 0 0 25px rgba(139, 0, 255, 0.45),
-              0 0 50px rgba(139, 0, 255, 0.2);
+  color: var(--red);
+  box-shadow: 0 0 25px rgba(255, 0, 136, 0.45),
+              0 0 50px rgba(255, 0, 136, 0.2);
   transform: translateY(-2px);
 }
 
