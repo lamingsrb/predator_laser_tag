@@ -210,7 +210,7 @@ button:hover ~ #cursor-dot,
 }
 
 .nav-logo-img {
-  height: 58px;
+  height: 78px;
   width: auto;
   filter: drop-shadow(0 0 10px rgba(255, 0, 136, 0.45));
   transition: filter 0.3s, transform 0.3s;
@@ -1070,11 +1070,13 @@ button:hover ~ #cursor-dot,
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
+  align-items: stretch;
 }
 
 .exp-card {
   position: relative;
   perspective: 1000px;
+  display: flex;
 }
 
 .exp-card-inner {
@@ -1084,6 +1086,9 @@ button:hover ~ #cursor-dot,
   text-align: center;
   transition: all 0.5s ease;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   overflow: hidden;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
@@ -1166,7 +1171,12 @@ button:hover ~ #cursor-dot,
 .package-card-inner { flex: 1; display: flex; flex-direction: column; }
 .package-front { flex: 1; display: flex; flex-direction: column; }
 .package-features { flex: 1; }
-.package-front .btn { margin-top: auto; }
+.package-front .btn,
+.package-front .btn-venue {
+  margin-top: auto;
+  width: 100%;
+  justify-content: center;
+}
 
 /* Team Building card — green accent border */
 .package-card-team { border-color: rgba(0, 255, 136, 0.2); }
@@ -2972,10 +2982,10 @@ body.lightbox-open {
 }
 
 .footer-logo-img {
-  height: 50px;
+  height: 85px;
   width: auto;
   margin: 0 auto;
-  filter: drop-shadow(0 0 10px rgba(255, 0, 64, 0.3));
+  filter: drop-shadow(0 0 14px rgba(255, 0, 136, 0.4));
 }
 
 .footer-links {
@@ -3561,7 +3571,7 @@ body.lightbox-open {
   }
 
   .nav-logo-img {
-    height: 44px;
+    height: 56px;
   }
 }
 
