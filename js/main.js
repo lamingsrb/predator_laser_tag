@@ -87,11 +87,8 @@ class Typewriter {
 
 new Typewriter(document.getElementById('typewriter'), [
   'PARKING obezbeđen za SVE posetioce.',
-  'Mesto gde adrenalin preuzima kontrolu.',
   'Najmodernija laser tag arena u Beogradu.',
-  'Nezaboravno iskustvo za celu porodicu.',
-  'Rođendani. Team building. Akcija.',
-  '280m² arene sa unikatnim dizajnom.',
+  'Pozovite nas: +381 64 525 7777',
 ]);
 
 // ===================================

@@ -3410,7 +3410,7 @@ body.lightbox-open {
 
   /* Hero video on mobile — keep video playing (poster as fallback) */
   .hero-video-wrap {
-    background: url('/assets/video/showreel-poster.webp') center/cover no-repeat #000;
+    background: #000;
   }
 
   .hero-video {
