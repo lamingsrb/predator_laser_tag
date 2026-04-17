@@ -1059,7 +1059,7 @@ button:hover ~ #cursor-dot,
    EXPERIENCE SECTION
    =================================== */
 .experience {
-  background: linear-gradient(180deg, rgba(10,10,10,0.88), rgba(17,17,17,0.88), rgba(10,10,10,0.88));
+  background: linear-gradient(180deg, rgba(10,10,10,0.55), rgba(17,17,17,0.55), rgba(10,10,10,0.55));
   position: relative;
   overflow: hidden;
 }
@@ -1160,7 +1160,7 @@ button:hover ~ #cursor-dot,
    PACKAGES SECTION
    =================================== */
 .packages {
-  background: rgba(10, 10, 10, 0.88);
+  background: rgba(10, 10, 10, 0.55);
 }
 
 .packages-grid {
@@ -1581,7 +1581,7 @@ button:hover ~ #cursor-dot,
    BIRTHDAYS SECTION
    =================================== */
 .birthdays {
-  background: linear-gradient(180deg, rgba(10,10,10,0.88), rgba(17,17,17,0.88), rgba(10,10,10,0.88));
+  background: linear-gradient(180deg, rgba(10,10,10,0.55), rgba(17,17,17,0.55), rgba(10,10,10,0.55));
 }
 
 .birthday-grid {
@@ -1606,7 +1606,7 @@ button:hover ~ #cursor-dot,
    VENUE RENTAL SECTION (purple palette)
    =================================== */
 .venue-rental {
-  background: linear-gradient(180deg, rgba(10,10,10,0.88), rgba(13,10,20,0.88), rgba(10,10,10,0.88));
+  background: linear-gradient(180deg, rgba(10,10,10,0.55), rgba(13,10,20,0.55), rgba(10,10,10,0.55));
   position: relative;
 }
 
@@ -2072,7 +2072,7 @@ button:hover ~ #cursor-dot,
    INVITATIONS SECTION
    =================================== */
 .invitations {
-  background: rgba(10, 10, 10, 0.88);
+  background: rgba(10, 10, 10, 0.55);
   position: relative;
 }
 
@@ -2131,7 +2131,7 @@ button:hover ~ #cursor-dot,
    GALLERY SECTION
    =================================== */
 .gallery {
-  background: rgba(10, 10, 10, 0.88);
+  background: rgba(10, 10, 10, 0.55);
   position: relative;
 }
 
@@ -2664,7 +2664,7 @@ body.lightbox-open #navbar {
    REVIEWS SECTION
    =================================== */
 .reviews {
-  background: linear-gradient(180deg, rgba(10,10,10,0.88), rgba(13,13,18,0.88) 50%, rgba(10,10,10,0.88));
+  background: linear-gradient(180deg, rgba(10,10,10,0.55), rgba(13,13,18,0.55) 50%, rgba(10,10,10,0.55));
   position: relative;
   overflow: hidden;
 }
@@ -2978,7 +2978,7 @@ body.lightbox-open #navbar {
    CONTACT SECTION
    =================================== */
 .contact {
-  background: linear-gradient(180deg, rgba(10,10,10,0.88), rgba(17,17,17,0.88));
+  background: linear-gradient(180deg, rgba(10,10,10,0.55), rgba(17,17,17,0.55));
 }
 
 .contact-grid {
