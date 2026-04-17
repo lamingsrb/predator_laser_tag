@@ -39,6 +39,50 @@ navLinks?.querySelectorAll('a').forEach(link => {
   });
 });
 
+// Scroll-spy: highlight nav link for the section currently in view
+(() => {
+  const sectionLinks = Array.from(navLinks?.querySelectorAll('a[href^="#"]') || [])
+    .filter(a => a.getAttribute('href').length > 1);
+  if (!sectionLinks.length || !('IntersectionObserver' in window)) return;
+
+  const byId = new Map();
+  sectionLinks.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    const sec = document.getElementById(id);
+    if (sec) byId.set(id, a);
+  });
+  if (!byId.size) return;
+
+  const visible = new Map();
+  const setActive = (id) => {
+    sectionLinks.forEach(a => a.classList.remove('is-active'));
+    const link = byId.get(id);
+    if (link) link.classList.add('is-active');
+  };
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) visible.set(e.target.id, e.intersectionRatio);
+      else visible.delete(e.target.id);
+    });
+    if (!visible.size) return;
+    // Pick the section with the largest visible ratio
+    let best = null, bestRatio = -1;
+    visible.forEach((ratio, id) => {
+      if (ratio > bestRatio) { best = id; bestRatio = ratio; }
+    });
+    if (best) setActive(best);
+  }, {
+    rootMargin: '-30% 0px -55% 0px',
+    threshold: [0, 0.25, 0.5, 0.75, 1]
+  });
+
+  byId.forEach((_link, id) => {
+    const sec = document.getElementById(id);
+    if (sec) io.observe(sec);
+  });
+})();
+
 // ===================================
 // TYPEWRITER EFFECT
 // ===================================

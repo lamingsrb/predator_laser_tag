@@ -264,12 +264,18 @@ button:hover ~ #cursor-dot,
   box-shadow: 0 0 10px var(--red);
 }
 
-.nav-links a:not(.nav-cta):hover::after {
+.nav-links a:not(.nav-cta):hover::after,
+.nav-links a.is-active:not(.nav-cta)::after {
   width: 80%;
 }
 
 .nav-links a:not(.nav-cta):hover {
   color: var(--cyan);
+}
+
+.nav-links a.is-active:not(.nav-cta) {
+  color: var(--red);
+  text-shadow: 0 0 14px rgba(255, 0, 136, 0.55);
 }
 
 .nav-cta {
