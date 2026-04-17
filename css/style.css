@@ -210,14 +210,15 @@ button:hover ~ #cursor-dot,
 }
 
 .nav-logo-img {
-  height: 40px;
+  height: 58px;
   width: auto;
-  filter: drop-shadow(0 0 8px rgba(255, 0, 64, 0.4));
-  transition: filter 0.3s;
+  filter: drop-shadow(0 0 10px rgba(255, 0, 136, 0.45));
+  transition: filter 0.3s, transform 0.3s;
 }
 
 .nav-logo-img:hover {
-  filter: drop-shadow(0 0 15px rgba(255, 0, 64, 0.7));
+  filter: drop-shadow(0 0 18px rgba(255, 0, 136, 0.75));
+  transform: scale(1.04);
 }
 
 .logo-icon {
@@ -1247,6 +1248,18 @@ button:hover ~ #cursor-dot,
 
 .package-callout:hover { transform: translateY(-3px); }
 .package-callout:hover .callout-arrow { transform: translateX(6px); }
+
+.package-callout-individual { color: var(--cyan); border-color: rgba(0, 240, 255, 0.3); }
+.package-callout-individual:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 8px 25px rgba(0, 240, 255, 0.2);
+}
+
+.package-callout-team { color: var(--green); border-color: rgba(0, 255, 136, 0.3); }
+.package-callout-team:hover {
+  border-color: var(--green);
+  box-shadow: 0 8px 25px rgba(0, 255, 136, 0.2);
+}
 
 .package-callout-bday { color: var(--red); border-color: rgba(255, 0, 64, 0.3); }
 .package-callout-bday:hover {
@@ -3548,7 +3561,7 @@ body.lightbox-open {
   }
 
   .nav-logo-img {
-    height: 30px;
+    height: 44px;
   }
 }
 
