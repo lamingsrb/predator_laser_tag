@@ -722,19 +722,27 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
   function next() { open(index + 1); }
   function prev() { open(index - 1); }
 
-  items.forEach((el, i) => {
-    el.addEventListener('click', (e) => {
-      e.preventDefault();
-      open(i);
-    });
+  items.forEach((el) => {
     el.setAttribute('tabindex', '0');
     el.setAttribute('role', 'button');
-    el.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        open(i);
-      }
-    });
+  });
+
+  // Event delegation on masonry — works for clones (marquee loop) AND on iPad/touch
+  function handleTileActivation(e) {
+    const tile = e.target.closest('.masonry-item');
+    if (!tile || !masonry.contains(tile)) return;
+    const src = tile.dataset.lbSrc;
+    if (!src) return;
+    // Find the original item with matching data-lb-src (clones share the same src)
+    const idx = data.findIndex(d => d.src === src);
+    if (idx === -1) return;
+    e.preventDefault();
+    e.stopPropagation();
+    open(idx);
+  }
+  masonry.addEventListener('click', handleTileActivation);
+  masonry.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') handleTileActivation(e);
   });
 
   closeBtn.addEventListener('click', close);

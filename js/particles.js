@@ -41,7 +41,7 @@ class ParticleSystem {
   }
 
   createParticles() {
-    const count = this.isMobile ? 90 : 320;
+    const count = this.isMobile ? 50 : 180;
     this.particleCount = count;
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
@@ -107,10 +107,10 @@ class ParticleSystem {
     geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
 
     const material = new THREE.PointsMaterial({
-      size: 0.8,
+      size: 0.5,
       vertexColors: true,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.5,
       blending: THREE.AdditiveBlending,
       sizeAttenuation: true
     });
