@@ -15,8 +15,8 @@
   --purple: #8b00ff;
   --white: #f0f0f0;
   --gray: #888888;
-  --font-heading: 'Orbitron', monospace;
-  --font-body: 'Rajdhani', sans-serif;
+  --font-heading: 'Orbitron', 'Chakra Petch', 'Rajdhani', monospace;
+  --font-body: 'Rajdhani', 'Chakra Petch', sans-serif;
 }
 
 /* Reset */
