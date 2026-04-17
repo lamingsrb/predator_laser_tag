@@ -3098,7 +3098,16 @@ body.lightbox-open #navbar {
 }
 
 .map-wrapper {
-  cursor: auto;
+  cursor: pointer;
+}
+
+.map-click-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: block;
+  background: transparent;
+  cursor: pointer;
 }
 
 .map-overlay-border {
