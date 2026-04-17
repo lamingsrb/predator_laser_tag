@@ -2079,20 +2079,36 @@ button:hover ~ #cursor-dot,
 .termini-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 3rem auto 0;
+  gap: 1.25rem;
+  max-width: 1080px;
+  margin: 2.2rem auto 0;
+  align-items: stretch;
 }
 
 .termini-card {
   position: relative;
   background: linear-gradient(145deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 2.5rem 2rem 2rem;
+  padding: 1.5rem 1.4rem 1.4rem;
   display: flex;
   flex-direction: column;
   transition: transform 0.4s, border-color 0.4s, box-shadow 0.4s;
   overflow: hidden;
+}
+.termini-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+/* Push REZERVIŠI button to bottom so it aligns across both cards */
+.termini-card > .btn-block {
+  margin-top: auto;
+}
+.termini-card > .termini-list,
+.termini-card > .termini-tiers,
+.termini-card > .termini-footnote {
+  margin-bottom: 0;
 }
 .termini-card::before {
   content: '';
@@ -2124,17 +2140,17 @@ button:hover ~ #cursor-dot,
 }
 
 .termini-card-header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 .termini-tag {
   display: inline-block;
   font-family: var(--font-heading);
-  font-size: 0.65rem;
-  letter-spacing: 3px;
-  padding: 0.35rem 0.7rem;
+  font-size: 0.6rem;
+  letter-spacing: 2.5px;
+  padding: 0.25rem 0.6rem;
   border: 1px solid rgba(0, 240, 255, 0.4);
   color: var(--cyan);
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.55rem;
 }
 .termini-tag.team {
   border-color: rgba(255, 0, 136, 0.45);
@@ -2142,17 +2158,17 @@ button:hover ~ #cursor-dot,
 }
 .termini-card-header h3 {
   font-family: var(--font-heading);
-  font-size: 1.7rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: #fff;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
 }
 .th-sub {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: var(--cyan);
-  letter-spacing: 2px;
-  margin-left: 0.5rem;
+  letter-spacing: 1.8px;
+  margin-left: 0.4rem;
 }
 .termini-card-team .th-sub {
   color: var(--red);
@@ -2161,14 +2177,14 @@ button:hover ~ #cursor-dot,
 /* Individualna: simple price list */
 .termini-list {
   list-style: none;
-  margin: 0 0 1.5rem;
+  margin: 0 0 0.9rem;
   padding: 0;
 }
 .termini-list li {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.9rem 0;
+  padding: 0.55rem 0;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
 }
 .termini-list li:last-child {
@@ -2176,11 +2192,11 @@ button:hover ~ #cursor-dot,
 }
 .tl-duration {
   font-family: var(--font-heading);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.8px;
   color: #fff;
-  min-width: 80px;
+  min-width: 70px;
 }
 .tl-dots {
   flex: 1;
@@ -2189,14 +2205,14 @@ button:hover ~ #cursor-dot,
 }
 .tl-price {
   font-family: var(--font-heading);
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 800;
   color: var(--cyan);
   text-shadow: 0 0 10px rgba(0, 240, 255, 0.35);
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
 }
 .tl-price small {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--light);
   font-weight: 600;
   margin-left: 0.25rem;
@@ -2205,15 +2221,15 @@ button:hover ~ #cursor-dot,
 
 .termini-footnote {
   display: flex;
-  gap: 0.7rem;
+  gap: 0.6rem;
   align-items: flex-start;
-  padding: 0.9rem 1rem;
+  padding: 0.7rem 0.85rem;
   background: rgba(0, 240, 255, 0.06);
   border-left: 2px solid var(--cyan);
   color: var(--light);
-  font-size: 0.88rem;
-  line-height: 1.5;
-  margin-bottom: 1.2rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  margin-bottom: 0;
 }
 .termini-footnote strong {
   color: #fff;
@@ -2227,14 +2243,14 @@ button:hover ~ #cursor-dot,
 /* Team Building: richer tiers */
 .termini-tiers {
   list-style: none;
-  margin: 0 0 1.5rem;
+  margin: 0 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.35rem;
 }
 .termini-tiers li {
-  padding: 0.9rem 1rem;
+  padding: 0.55rem 0.75rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.015);
   border-radius: 3px;
@@ -2253,41 +2269,41 @@ button:hover ~ #cursor-dot,
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 1rem;
-  margin-bottom: 0.3rem;
+  gap: 0.8rem;
+  margin-bottom: 0.15rem;
 }
 .tt-players {
   font-family: var(--font-heading);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: #fff;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
 }
 .tt-price {
   font-family: var(--font-heading);
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--red);
   text-shadow: 0 0 10px rgba(255, 0, 136, 0.35);
   letter-spacing: 0.5px;
 }
 .tt-price small {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--light);
   font-weight: 600;
   margin-left: 0.2rem;
   text-shadow: none;
 }
 .tt-incl {
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   color: #bbb;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.3rem;
 }
 .tt-icon {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 .tt-sep {
   color: rgba(255, 255, 255, 0.35);
