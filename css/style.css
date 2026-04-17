@@ -2050,6 +2050,11 @@ button:hover ~ #cursor-dot,
   font-weight: 800;
   letter-spacing: 0.3px;
 }
+.birthday-features-plain .bf-note {
+  color: #aaa;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
 .birthday-features-plain li.bf-highlight {
   background: linear-gradient(90deg, rgba(255, 0, 136, 0.08), rgba(255, 0, 136, 0.02));
   border-left: 2px solid var(--red);
