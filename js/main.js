@@ -790,8 +790,18 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
   closeBtn.addEventListener('click', close);
   prevBtn.addEventListener('click', prev);
   nextBtn.addEventListener('click', next);
+  // Close when clicking anywhere that isn't the media itself or a control button
   lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) close();
+    const t = e.target;
+    if (t.closest('.lightbox-close, .lightbox-nav')) return;
+    if (t.tagName === 'IMG' || t.tagName === 'VIDEO' || t.tagName === 'SOURCE') return;
+    close();
+  });
+
+  // Close lightbox when user clicks any nav link (so navigation works mid-lightbox)
+  navLinks?.addEventListener('click', (e) => {
+    if (!lightbox.classList.contains('active')) return;
+    if (e.target.closest('a')) close();
   });
 
   document.addEventListener('keydown', (e) => {

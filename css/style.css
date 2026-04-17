@@ -2655,6 +2655,11 @@ body.lightbox-open {
   overflow: hidden;
 }
 
+/* Keep navbar clickable while lightbox is open so nav links dismiss it */
+body.lightbox-open #navbar {
+  z-index: 10001;
+}
+
 /* ===================================
    REVIEWS SECTION
    =================================== */
