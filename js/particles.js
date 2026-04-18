@@ -190,20 +190,20 @@ class ParticleSystem {
       end   = { x: x + (Math.random()-0.5)*35, y:  dir * 55, z };
     }
 
-    // Trail built from a Points sprite cloud instead of a thin line:
-    //   - segCount positions (head at index 0, tail at last)
-    //   - per-vertex color where tail darkens toward zero, so AdditiveBlending
-    //     naturally fades the streak without needing per-vertex opacity.
-    // Rendered twice: a fat halo layer for glow + a tighter core for crispness.
-    const segCount = 32;
+    // Trail built from a Points sprite cloud — two layers:
+    //   - thin halo for a soft glow aura
+    //   - tight core for the crisp streak
+    // per-vertex color darkens toward the tail so Additive blending fades
+    // the trail naturally without needing per-vertex opacity.
+    const segCount = 24;
     const positions = new Float32Array(segCount * 3);
     const colors    = new Float32Array(segCount * 3);
     for (let i = 0; i < segCount; i++) {
       positions[i*3]     = start.x;
       positions[i*3 + 1] = start.y;
       positions[i*3 + 2] = start.z;
-      const t = 1 - i / (segCount - 1); // 1 at head, 0 at tail
-      const k = Math.pow(t, 0.7);       // slight tail extension
+      const t = 1 - i / (segCount - 1);
+      const k = Math.pow(t, 0.7);
       colors[i*3]     = baseColor.r * k;
       colors[i*3 + 1] = baseColor.g * k;
       colors[i*3 + 2] = baseColor.b * k;
@@ -227,17 +227,16 @@ class ParticleSystem {
       return pts;
     };
 
-    // Fat outer halo → gives the beam real thickness
-    const halo = makeLayer(4.5, 0.55);
-    // Brighter inner core → keeps the streak crisp on top of the halo
-    const core = makeLayer(2.0, 1.0);
+    // Slimmer than before — still thick enough to read, no longer a tube.
+    const halo = makeLayer(2.4, 0.5);
+    const core = makeLayer(1.0, 1.0);
 
-    // Extra-bright head sprite on top of everything
+    // Compact bright head sprite
     const headGeo = new THREE.BufferGeometry();
     headGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([start.x, start.y, start.z]), 3));
     const headMat = new THREE.PointsMaterial({
       color: baseColor,
-      size: 6.0,
+      size: 3.0,
       transparent: true,
       opacity: 1,
       blending: THREE.AdditiveBlending,
@@ -247,7 +246,7 @@ class ParticleSystem {
     const head = new THREE.Points(headGeo, headMat);
     this.scene.add(head);
 
-    // Speed: slower than before — cross the scene in ~60-90 frames (1.0-1.5 s)
+    // Same speed as before — 1–1.5 s to cross the scene
     const dx = end.x - start.x;
     const dy = end.y - start.y;
     const dz = end.z - start.z;
@@ -263,18 +262,19 @@ class ParticleSystem {
       segCount,
       framesLeft: frames + 18,
       travelFrames: frames,
-      hitRadius: 7,
+      hitRadius: 6,
       isRed,
     });
   }
 
   animateLaserBolts() {
-    // Spawn cadence: 1.5-4 s between bolts; occasional double-shot burst.
-    this.boltTimer -= 1/60; // rough: animate() runs via rAF ~60 Hz
+    // Spawn cadence: 0.6-1.6 s between bolts; ~40 % chance of a double-shot
+    // burst so it reads as an active firefight rather than an occasional shot.
+    this.boltTimer -= 1/60;
     if (this.boltTimer <= 0) {
       this.spawnLaserBolt();
-      if (Math.random() < 0.25) setTimeout(() => this.spawnLaserBolt(), 120);
-      this.boltTimer = 1.5 + Math.random() * 2.5;
+      if (Math.random() < 0.4) setTimeout(() => this.spawnLaserBolt(), 110);
+      this.boltTimer = 0.6 + Math.random() * 1.0;
     }
 
     for (let b = this.laserBolts.length - 1; b >= 0; b--) {
@@ -333,30 +333,85 @@ class ParticleSystem {
     }
   }
 
-  // Quick "pew" — high-pitch saw sweep downward, very short decay.
+  // Star Wars–style blaster — metallic "pew" with a fast downward pitch
+  // bend and a ringing tail. Built from:
+  //   1. fast sine down-sweep (the main whoop)
+  //   2. triangle sub-sweep one octave lower for body
+  //   3. bright high-pass noise click at t0 for the transient
+  //   4. feedback-delay "cannon echo" so the tail rings
   playLaserFire(isRed) {
     try {
       if (!this.audioCtx) this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const ctx = this.audioCtx;
       const now = ctx.currentTime;
-      const osc = ctx.createOscillator();
-      osc.type = 'sawtooth';
-      // Red = lower pew; green = higher, brighter
-      const topFreq = isRed ? 1400 : 1900;
-      osc.frequency.setValueAtTime(topFreq, now);
-      osc.frequency.exponentialRampToValueAtTime(140, now + 0.13);
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.16, now + 0.008);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
-      // Bandpass to smooth the sawtooth harsh harmonics
-      const bp = ctx.createBiquadFilter();
-      bp.type = 'bandpass';
-      bp.frequency.value = 900;
-      bp.Q.value = 1.3;
-      osc.connect(bp).connect(gain).connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.2);
+
+      // Shared echo feedback bus for that cannon-chimney ring
+      const echoDelay = ctx.createDelay(0.5);
+      echoDelay.delayTime.value = 0.095;
+      const echoFb = ctx.createGain();
+      echoFb.gain.value = 0.35;
+      const echoHp = ctx.createBiquadFilter();
+      echoHp.type = 'highpass';
+      echoHp.frequency.value = 500;
+      const echoOut = ctx.createGain();
+      echoOut.gain.value = 0.45;
+      echoDelay.connect(echoHp).connect(echoFb).connect(echoDelay);
+      echoDelay.connect(echoOut).connect(ctx.destination);
+
+      // Red = lower/burlier; green = higher/zingier
+      const startF = isRed ? 1800 : 2600;
+      const endF   = isRed ? 110  : 150;
+
+      // 1. Sine main — the signature "pew"
+      const o1 = ctx.createOscillator();
+      o1.type = 'sine';
+      o1.frequency.setValueAtTime(startF, now);
+      o1.frequency.exponentialRampToValueAtTime(endF, now + 0.11);
+      const g1 = ctx.createGain();
+      g1.gain.setValueAtTime(0.0001, now);
+      g1.gain.linearRampToValueAtTime(0.22, now + 0.004);
+      g1.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+      o1.connect(g1);
+      g1.connect(ctx.destination);
+      g1.connect(echoDelay);
+      o1.start(now);
+      o1.stop(now + 0.2);
+
+      // 2. Triangle sub-octave — adds chest/body to the blast
+      const o2 = ctx.createOscillator();
+      o2.type = 'triangle';
+      o2.frequency.setValueAtTime(startF * 0.5, now);
+      o2.frequency.exponentialRampToValueAtTime(endF * 0.5, now + 0.13);
+      const g2 = ctx.createGain();
+      g2.gain.setValueAtTime(0.0001, now);
+      g2.gain.linearRampToValueAtTime(0.12, now + 0.006);
+      g2.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+      o2.connect(g2);
+      g2.connect(ctx.destination);
+      g2.connect(echoDelay);
+      o2.start(now);
+      o2.stop(now + 0.24);
+
+      // 3. Short metallic click at t0 — bright noise burst through highpass
+      const clickDur = 0.04;
+      const sr = ctx.sampleRate;
+      const buf = ctx.createBuffer(1, Math.floor(sr * clickDur), sr);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) {
+        const t = i / sr;
+        d[i] = (Math.random() * 2 - 1) * Math.exp(-t * 90);
+      }
+      const nsrc = ctx.createBufferSource();
+      nsrc.buffer = buf;
+      const hp = ctx.createBiquadFilter();
+      hp.type = 'highpass';
+      hp.frequency.value = 2400;
+      const ng = ctx.createGain();
+      ng.gain.value = 0.18;
+      nsrc.connect(hp).connect(ng);
+      ng.connect(ctx.destination);
+      ng.connect(echoDelay);
+      nsrc.start(now);
     } catch {}
   }
 
