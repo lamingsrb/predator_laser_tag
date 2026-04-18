@@ -31,7 +31,7 @@ PAUSE_SEC = 0.35
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
 # Ime kombinovane verzije koju sajt trenutno koristi za logo long-press.
-ACTIVE = "female"
+ACTIVE = "male"
 
 JOBS = {
     "female": SRC / "Zenski glas 2.mp3",
