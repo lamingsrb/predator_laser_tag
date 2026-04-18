@@ -171,7 +171,7 @@ class ParticleSystem {
   spawnLaserBolt() {
     // Alternate red / green (Predator / Jedi)
     const isRed = this.boltCounter++ % 2 === 0;
-    const color = isRed ? new THREE.Color(0xff0044) : new THREE.Color(0x33ff55);
+    const baseColor = isRed ? new THREE.Color(0xff0044) : new THREE.Color(0x33ff55);
 
     // Start and end on opposite sides of the visible box, with variety in axis + angle
     const horizontal = Math.random() < 0.6;
@@ -190,55 +190,81 @@ class ParticleSystem {
       end   = { x: x + (Math.random()-0.5)*35, y:  dir * 55, z };
     }
 
-    // Trail line — head at index 0 slides forward, older positions shift back
-    const segCount = 24;
+    // Trail built from a Points sprite cloud instead of a thin line:
+    //   - segCount positions (head at index 0, tail at last)
+    //   - per-vertex color where tail darkens toward zero, so AdditiveBlending
+    //     naturally fades the streak without needing per-vertex opacity.
+    // Rendered twice: a fat halo layer for glow + a tighter core for crispness.
+    const segCount = 32;
     const positions = new Float32Array(segCount * 3);
+    const colors    = new Float32Array(segCount * 3);
     for (let i = 0; i < segCount; i++) {
       positions[i*3]     = start.x;
       positions[i*3 + 1] = start.y;
       positions[i*3 + 2] = start.z;
+      const t = 1 - i / (segCount - 1); // 1 at head, 0 at tail
+      const k = Math.pow(t, 0.7);       // slight tail extension
+      colors[i*3]     = baseColor.r * k;
+      colors[i*3 + 1] = baseColor.g * k;
+      colors[i*3 + 2] = baseColor.b * k;
     }
-    const lineGeo = new THREE.BufferGeometry();
-    lineGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    const lineMat = new THREE.LineBasicMaterial({
-      color,
-      transparent: true,
-      opacity: 0.95,
-      blending: THREE.AdditiveBlending,
-    });
-    const line = new THREE.Line(lineGeo, lineMat);
-    this.scene.add(line);
 
-    // Bright head point so the tip glows harder than the trail
+    const makeLayer = (size, opacity) => {
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(positions.slice(), 3));
+      geo.setAttribute('color',    new THREE.BufferAttribute(colors.slice(), 3));
+      const mat = new THREE.PointsMaterial({
+        size,
+        vertexColors: true,
+        transparent: true,
+        opacity,
+        blending: THREE.AdditiveBlending,
+        sizeAttenuation: true,
+        depthWrite: false,
+      });
+      const pts = new THREE.Points(geo, mat);
+      this.scene.add(pts);
+      return pts;
+    };
+
+    // Fat outer halo → gives the beam real thickness
+    const halo = makeLayer(4.5, 0.55);
+    // Brighter inner core → keeps the streak crisp on top of the halo
+    const core = makeLayer(2.0, 1.0);
+
+    // Extra-bright head sprite on top of everything
     const headGeo = new THREE.BufferGeometry();
     headGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([start.x, start.y, start.z]), 3));
     const headMat = new THREE.PointsMaterial({
-      color,
-      size: 2.4,
+      color: baseColor,
+      size: 6.0,
       transparent: true,
       opacity: 1,
       blending: THREE.AdditiveBlending,
       sizeAttenuation: true,
+      depthWrite: false,
     });
     const head = new THREE.Points(headGeo, headMat);
     this.scene.add(head);
 
-    // Speed: cross the scene in ~30-45 frames (0.5-0.75 s at 60 fps)
+    // Speed: slower than before — cross the scene in ~60-90 frames (1.0-1.5 s)
     const dx = end.x - start.x;
     const dy = end.y - start.y;
     const dz = end.z - start.z;
-    const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
-    const frames = 32 + Math.floor(Math.random() * 14);
+    const frames = 60 + Math.floor(Math.random() * 30);
     const vx = dx / frames, vy = dy / frames, vz = dz / frames;
 
+    this.playLaserFire(isRed);
+
     this.laserBolts.push({
-      line, head,
+      halo, core, head,
       pos: { ...start },
       vel: { x: vx, y: vy, z: vz },
       segCount,
-      framesLeft: frames + 14, // small tail fade after travel completes
+      framesLeft: frames + 18,
       travelFrames: frames,
-      hitRadius: 6,
+      hitRadius: 7,
+      isRed,
     });
   }
 
@@ -254,26 +280,24 @@ class ParticleSystem {
     for (let b = this.laserBolts.length - 1; b >= 0; b--) {
       const bolt = this.laserBolts[b];
 
-      // Advance head while travel budget remains
-      if (bolt.framesLeft > bolt.travelFrames - bolt.travelFrames) {
-        // always true during travel — keep velocity
-      }
       bolt.pos.x += bolt.vel.x;
       bolt.pos.y += bolt.vel.y;
       bolt.pos.z += bolt.vel.z;
       bolt.framesLeft--;
 
-      // Shift trail (index 0 = head, higher index = older)
-      const lp = bolt.line.geometry.attributes.position.array;
-      for (let i = bolt.segCount - 1; i > 0; i--) {
-        lp[i*3]     = lp[(i-1)*3];
-        lp[i*3 + 1] = lp[(i-1)*3 + 1];
-        lp[i*3 + 2] = lp[(i-1)*3 + 2];
+      // Shift trail positions for both halo + core layers (they share topology)
+      for (const layer of [bolt.halo, bolt.core]) {
+        const lp = layer.geometry.attributes.position.array;
+        for (let i = bolt.segCount - 1; i > 0; i--) {
+          lp[i*3]     = lp[(i-1)*3];
+          lp[i*3 + 1] = lp[(i-1)*3 + 1];
+          lp[i*3 + 2] = lp[(i-1)*3 + 2];
+        }
+        lp[0] = bolt.pos.x;
+        lp[1] = bolt.pos.y;
+        lp[2] = bolt.pos.z;
+        layer.geometry.attributes.position.needsUpdate = true;
       }
-      lp[0] = bolt.pos.x;
-      lp[1] = bolt.pos.y;
-      lp[2] = bolt.pos.z;
-      bolt.line.geometry.attributes.position.needsUpdate = true;
 
       const hp = bolt.head.geometry.attributes.position.array;
       hp[0] = bolt.pos.x;
@@ -281,31 +305,92 @@ class ParticleSystem {
       hp[2] = bolt.pos.z;
       bolt.head.geometry.attributes.position.needsUpdate = true;
 
-      // Damage any particles near the bolt head — this reuses the mouse-click
-      // damage path so killed particles spawn the same explosion/shockwave FX.
-      this.damageNearbyParticles(
+      // Damage particles near the head — reuses the mouse-click damage pipeline,
+      // returns the kill count so we can play a hit stab when particles explode.
+      const kills = this.damageNearbyParticles(
         new THREE.Vector3(bolt.pos.x, bolt.pos.y, bolt.pos.z),
         bolt.hitRadius
       );
+      if (kills > 0) this.playLaserHit(bolt.isRed);
 
-      // Fade out in the last 14 frames
-      const fadeStart = 14;
+      // Fade out in the last 18 frames
+      const fadeStart = 18;
       if (bolt.framesLeft < fadeStart) {
         const k = Math.max(0, bolt.framesLeft / fadeStart);
-        bolt.line.material.opacity = 0.95 * k;
+        bolt.halo.material.opacity = 0.55 * k;
+        bolt.core.material.opacity = 1.0  * k;
         bolt.head.material.opacity = k;
       }
 
       if (bolt.framesLeft <= 0) {
-        this.scene.remove(bolt.line);
-        this.scene.remove(bolt.head);
-        bolt.line.geometry.dispose();
-        bolt.line.material.dispose();
-        bolt.head.geometry.dispose();
-        bolt.head.material.dispose();
+        for (const layer of [bolt.halo, bolt.core, bolt.head]) {
+          this.scene.remove(layer);
+          layer.geometry.dispose();
+          layer.material.dispose();
+        }
         this.laserBolts.splice(b, 1);
       }
     }
+  }
+
+  // Quick "pew" — high-pitch saw sweep downward, very short decay.
+  playLaserFire(isRed) {
+    try {
+      if (!this.audioCtx) this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const ctx = this.audioCtx;
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      osc.type = 'sawtooth';
+      // Red = lower pew; green = higher, brighter
+      const topFreq = isRed ? 1400 : 1900;
+      osc.frequency.setValueAtTime(topFreq, now);
+      osc.frequency.exponentialRampToValueAtTime(140, now + 0.13);
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.16, now + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+      // Bandpass to smooth the sawtooth harsh harmonics
+      const bp = ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.value = 900;
+      bp.Q.value = 1.3;
+      osc.connect(bp).connect(gain).connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.2);
+    } catch {}
+  }
+
+  // Short metallic "crack" for a hit — noise burst through a bright bandpass.
+  playLaserHit(isRed) {
+    try {
+      if (!this.audioCtx) this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const ctx = this.audioCtx;
+      const now = ctx.currentTime;
+      // Limit hit sound rate so a single bolt grazing lots of particles
+      // doesn't machine-gun overlapping cracks. 70 ms debounce.
+      if (this._lastHitTime && (now - this._lastHitTime) < 0.07) return;
+      this._lastHitTime = now;
+
+      const dur = 0.08;
+      const sr = ctx.sampleRate;
+      const buf = ctx.createBuffer(1, sr * dur, sr);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) {
+        const t = i / sr;
+        const env = Math.exp(-t * 45);
+        d[i] = (Math.random() * 2 - 1) * env;
+      }
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const bp = ctx.createBiquadFilter();
+      bp.type = 'bandpass';
+      bp.frequency.value = isRed ? 2200 : 2900;
+      bp.Q.value = 3.5;
+      const gain = ctx.createGain();
+      gain.gain.value = 0.11;
+      src.connect(bp).connect(gain).connect(ctx.destination);
+      src.start(now);
+    } catch {}
   }
 
   // Create explosion burst at a 3D point
@@ -567,7 +652,7 @@ class ParticleSystem {
 
   // Damage & scatter nearby ambient particles on explosion
   damageNearbyParticles(point, radius) {
-    if (!this.particles) return;
+    if (!this.particles) return 0;
     const positions = this.particles.geometry.attributes.position.array;
     const colors = this.particles.geometry.attributes.color.array;
     const sizes = this.particles.geometry.attributes.size.array;
@@ -637,6 +722,7 @@ class ParticleSystem {
 
     this.particles.geometry.attributes.color.needsUpdate = true;
     this.particles.geometry.attributes.size.needsUpdate = true;
+    return killCount;
   }
 
   // Mini secondary explosion when multiple particles die
@@ -739,6 +825,20 @@ class ParticleSystem {
     this.canvas.style.pointerEvents = 'auto';
     this.canvas.style.zIndex = '1';
     window.addEventListener('click', (e) => this.handleClick(e));
+
+    // Resume the (laser-bolt) AudioContext on first user gesture — browsers
+    // block automatic audio until the user has interacted with the page.
+    const unlock = () => {
+      if (this.audioCtx && this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume().catch(() => {});
+      }
+      window.removeEventListener('pointerdown', unlock);
+      window.removeEventListener('keydown',     unlock);
+      window.removeEventListener('scroll',      unlock, true);
+    };
+    window.addEventListener('pointerdown', unlock);
+    window.addEventListener('keydown',     unlock);
+    window.addEventListener('scroll',      unlock, { capture: true, once: true });
   }
 
   animate() {
