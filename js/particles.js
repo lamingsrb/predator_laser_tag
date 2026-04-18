@@ -26,6 +26,12 @@ class ParticleSystem {
     this.shockwaves = [];
     this.debris = [];
 
+    // War-zone laser bolts — fire across the scene at random intervals,
+    // alternating red/green, and blow up any particle they pass through.
+    this.laserBolts = [];
+    this.boltTimer = 3.5; // first bolt ~3.5s in so hero loads cleanly
+    this.boltCounter = 0;
+
     // Raycaster for click detection
     this.raycaster = new THREE.Raycaster();
     this.raycaster.params.Points.threshold = 3;
@@ -158,6 +164,147 @@ class ParticleSystem {
 
       this.laserLines.push(line);
       this.scene.add(line);
+    }
+  }
+
+  // === LASER BOLT — fires across the scene, damages particles it flies through ===
+  spawnLaserBolt() {
+    // Alternate red / green (Predator / Jedi)
+    const isRed = this.boltCounter++ % 2 === 0;
+    const color = isRed ? new THREE.Color(0xff0044) : new THREE.Color(0x33ff55);
+
+    // Start and end on opposite sides of the visible box, with variety in axis + angle
+    const horizontal = Math.random() < 0.6;
+    let start, end;
+    if (horizontal) {
+      const dir = Math.random() < 0.5 ? 1 : -1;
+      const y = (Math.random() - 0.5) * 60;
+      const z = (Math.random() - 0.5) * 25;
+      start = { x: -dir * 80, y,                         z };
+      end   = { x:  dir * 80, y: y + (Math.random()-0.5)*20, z };
+    } else {
+      const dir = Math.random() < 0.5 ? 1 : -1;
+      const x = (Math.random() - 0.5) * 90;
+      const z = (Math.random() - 0.5) * 25;
+      start = { x,                         y: -dir * 55, z };
+      end   = { x: x + (Math.random()-0.5)*35, y:  dir * 55, z };
+    }
+
+    // Trail line — head at index 0 slides forward, older positions shift back
+    const segCount = 24;
+    const positions = new Float32Array(segCount * 3);
+    for (let i = 0; i < segCount; i++) {
+      positions[i*3]     = start.x;
+      positions[i*3 + 1] = start.y;
+      positions[i*3 + 2] = start.z;
+    }
+    const lineGeo = new THREE.BufferGeometry();
+    lineGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const lineMat = new THREE.LineBasicMaterial({
+      color,
+      transparent: true,
+      opacity: 0.95,
+      blending: THREE.AdditiveBlending,
+    });
+    const line = new THREE.Line(lineGeo, lineMat);
+    this.scene.add(line);
+
+    // Bright head point so the tip glows harder than the trail
+    const headGeo = new THREE.BufferGeometry();
+    headGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([start.x, start.y, start.z]), 3));
+    const headMat = new THREE.PointsMaterial({
+      color,
+      size: 2.4,
+      transparent: true,
+      opacity: 1,
+      blending: THREE.AdditiveBlending,
+      sizeAttenuation: true,
+    });
+    const head = new THREE.Points(headGeo, headMat);
+    this.scene.add(head);
+
+    // Speed: cross the scene in ~30-45 frames (0.5-0.75 s at 60 fps)
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const dz = end.z - start.z;
+    const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+    const frames = 32 + Math.floor(Math.random() * 14);
+    const vx = dx / frames, vy = dy / frames, vz = dz / frames;
+
+    this.laserBolts.push({
+      line, head,
+      pos: { ...start },
+      vel: { x: vx, y: vy, z: vz },
+      segCount,
+      framesLeft: frames + 14, // small tail fade after travel completes
+      travelFrames: frames,
+      hitRadius: 6,
+    });
+  }
+
+  animateLaserBolts() {
+    // Spawn cadence: 1.5-4 s between bolts; occasional double-shot burst.
+    this.boltTimer -= 1/60; // rough: animate() runs via rAF ~60 Hz
+    if (this.boltTimer <= 0) {
+      this.spawnLaserBolt();
+      if (Math.random() < 0.25) setTimeout(() => this.spawnLaserBolt(), 120);
+      this.boltTimer = 1.5 + Math.random() * 2.5;
+    }
+
+    for (let b = this.laserBolts.length - 1; b >= 0; b--) {
+      const bolt = this.laserBolts[b];
+
+      // Advance head while travel budget remains
+      if (bolt.framesLeft > bolt.travelFrames - bolt.travelFrames) {
+        // always true during travel — keep velocity
+      }
+      bolt.pos.x += bolt.vel.x;
+      bolt.pos.y += bolt.vel.y;
+      bolt.pos.z += bolt.vel.z;
+      bolt.framesLeft--;
+
+      // Shift trail (index 0 = head, higher index = older)
+      const lp = bolt.line.geometry.attributes.position.array;
+      for (let i = bolt.segCount - 1; i > 0; i--) {
+        lp[i*3]     = lp[(i-1)*3];
+        lp[i*3 + 1] = lp[(i-1)*3 + 1];
+        lp[i*3 + 2] = lp[(i-1)*3 + 2];
+      }
+      lp[0] = bolt.pos.x;
+      lp[1] = bolt.pos.y;
+      lp[2] = bolt.pos.z;
+      bolt.line.geometry.attributes.position.needsUpdate = true;
+
+      const hp = bolt.head.geometry.attributes.position.array;
+      hp[0] = bolt.pos.x;
+      hp[1] = bolt.pos.y;
+      hp[2] = bolt.pos.z;
+      bolt.head.geometry.attributes.position.needsUpdate = true;
+
+      // Damage any particles near the bolt head — this reuses the mouse-click
+      // damage path so killed particles spawn the same explosion/shockwave FX.
+      this.damageNearbyParticles(
+        new THREE.Vector3(bolt.pos.x, bolt.pos.y, bolt.pos.z),
+        bolt.hitRadius
+      );
+
+      // Fade out in the last 14 frames
+      const fadeStart = 14;
+      if (bolt.framesLeft < fadeStart) {
+        const k = Math.max(0, bolt.framesLeft / fadeStart);
+        bolt.line.material.opacity = 0.95 * k;
+        bolt.head.material.opacity = k;
+      }
+
+      if (bolt.framesLeft <= 0) {
+        this.scene.remove(bolt.line);
+        this.scene.remove(bolt.head);
+        bolt.line.geometry.dispose();
+        bolt.line.material.dispose();
+        bolt.head.geometry.dispose();
+        bolt.head.material.dispose();
+        this.laserBolts.splice(b, 1);
+      }
     }
   }
 
@@ -896,6 +1043,9 @@ class ParticleSystem {
         this.debris.splice(d, 1);
       }
     }
+
+    // War-zone bolts (periodic + collision with particles)
+    this.animateLaserBolts();
 
     // Animate laser lines
     this.laserLines.forEach(line => {
