@@ -26,7 +26,11 @@ import imageio_ffmpeg
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "Media_RAW" / "Audio za dugme"
 OUT_DIR = ROOT / "public" / "assets" / "audio"
-PAUSE_SEC = 0.35
+# Perceived pause between intro and body. Raw recordings usually carry their
+# own leading/trailing silence, so we first trim it with silenceremove and
+# then add exactly this much breath between the two clips.
+PAUSE_SEC = 0.08
+SILENCE_THRESHOLD = "-45dB"
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
 # Ime kombinovane verzije koju sajt trenutno koristi za logo long-press.
@@ -52,9 +56,16 @@ def build(intro: Path, body: Path, out: Path) -> None:
     assert intro.exists() and body.exists(), f"Missing: {intro} / {body}"
     out.parent.mkdir(parents=True, exist_ok=True)
 
+    # silenceremove trims both the trailing silence of the intro and the
+    # leading silence of the body so the final pause is exactly PAUSE_SEC.
+    trim = (
+        f"silenceremove="
+        f"start_periods=1:start_duration=0:start_threshold={SILENCE_THRESHOLD}:"
+        f"stop_periods=-1:stop_duration=0.05:stop_threshold={SILENCE_THRESHOLD}"
+    )
     filter_complex = (
-        "[0:a]aresample=44100,aformat=sample_fmts=fltp:channel_layouts=mono[a1];"
-        "[1:a]aresample=44100,aformat=sample_fmts=fltp:channel_layouts=mono[a2];"
+        f"[0:a]aresample=44100,aformat=sample_fmts=fltp:channel_layouts=mono,{trim}[a1];"
+        f"[1:a]aresample=44100,aformat=sample_fmts=fltp:channel_layouts=mono,{trim}[a2];"
         f"anullsrc=r=44100:cl=mono:d={PAUSE_SEC}[gap];"
         "[a1][gap][a2]concat=n=3:v=0:a=1[joined];"
         "[joined]loudnorm=I=-14:LRA=7:TP=-1.5[norm];"
