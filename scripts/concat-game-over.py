@@ -26,16 +26,17 @@ import imageio_ffmpeg
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "Media_RAW" / "Audio za dugme"
 OUT_DIR = ROOT / "public" / "assets" / "audio"
-IN1 = SRC / "1.mp3"
 PAUSE_SEC = 0.35
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
 # Ime kombinovane verzije koju sajt trenutno koristi za logo long-press.
-ACTIVE = "male"
+ACTIVE = "female"
 
+# Every voice has its own intro + body. Owner can send fresh takes anytime;
+# the pipeline just needs the updated file names here.
 JOBS = {
-    "female": SRC / "Zenski glas 2.mp3",
-    "male":   SRC / "Muski glas 2.mp3",
+    "female": (SRC / "Novi zenski 1. deo zvuka.mp3", SRC / "Zenski glas 2.mp3"),
+    "male":   (SRC / "1.mp3",                        SRC / "Muski glas 2.mp3"),
 }
 
 
@@ -83,9 +84,9 @@ def probe_duration(path: Path) -> str:
 
 
 def main() -> None:
-    for tag, body in JOBS.items():
+    for tag, (intro, body) in JOBS.items():
         out = OUT_DIR / f"game-over-{tag}.mp3"
-        build(IN1, body, out)
+        build(intro, body, out)
         size_kb = out.stat().st_size / 1024
         print(f"[done] {out.name} — {size_kb:.1f} KB, trajanje {probe_duration(out)}")
 
