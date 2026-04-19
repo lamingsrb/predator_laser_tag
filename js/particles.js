@@ -435,6 +435,7 @@ class ParticleSystem {
   //   3. bright high-pass noise click at t0 for the transient
   //   4. feedback-delay "cannon echo" so the tail rings
   playLaserFire(isRed) {
+    if (!ParticleSystem.LASER_SOUND) return;
     try {
       if (!this.audioCtx) this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const ctx = this.audioCtx;
@@ -512,6 +513,7 @@ class ParticleSystem {
 
   // Short metallic "crack" for a hit — noise burst through a bright bandpass.
   playLaserHit(isRed) {
+    if (!ParticleSystem.LASER_SOUND) return;
     try {
       if (!this.audioCtx) this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const ctx = this.audioCtx;
@@ -1311,6 +1313,10 @@ class ParticleSystem {
     this.renderer.render(this.scene, this.camera);
   }
 }
+
+// Toggle laser bolt SFX (fire pew + hit crack). Owner asked them off for now;
+// flip to true to bring the audio back without touching the synth code.
+ParticleSystem.LASER_SOUND = false;
 
 // Initialize
 new ParticleSystem();
