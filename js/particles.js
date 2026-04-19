@@ -167,27 +167,49 @@ class ParticleSystem {
     }
   }
 
+  // Visible-frustum bounds at z=0 — recomputed each spawn so the bolts
+  // always enter from just off-screen of the user's current viewport,
+  // independent of desktop/mobile aspect ratio.
+  visibleBoundsAtZ(z = 0) {
+    const dist = Math.abs(this.camera.position.z - z);
+    const halfH = Math.tan((this.camera.fov * Math.PI / 180) / 2) * dist;
+    const halfW = halfH * this.camera.aspect;
+    return { halfW, halfH };
+  }
+
   // === LASER BOLT — fires across the scene, damages particles it flies through ===
   spawnLaserBolt() {
     // Alternate red / green (Predator / Jedi)
     const isRed = this.boltCounter++ % 2 === 0;
     const baseColor = isRed ? new THREE.Color(0xff0044) : new THREE.Color(0x33ff55);
 
-    // Start and end on opposite sides of the visible box, with variety in axis + angle
+    // Make the bolt enter from just outside the current viewport and leave
+    // from the opposite side — so it always crosses the visible portion of
+    // the page, on desktop wide and on portrait mobile alike.
+    const { halfW, halfH } = this.visibleBoundsAtZ(0);
+    const margin = 6;
+    const xBound = halfW + margin;
+    const yBound = halfH + margin;
+
     const horizontal = Math.random() < 0.6;
     let start, end;
     if (horizontal) {
       const dir = Math.random() < 0.5 ? 1 : -1;
-      const y = (Math.random() - 0.5) * 60;
-      const z = (Math.random() - 0.5) * 25;
-      start = { x: -dir * 80, y,                         z };
-      end   = { x:  dir * 80, y: y + (Math.random()-0.5)*20, z };
+      // Keep y inside the visible vertical range (with small inset)
+      const ySpan = Math.max(8, halfH * 1.5);
+      const y = (Math.random() - 0.5) * ySpan;
+      const z = (Math.random() - 0.5) * 18;
+      const yJitter = (Math.random() - 0.5) * (halfH * 0.4);
+      start = { x: -dir * xBound, y,            z };
+      end   = { x:  dir * xBound, y: y + yJitter, z };
     } else {
       const dir = Math.random() < 0.5 ? 1 : -1;
-      const x = (Math.random() - 0.5) * 90;
-      const z = (Math.random() - 0.5) * 25;
-      start = { x,                         y: -dir * 55, z };
-      end   = { x: x + (Math.random()-0.5)*35, y:  dir * 55, z };
+      const xSpan = Math.max(10, halfW * 1.6);
+      const x = (Math.random() - 0.5) * xSpan;
+      const z = (Math.random() - 0.5) * 18;
+      const xJitter = (Math.random() - 0.5) * (halfW * 0.4);
+      start = { x,             y: -dir * yBound, z };
+      end   = { x: x + xJitter, y:  dir * yBound, z };
     }
 
     // Trail built from a Points sprite cloud — two layers:
@@ -307,11 +329,18 @@ class ParticleSystem {
 
       // Damage particles near the head — reuses the mouse-click damage pipeline,
       // returns the kill count so we can play a hit stab when particles explode.
-      const kills = this.damageNearbyParticles(
-        new THREE.Vector3(bolt.pos.x, bolt.pos.y, bolt.pos.z),
-        bolt.hitRadius
-      );
-      if (kills > 0) this.playLaserHit(bolt.isRed);
+      const hitPoint = new THREE.Vector3(bolt.pos.x, bolt.pos.y, bolt.pos.z);
+      const kills = this.damageNearbyParticles(hitPoint, bolt.hitRadius);
+      if (kills > 0) {
+        this.playLaserHit(bolt.isRed);
+        // Visible mini-explosion at impact: throttled so a bolt grazing many
+        // particles in successive frames doesn't over-render.
+        const now = performance.now();
+        if (!bolt.lastImpactAt || now - bolt.lastImpactAt > 90) {
+          bolt.lastImpactAt = now;
+          this.createBoltImpact(hitPoint, bolt.isRed, kills);
+        }
+      }
 
       // Fade out in the last 18 frames
       const fadeStart = 18;
@@ -331,6 +360,72 @@ class ParticleSystem {
         this.laserBolts.splice(b, 1);
       }
     }
+  }
+
+  // Colored impact burst when a laser bolt actually destroys a particle.
+  // Smaller and faster than the click explosion so it reads as a satellite
+  // hit rather than a player click, and tinted to the bolt's color.
+  createBoltImpact(point, isRed, intensity) {
+    const baseColor = isRed
+      ? new THREE.Color(0xff0066)
+      : new THREE.Color(0x55ff77);
+    const sparkColor = isRed
+      ? new THREE.Color(0xffaa66)
+      : new THREE.Color(0xaaffaa);
+
+    // Scatter burst — kicks shrapnel out in all directions
+    const burstCount = Math.min(8 + intensity * 6, 28);
+    const positions = new Float32Array(burstCount * 3);
+    const colors    = new Float32Array(burstCount * 3);
+    const velocities = [];
+    for (let i = 0; i < burstCount; i++) {
+      const i3 = i * 3;
+      positions[i3]     = point.x;
+      positions[i3 + 1] = point.y;
+      positions[i3 + 2] = point.z;
+      const theta = Math.random() * Math.PI * 2;
+      const phi   = Math.random() * Math.PI;
+      const speed = 0.4 + Math.random() * 0.9;
+      velocities.push({
+        x: Math.sin(phi) * Math.cos(theta) * speed,
+        y: Math.sin(phi) * Math.sin(theta) * speed,
+        z: Math.cos(phi) * speed * 0.5,
+      });
+      const c = Math.random() < 0.7 ? baseColor : sparkColor;
+      colors[i3] = c.r; colors[i3 + 1] = c.g; colors[i3 + 2] = c.b;
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
+    const mat = new THREE.PointsMaterial({
+      size: 1.2,
+      vertexColors: true,
+      transparent: true,
+      opacity: 1,
+      blending: THREE.AdditiveBlending,
+      sizeAttenuation: true,
+      depthWrite: false,
+    });
+    const mesh = new THREE.Points(geo, mat);
+    this.scene.add(mesh);
+    this.explosions.push({ mesh, velocities, life: 1.0, decay: 0.04 });
+
+    // Tinted shockwave ring so the impact has a visible "pop"
+    const ringGeo = new THREE.RingGeometry(0.05, 0.35, 24);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: baseColor,
+      transparent: true,
+      opacity: 0.9,
+      side: THREE.DoubleSide,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.position.copy(point);
+    ring.lookAt(this.camera.position);
+    this.scene.add(ring);
+    this.shockwaves.push({ mesh: ring, life: 1.0, decay: 0.06 });
   }
 
   // Star Wars–style blaster — metallic "pew" with a fast downward pitch
@@ -752,11 +847,12 @@ class ParticleSystem {
           this.particleLife[i] = 1.0;
           killCount++;
 
-          // Death velocity — fling hard
-          const deathForce = 0.5 + Math.random() * 1.0;
-          this.velocities[i3] = nx * deathForce + (Math.random() - 0.5) * 0.3;
-          this.velocities[i3 + 1] = ny * deathForce + Math.random() * 0.5;
-          this.velocities[i3 + 2] = nz * deathForce + (Math.random() - 0.5) * 0.3;
+          // Death velocity — really fling. Boosted for the laser-bolt era so
+          // the impact reads as 'razbacati na sve strane', not just nudge.
+          const deathForce = 1.4 + Math.random() * 2.2;
+          this.velocities[i3]     = nx * deathForce + (Math.random() - 0.5) * 0.9;
+          this.velocities[i3 + 1] = ny * deathForce + (Math.random() - 0.2) * 1.0;
+          this.velocities[i3 + 2] = nz * deathForce + (Math.random() - 0.5) * 0.9;
 
           // Flash white on death
           colors[i3] = 1;
