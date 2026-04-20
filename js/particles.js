@@ -126,9 +126,12 @@ class ParticleSystem {
 
     // Particles are smaller + more opaque on hero, larger + dimmer further down.
     // Hero height ≈ 100vh; we interpolate between HERO and REST based on scroll.
+    // Particles are tiny + subtle on every section. Owner felt the larger
+    // "cubes" on scroll were distracting, so 'rest' is now barely louder
+    // than 'hero' — just visible, never attention-grabbing.
     this.particleAppearance = {
       hero:  { size: 0.35, opacity: 0.5 },
-      rest:  { size: 1.15, opacity: 0.28 }
+      rest:  { size: 0.45, opacity: 0.2 }
     };
   }
 
