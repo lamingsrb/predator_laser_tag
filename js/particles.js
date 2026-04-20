@@ -250,16 +250,16 @@ class ParticleSystem {
       return pts;
     };
 
-    // Slimmer than before — still thick enough to read, no longer a tube.
-    const halo = makeLayer(2.4, 0.5);
-    const core = makeLayer(1.0, 1.0);
+    // Slim beam — owner felt the prior size read as a stack of squares.
+    const halo = makeLayer(1.1, 0.45);
+    const core = makeLayer(0.45, 1.0);
 
     // Compact bright head sprite
     const headGeo = new THREE.BufferGeometry();
     headGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([start.x, start.y, start.z]), 3));
     const headMat = new THREE.PointsMaterial({
       color: baseColor,
-      size: 3.0,
+      size: 1.6,
       transparent: true,
       opacity: 1,
       blending: THREE.AdditiveBlending,
@@ -291,13 +291,12 @@ class ParticleSystem {
   }
 
   animateLaserBolts() {
-    // Spawn cadence: 0.6-1.6 s between bolts; ~40 % chance of a double-shot
-    // burst so it reads as an active firefight rather than an occasional shot.
+    // Spawn cadence: one bolt every 4-8 s, no double-shot burst. Owner
+    // found the old ~1 s rhythm too noisy to read the content under.
     this.boltTimer -= 1/60;
     if (this.boltTimer <= 0) {
       this.spawnLaserBolt();
-      if (Math.random() < 0.4) setTimeout(() => this.spawnLaserBolt(), 110);
-      this.boltTimer = 0.6 + Math.random() * 1.0;
+      this.boltTimer = 4.0 + Math.random() * 4.0;
     }
 
     for (let b = this.laserBolts.length - 1; b >= 0; b--) {
