@@ -50,6 +50,11 @@ WIN_FONTS = Path("C:/Windows/Fonts")
 pdfmetrics.registerFont(TTFont("Arial",    str(WIN_FONTS / "arial.ttf")))
 pdfmetrics.registerFont(TTFont("Arial-B",  str(WIN_FONTS / "arialbd.ttf")))
 pdfmetrics.registerFont(TTFont("Arial-I",  str(WIN_FONTS / "ariali.ttf")))
+pdfmetrics.registerFont(TTFont("Arial-BI", str(WIN_FONTS / "arialbi.ttf")))
+# Family mapping so <b>/<i> tags inside a Paragraph switch to the right TTF
+pdfmetrics.registerFontFamily(
+    "Arial", normal="Arial", bold="Arial-B", italic="Arial-I", boldItalic="Arial-BI",
+)
 
 # -----------------------------------------------------------------------
 # Colors
@@ -408,7 +413,20 @@ def build_story():
     story.append(rule())
     story.append(Paragraph(
         "Projekat je prošao kroz <b>tri velika kruga Vašeg feedback-a</b> i "
-        "<b>84 commit-a</b> (tačaka snimanja u istoriji). Grupisano u <b>5 faza</b>:",
+        "<b>84 verzije</b> (tačaka snimanja u istoriji) dok nismo stigli do "
+        "finalne koja Vam se dopala. Svaka od tih 84 verzija je bila jedna "
+        "stanica na putu - menjali smo tekst, boju, raspored, sliku, ponekad "
+        "i po nekoliko puta istu rečenicu.",
+        S_BODY))
+    story.append(Paragraph(
+        "<b>Ovo je jedini ispravan put do odličnog sajta.</b> Bez Vašeg "
+        "jasnog uvida u svaki detalj, bez strpljenja da pregledate svaku "
+        "izmenu i bez slobode da kažete <i>„ovo nije to, možemo bolje\"</i> - "
+        "sajt koji danas preuzimate ne bi bio ovakav kakav jeste. Vaš udeo u "
+        "ovome je, realno, najvažniji.",
+        S_BODY))
+    story.append(Paragraph(
+        "Sve izmene grupisane u <b>5 faza</b>:",
         S_BODY))
 
     phases = [
