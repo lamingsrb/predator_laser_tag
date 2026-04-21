@@ -1036,6 +1036,29 @@ button:hover ~ #cursor-dot,
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
 }
 
+.about-intro {
+  max-width: 920px;
+  margin: 0 auto 3.5rem;
+  text-align: center;
+  color: var(--light);
+  font-size: 1.05rem;
+  line-height: 1.85;
+  padding: 0 1rem;
+}
+.about-intro strong {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+.about-intro-tag {
+  display: block;
+  margin-top: 1rem;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  color: var(--red);
+  text-shadow: 0 0 14px rgba(255, 0, 136, 0.35);
+}
+
 .about-emphasis {
   display: block;
   margin-top: 0.9rem;
