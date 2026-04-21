@@ -226,12 +226,11 @@ def build_story():
         "Poštovana,",
         S_BODY_LEFT))
     story.append(Paragraph(
-        "Prošla su 32 dana od prvog dana rada na sajtu do ovog trenutka. "
-        "U međuvremenu smo zajedno prošli kroz <b>tri kruga feedback-a</b>, "
-        "više stotina sitnih izmena i nekoliko zajedničkih pregleda "
-        "fotografija i video materijala. Svaki kadar u galeriji, svaka "
-        "rečenica u tekstu i svaka cena na kartici je proverena sa Vama "
-        "pre nego što je ušla u finalnu verziju.",
+        "Kroz <b>tri kruga feedback-a</b>, nekoliko dana fokusiranog rada i "
+        "više zajedničkih pregleda fotografija i video materijala, zajedno "
+        "smo napravili sajt koji danas preuzimate. Svaki kadar u galeriji, "
+        "svaka rečenica u tekstu i svaka cena na kartici je proverena sa "
+        "Vama pre nego što je ušla u finalnu verziju.",
         S_BODY))
     story.append(Paragraph(
         "Hvala Vam na poverenju, na strpljenju, i na tome što ste mi "
@@ -377,32 +376,12 @@ def build_story():
         S_WARN))
     story.append(PageBreak())
 
-    # --- GDE JE KOD -------------------------------------------------
-    story.append(Paragraph("Gde je izvorni kod", S_H1))
-    story.append(rule())
-    story.append(Paragraph(
-        "Izvorni kod sajta (HTML, CSS, JavaScript, skripte za obradu slika i "
-        "videa) se čuva na GitHub-u kod mene:",
-        S_BODY))
-    story.append(Paragraph(
-        "<font face='Courier'>https://github.com/lamingsrb/predator_laser_tag</font>",
-        S_BODY_LEFT))
-    story.append(Paragraph(
-        "<b>Šta ovo znači za Vas, jednostavno:</b>",
-        S_CELL_LABEL))
-    story.append(bullet("<b>Sajt je Vaš.</b> Domen, hosting, sav sadržaj, sve fotografije i tekstovi koji se vide — to je sve u Vašem vlasništvu."))
-    story.append(bullet("<b>Kod koji tehnički pokreće sajt je moje autorsko delo.</b> Ono što se vidi je Vaše, ono što se ne vidi (ispod haube) ja sam napravio."))
-    story.append(bullet("<b>Ovo je uobičajena praksa</b> — analogno kao kada kupite knjigu: knjiga je Vaša, ali fabrika papira i štampa nisu."))
-    story.append(bullet("<b>Ne ugrožava Vaš posao</b> — sajt ide nezavisno od toga gde je kod. Ako me ikada ne bude bilo, kod može da se prenese drugom developeru za 30 minuta rada."))
-    story.append(PageBreak())
-
     # --- ŠTA JE URAĐENO ---------------------------------------------
     story.append(Paragraph("Šta je urađeno — put do sajta", S_H1))
     story.append(rule())
     story.append(Paragraph(
-        "Od 20. marta do 21. aprila 2026. — 32 dana, 84 commit-a (tačaka "
-        "snimanja u istoriji), tri velika kruga Vašeg feedback-a. Grupisano "
-        "u 5 faza:",
+        "Projekat je prošao kroz <b>tri velika kruga Vašeg feedback-a</b> i "
+        "84 commit-a (tačaka snimanja u istoriji). Grupisano u 5 faza:",
         S_BODY))
 
     phases = [
