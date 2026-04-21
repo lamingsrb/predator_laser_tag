@@ -1036,6 +1036,18 @@ button:hover ~ #cursor-dot,
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
 }
 
+.about-emphasis {
+  display: block;
+  margin-top: 0.9rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--red);
+  color: #fff;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  text-shadow: 0 0 10px rgba(255, 0, 136, 0.25);
+}
+
 .about-features {
   display: grid;
   grid-template-columns: 1fr 1fr;
