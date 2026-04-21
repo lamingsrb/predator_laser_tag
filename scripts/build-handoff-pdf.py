@@ -555,7 +555,7 @@ def build_story():
         [Paragraph("<b>Developer (ja)</b>", S_CELL_LABEL),
          Paragraph("<b>Lazar Milićević</b><br/>"
                    "Email: <font face='Courier'>lamingsrb@gmail.com</font><br/>"
-                   "GSM: <font face='Courier'>&lt;popuniti pre slanja&gt;</font>",
+                   "GSM: <font face='Courier'>+381 64 121 32 92</font>",
                    S_CELL_VALUE)],
         [Paragraph("<b>Vercel podrška</b>", S_CELL_LABEL),
          Paragraph("https://vercel.com/help<br/>"
