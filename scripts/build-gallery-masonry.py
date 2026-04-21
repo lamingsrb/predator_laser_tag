@@ -23,8 +23,10 @@ HTML = ROOT / "index.html"
 # 'videoN' = gallery-action video, mapping below.
 # Order is the tile order (page 1 = first 16, page 2 = next 16, etc.)
 TILES = [
-    # --- PAGE 1: strongest hero shots + instant vibe ---
+    # --- PAGE 1: pro video takes on top, then strongest stills, instant vibe ---
+    ("video", "8",   "NOVO",         "Profesionalni snimak — UV arena"),
     ("photo", "p14", "ARENA",        "UV arena u akciji"),
+    ("video", "9",   "NOVO",         "Profesionalni snimak — rođendan"),
     ("photo", "00a-drustvo-bday", "DRUŠTVO", "Društvo u areni — rođendan"),
     ("photo", "p29", "EKIPA",        "Ekipa pred galaksiju"),
     ("video", "1",   "LIVE AKCIJA",  "Laser tag u akciji"),
@@ -38,8 +40,6 @@ TILES = [
     ("photo", "p24", "AKCIJA",       "Klinci u akciji"),
     ("video", "2",   "LIVE AKCIJA",  "Gađanje u areni"),
     ("photo", "p23", "AKCIJA",       "Napad u toku"),
-    ("photo", "p04", "SLAVLJENIK",   "Slavljenik sa tablom"),
-    ("photo", "p17", "EKIPA",        "Grupna fotka u areni"),
 
     # --- PAGE 2 ---
     ("photo", "p08", "ARENA",        "UV detalj arene"),

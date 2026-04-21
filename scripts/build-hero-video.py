@@ -21,20 +21,25 @@ FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 # (source, start_offset, trim_duration) — bright party intro, then arena action mix
 NEW = RAW / "novi"
 PRO = ROOT / "Media_RAW" / "2026-04-21_knjigovodja_update"  # knjigovodja's pro videos
+
+# Mix of the original raw segments ("stari je lep") with the new professional
+# clips inserted in full so the owner's pro material has real presence.
+# Pro clips are portrait 2160×3840 — scaled-to-cover + center-cropped in the
+# filter graph below (same as every other segment).
 SEGMENTS = [
-    (RAW / "20260208_165421.mp4",                                                       1, 5),   # *** kids + blue balloons, bright party intro ***
+    (RAW / "20260208_165421.mp4",                                                       1, 5),   # kids + blue balloons, bright party intro
     (RAW / "20260307_195141.mp4",                                                       2, 4),   # kids cheering at table
     (RAW / "20260214_193243.mp4",                                                       3, 4),   # arena action (dark, laser)
-    (NEW / "0-02-05-a2f02b275e0deb09c268a55ff884cf163f4741892466688c5588b5063e97362f_cdd9ac927fceb769.mp4", 2, 4),   # novi 1
+    (NEW / "0-02-05-a2f02b275e0deb09c268a55ff884cf163f4741892466688c5588b5063e97362f_cdd9ac927fceb769.mp4", 2, 4),  # novi 1 (phone take)
     (RAW / "20260413_165828.mp4",                                                       2, 4),   # team
     (RAW / "20260320_201345.mp4",                                                       5, 4),   # arena laser (dark)
-    # Pro UV arena establishing shot (portrait 2160x3840 → center-cropped to 1280x720)
-    (PRO / "copy_760D4C2A-D14B-4F95-BC3F-E7ED38B6C91D.mov",                             6, 4),   # novi 2 (pro) — UV neon arena
+    (PRO / "copy_760D4C2A-D14B-4F95-BC3F-E7ED38B6C91D.mov",                             0, 28),  # PRO clip #1 in full (28 s)
     (RAW / "20260214_192943.mp4",                                                       4, 4),   # arena intense (dark)
     (RAW / "20260320_200546.mp4",                                                       6, 4),   # group
+    (PRO / "copy_BCE9EB6A-03D2-4D55-B9B3-950964E8F2C6.mov",                             0, 77),  # PRO clip #2 in full (77 s)
 ]
 
-TRANSITIONS = ["circleopen", "radial", "pixelize", "smoothleft", "wipeleft", "zoomin", "slidedown", "fadegrays"]
+TRANSITIONS = ["circleopen", "radial", "pixelize", "smoothleft", "wipeleft", "zoomin", "slidedown", "fadegrays", "smoothright"]
 XFADE_DUR = 0.6
 
 
@@ -92,7 +97,7 @@ cmd_mp4 = [
     "-filter_complex", filter_complex,
     "-map", "[vout]",
     "-an",
-    "-c:v", "libx264", "-preset", "medium", "-crf", "24",
+    "-c:v", "libx264", "-preset", "medium", "-crf", "27",
     "-pix_fmt", "yuv420p", "-movflags", "+faststart",
     str(mp4_out),
 ]
@@ -107,7 +112,7 @@ cmd_webm = [
     "-filter_complex", filter_complex,
     "-map", "[vout]",
     "-an",
-    "-c:v", "libvpx-vp9", "-crf", "32", "-b:v", "0",
+    "-c:v", "libvpx-vp9", "-crf", "35", "-b:v", "0",
     "-deadline", "good", "-cpu-used", "2",
     str(webm_out),
 ]
