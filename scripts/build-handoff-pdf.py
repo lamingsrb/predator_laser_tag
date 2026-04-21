@@ -258,11 +258,11 @@ def build_story():
         S_BODY))
     info_data = [
         [Paragraph("<b>Glavni URL</b>", S_CELL_LABEL),
-         Paragraph("https://lasertagpredator.rs", S_CELL_VALUE)],
+         Paragraph("<b>https://lasertagpredator.rs</b>", S_CELL_VALUE)],
         [Paragraph("<b>www verzija</b>", S_CELL_LABEL),
          Paragraph("https://www.lasertagpredator.rs - automatski preusmerava na glavni URL", S_CELL_VALUE)],
         [Paragraph("<b>Hosting</b>", S_CELL_LABEL),
-         Paragraph("Vercel (globalna mreža servera, automatsko skaliranje)", S_CELL_VALUE)],
+         Paragraph("<b>Vercel</b> (globalna mreža servera, automatsko skaliranje)", S_CELL_VALUE)],
         [Paragraph("<b>SSL sertifikat</b>", S_CELL_LABEL),
          Paragraph("aktivan (ikona katanca u browser-u) - automatski se obnavlja", S_CELL_VALUE)],
         [Paragraph("<b>Mesečni trošak hostinga</b>", S_CELL_LABEL),
@@ -300,9 +300,9 @@ def build_story():
         S_BODY))
     vercel = [
         [Paragraph("<b>URL</b>", S_CELL_LABEL),
-         Paragraph("https://vercel.com", S_CELL_VALUE)],
+         Paragraph("<b>https://vercel.com</b>", S_CELL_VALUE)],
         [Paragraph("<b>Login email</b>", S_CELL_LABEL),
-         Paragraph("<font face='Courier'>predatorlasertagbeograd@gmail.com</font>", S_CELL_VALUE)],
+         Paragraph("<b><font face='Courier'>predatorlasertagbeograd@gmail.com</font></b>", S_CELL_VALUE)],
         [Paragraph("<b>Šifra</b>", S_CELL_LABEL),
          Paragraph("ona koju ste izabrali pri registraciji<br/>"
                    "<font size='8' color='#666'>(ako je zaboravite - klik na 'Forgot password' na login stranici, stiže Vam reset mail)</font>",
@@ -375,13 +375,13 @@ def build_story():
         S_CELL_LABEL))
     vesta = [
         [Paragraph("<b>Panel URL</b>", S_CELL_LABEL),
-         Paragraph("https://spd.mysafeservers.com:12383/?logovanje", S_CELL_VALUE)],
+         Paragraph("<b>https://spd.mysafeservers.com:12383/?logovanje</b>", S_CELL_VALUE)],
         [Paragraph("<b>Username</b>", S_CELL_LABEL),
-         Paragraph("<font face='Courier'>PredatorLaser</font>", S_CELL_VALUE)],
+         Paragraph("<b><font face='Courier'>PredatorLaser</font></b>", S_CELL_VALUE)],
         [Paragraph("<b>Šifra</b>", S_CELL_LABEL),
-         Paragraph("<font face='Courier'>nI@9@H%G45sq%f4$G5gcGkdc</font>", S_CELL_VALUE)],
+         Paragraph("<b><font face='Courier'>nI@9@H%G45sq%f4$G5gcGkdc</font></b>", S_CELL_VALUE)],
         [Paragraph("<b>Provider kontakt</b>", S_CELL_LABEL),
-         Paragraph("Marko Pavišić (SixPack) - marko.pavisic@sixpack.rs - +381 63 850 9000",
+         Paragraph("<b>Marko Pavišić</b> (SixPack) - marko.pavisic@sixpack.rs - <b>+381 63 850 9000</b>",
                    S_CELL_VALUE)],
     ]
     t = Table(vesta, colWidths=[3.5 * cm, 12.5 * cm])
@@ -408,7 +408,7 @@ def build_story():
     story.append(rule())
     story.append(Paragraph(
         "Projekat je prošao kroz <b>tri velika kruga Vašeg feedback-a</b> i "
-        "84 commit-a (tačaka snimanja u istoriji). Grupisano u 5 faza:",
+        "<b>84 commit-a</b> (tačaka snimanja u istoriji). Grupisano u <b>5 faza</b>:",
         S_BODY))
 
     phases = [
@@ -432,7 +432,7 @@ def build_story():
             "Scroll-spy meni - stavka u meniju svetli pink dok ste u toj sekciji, roditelj odmah zna gde je.",
             "Sekcija „Iznajmljivanje Prostora\" iz ljubičaste prebačena u brand pink.",
             "Adresa ispravljena na „Čarobne frule 36, Zvezdara - Mirijevo\".",
-            "Ispravka na 300m² umesto 280m² svuda gde se pominje arena.",
+            "Ispravka na <b>300m²</b> umesto 280m² svuda gde se pominje arena.",
             "Footer ikonice društvenih mreža uklonjene (niste ih koristili tako jer nisu bile prave brand ikonice).",
             "Google mapa u kontaktu - klik bilo gde na mapu otvara pravu Google Maps lokaciju.",
             "Popravljen lightbox galerije (klik na sliku otvara veliki pregled).",
@@ -440,7 +440,7 @@ def build_story():
         ]),
         ("Faza 3 - Detalji i restruktura", "17 - 18. april", [
             "PAKETI sekcija restrukturisana u <b>4 taba</b>: Rođendani / Team Building / Individualni termini / Iznajmljivanje Prostora.",
-            "Broj Google recenzija 213 → 218 → i pustili smo ga da se <b>automatski ažurira</b> svaku noć u 4:15 po Beogradu preko SerpAPI servisa. Ne morate više nikad ručno da ga menjate.",
+            "Broj Google recenzija <b>213 → 218</b> → i pustili smo ga da se <b>automatski ažurira</b> svaku noć u 4:15 po Beogradu preko SerpAPI servisa. <b>Ne morate više nikad ručno da ga menjate.</b>",
             "Na kartici „Rođendani\" dodata eksplicitna poruka <b>„Nema ograničenja za broj dece\"</b> - 90% roditelja Vas je to pitalo, sad je napisano.",
             "Implementiran skriveni <b>„Game Over\" glasovni signal</b> za kraj igre u areni: dugo držanje logoa u headeru (~0.7 sekundi) pušta snimak „Game over. Molimo vas, ugasite lasere i polako izađite iz arene...\". Ženski glas je aktivan, muški je u rezervi ako budete želeli promenu.",
             "Ispravljene gramatičke greške i besmislene rečenice u sekciji „Iskustvo\" (reč „puškomi\" bila je slovna greška, tekst prerađen na ljudski govor).",
@@ -505,13 +505,13 @@ def build_story():
         S_BODY))
     auto = [
         [Paragraph("<b>Broj Google recenzija</b>", S_CELL_LABEL),
-         Paragraph("Svako jutro u 4:15 po Beogradu, robot proverava Google i ažurira broj (bez Vas, bez mene).",
+         Paragraph("Svako jutro u <b>4:15 po Beogradu</b>, robot proverava Google i ažurira broj (bez Vas, bez mene).",
                    S_CELL_VALUE)],
         [Paragraph("<b>SSL sertifikat</b>", S_CELL_LABEL),
-         Paragraph("Vercel ga automatski obnavlja svaka 3 meseca. Nikad ne ističe.",
+         Paragraph("Vercel ga automatski obnavlja <b>svaka 3 meseca</b>. Nikad ne ističe.",
                    S_CELL_VALUE)],
         [Paragraph("<b>Bekap koda</b>", S_CELL_LABEL),
-         Paragraph("GitHub čuva celu istoriju - svih 84 verzija u kojima je projekat prošao.",
+         Paragraph("GitHub čuva celu istoriju - svih <b>84 verzija</b> u kojima je projekat prošao.",
                    S_CELL_VALUE)],
         [Paragraph("<b>Skaliranje</b>", S_CELL_LABEL),
          Paragraph("Ako za vikend dobijete 10× više poseta, sajt to preživljava bez usporavanja. Vercel to reši sam.",
@@ -533,7 +533,7 @@ def build_story():
     story.append(Paragraph("Sigurnost - par pravila", S_H1))
     story.append(rule())
     story.append(Paragraph("<b>Uradite:</b>", S_CELL_LABEL))
-    story.append(bullet("Promenite Vesta šifru čim uđete prvi put."))
+    story.append(bullet("<b>Promenite Vesta šifru</b> čim uđete prvi put."))
     story.append(bullet("Ako primite mejl da je Vaš nalog „hakovan\" ili „suspendovan\" - ne klikćite linkove. Prvo me pozovite."))
     story.append(bullet("Šifre iz ovog dokumenta čuvajte kao tajnu. Ne deliti preko običnog emaila neznancima."))
     story.append(Paragraph("<b>Ne dirajte:</b>", S_CELL_LABEL))
@@ -554,8 +554,8 @@ def build_story():
     kontakt = [
         [Paragraph("<b>Developer (ja)</b>", S_CELL_LABEL),
          Paragraph("<b>Lazar Milićević</b><br/>"
-                   "Email: <font face='Courier'>lamingsrb@gmail.com</font><br/>"
-                   "GSM: <font face='Courier'>+381 64 121 32 92</font>",
+                   "Email: <b><font face='Courier'>lamingsrb@gmail.com</font></b><br/>"
+                   "GSM: <b><font face='Courier'>+381 64 121 32 92</font></b>",
                    S_CELL_VALUE)],
         [Paragraph("<b>Vercel podrška</b>", S_CELL_LABEL),
          Paragraph("https://vercel.com/help<br/>"
