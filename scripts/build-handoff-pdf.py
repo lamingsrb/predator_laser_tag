@@ -334,17 +334,18 @@ def build_story():
     story.append(Paragraph("Gmail", S_H2))
     story.append(Paragraph(
         "Nalog <font face='Courier'>predatorlasertagbeograd@gmail.com</font> "
-        "i dalje radi kao i ranije. Nismo ga dirali. Email koji stiže na "
-        "<font face='Courier'>kontakt@lasertagpredator.rs</font> i dalje ide u isti Gmail inbox.",
+        "i dalje radi kao i ranije. Nismo ga dirali.",
         S_BODY))
 
-    # --- Vesta
-    story.append(Paragraph("Stari hosting (SixPack / Vesta) — još uvek potreban", S_H2))
+    # --- Vesta / Domen
+    story.append(Paragraph("Stari hosting (SixPack / Vesta) — zbog domena", S_H2))
     story.append(Paragraph(
-        "Sajt je preseljen na Vercel, ali <b>email server</b> za adresu "
-        "<font face='Courier'>@lasertagpredator.rs</font> i dalje radi na starom "
-        "hostingu kod SixPack-a. Zato taj nalog ne smete da otkažete dok ne "
-        "prebacimo email na drugo mesto (npr. Google Workspace).",
+        "Sajt je preseljen na Vercel, ali <b>godišnja naknada za domen</b> "
+        "<font face='Courier'>lasertagpredator.rs</font> se i dalje plaća preko "
+        "SixPack-a (oni su registrovali domen). Iznos i datum obnove mogu da "
+        "Vam potvrde oni direktno — dole su kontakti. Sve dok je domen kod njih, "
+        "pristup Vesta panelu Vam je potreban (za eventualne promene ili "
+        "obavezna obnovljiva dokumenta).",
         S_BODY))
     vesta = [
         [Paragraph("<b>Panel URL</b>", S_CELL_LABEL),
@@ -431,7 +432,7 @@ def build_story():
             "Projekat prebačen sa mog naloga na Vaš — <b>sajt je sada zvanično Vaš</b>.",
             "Domen <b>lasertagpredator.rs</b> dodat u Vaš Vercel + automatski 308 redirekt sa <b>www.</b>",
             "DNS (adresa koja govori internetu gde da pronađe Vaš sajt) promenjen u Vesta CP panelu — stari server → Vercel.",
-            "Email za <b>@lasertagpredator.rs</b> ostaje potpuno netaknut — MX zapisi i dalje pokazuju na stari server, nastavlja da radi kao i pre.",
+            "Registracija domena <b>lasertagpredator.rs</b> ostaje kod SixPack-a — godišnju obnovu fakturišu oni.",
             "SSL sertifikat automatski izdat od <b>Let's Encrypt</b> preko Vercel-a (ikona katanca u browser-u).",
             "Globalna DNS propagacija gotova za ~10 minuta.",
             "<b>Sajt je live.</b>",
@@ -511,7 +512,7 @@ def build_story():
     story.append(bullet("Šifre iz ovog dokumenta čuvajte kao tajnu. Ne deliti preko običnog emaila neznancima."))
     story.append(Paragraph("<b>Ne dirajte:</b>", S_CELL_LABEL))
     story.append(bullet("Environment variables i Build settings u Vercelu — mogu da pokvare deploy."))
-    story.append(bullet("MX zapise ili email delove u Vesti — pukao bi email."))
+    story.append(bullet("DNS zapise u Vesta panelu — ako se promene, sajt prestaje da radi na Vašem domenu."))
     story.append(bullet("Dugme „Delete\" bilo gde — uglavnom je trajno."))
     story.append(Paragraph(
         "Ako nešto deluje čudno (sajt ne radi, ne stiže email, broj recenzija "
@@ -534,7 +535,7 @@ def build_story():
          Paragraph("https://vercel.com/help<br/>"
                    "<font size='8' color='#666'>Za tehnička pitanja oko Vercel platforme.</font>",
                    S_CELL_VALUE)],
-        [Paragraph("<b>Stari hosting + email (SixPack)</b>", S_CELL_LABEL),
+        [Paragraph("<b>Stari hosting + domen (SixPack)</b>", S_CELL_LABEL),
          Paragraph("Marko Pavišić<br/>"
                    "Email: <font face='Courier'>marko.pavisic@sixpack.rs</font><br/>"
                    "Mobilni: +381 63 850 9000",
