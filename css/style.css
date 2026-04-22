@@ -3554,6 +3554,8 @@ body.lightbox-open #navbar {
 .social-threads:hover { border-color: #ffffff; box-shadow: 0 0 18px rgba(255, 255, 255, 0.45); }
 .social-in:hover      { border-color: #0A66C2; box-shadow: 0 0 18px rgba(10, 102, 194, 0.5); }
 .social-yt:hover      { border-color: #FF0000; box-shadow: 0 0 18px rgba(255, 0, 0, 0.5); }
+.social-viber:hover   { border-color: #7360F2; box-shadow: 0 0 18px rgba(115, 96, 242, 0.55); }
+.social-wa:hover      { border-color: #25D366; box-shadow: 0 0 18px rgba(37, 211, 102, 0.5); }
 
 /* Map */
 .map-wrapper {
