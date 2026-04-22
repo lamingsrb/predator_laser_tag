@@ -637,6 +637,34 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
 
   requestAnimationFrame(() => { measure(); requestAnimationFrame(tick); });
   window.addEventListener('resize', measure);
+
+  // ----- Category filter (Sve / Arena / Rođendani / Team Building / Prostor) --
+  const filterBtns = document.querySelectorAll('.gallery-filter');
+  if (filterBtns.length) {
+    const allTiles = () => Array.from(track.querySelectorAll('.masonry-item'));
+    const applyFilter = (cat) => {
+      allTiles().forEach(tile => {
+        const match = (cat === 'all') || (tile.dataset.category === cat);
+        tile.classList.toggle('is-filtered-out', !match);
+      });
+      // Track width changed — reset offset so visible tiles start at left and
+      // the seamless-loop math keeps working.
+      offset = 0;
+      applyOffset();
+      requestAnimationFrame(measure);
+    };
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-selected', 'true');
+        applyFilter(btn.dataset.filter);
+      });
+    });
+  }
 })();
 
 // ===================================

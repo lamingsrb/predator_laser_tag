@@ -30,6 +30,97 @@ HTML = ROOT / "index.html"
 _DROPPED_BLURRY = {"06-player-aim", "08-arena-barriers", "22-cosmic-room-a",
                    "25-cosmic-room-d", "31-team-13-d"}
 
+# Category buckets for the 4-filter gallery UI per owner (2026-04-22):
+#   arena      — ARENA I OPREMA (arena interiors, UV shots, weapons racks, equipment)
+#   rodjendani — ROĐENDANI      (new pro kids photos: parties, cake, slavljenici)
+#   teambuild  — TEAM BUILDING  (older phone-era photos, all the pre-refresh set)
+#   prostor    — PROSTOR        (empty rooms, decorations without people)
+CATEGORY = {
+    # ----- New pro photos (p01-p58) -----
+    # PROSTOR — empty rooms / decor
+    "p01": "prostor", "p02": "prostor", "p05": "prostor", "p06": "prostor",
+    "p37": "prostor", "p38": "prostor", "p49": "prostor", "p50": "prostor",
+    "p51": "prostor", "p52": "prostor", "p53": "prostor", "p54": "prostor",
+    "p55": "prostor", "p56": "prostor", "p57": "prostor", "p58": "prostor",
+    # ARENA I OPREMA — arena interiors, weapons, UV walls
+    "p07": "arena", "p08": "arena", "p09": "arena", "p10": "arena",
+    "p11": "arena", "p12": "arena", "p13": "arena", "p14": "arena",
+    "p15": "arena", "p16": "arena", "p34": "arena", "p35": "arena",
+    "p36": "arena", "p43": "arena", "p44": "arena",
+    # ROĐENDANI — everything with kids / parties / slavljenici
+    "p03": "rodjendani", "p04": "rodjendani", "p17": "rodjendani",
+    "p18": "rodjendani", "p19": "rodjendani", "p20": "rodjendani",
+    "p21": "rodjendani", "p22": "rodjendani", "p23": "rodjendani",
+    "p24": "rodjendani", "p25": "rodjendani", "p26": "rodjendani",
+    "p27": "rodjendani", "p28": "rodjendani", "p29": "rodjendani",
+    "p30": "rodjendani", "p31": "rodjendani", "p32": "rodjendani",
+    "p33": "rodjendani", "p39": "rodjendani", "p40": "rodjendani",
+    "p41": "rodjendani", "p42": "rodjendani", "p45": "rodjendani",
+    "p46": "rodjendani", "p47": "rodjendani", "p48": "rodjendani",
+
+    # ----- Old 'drustvo' (00a-00f) — TEAM BUILDING per owner -----
+    "00a-drustvo-bday":   "teambuild",
+    "00b-drustvo-igrac":  "teambuild",
+    "00c-drustvo-dvoje":  "teambuild",
+    "00d-drustvo-momci":  "teambuild",
+    "00e-drustvo-mozaik": "teambuild",
+    "00f-drustvo-arena":  "teambuild",
+
+    # ----- Old 01-48 — arena shots stay as ARENA, rest → TEAM BUILDING -----
+    "01-arena-neon":       "arena",
+    "02-arena-lasers":     "arena",
+    "03-vojnik-neon":      "arena",
+    "04-weapons-red":      "arena",
+    "05-weapons-green":    "arena",
+    "07-arena-long":       "arena",
+    "09-vojnik-2":         "arena",
+    "36-arena-action-a":   "arena",
+    "37-arena-action-b":   "arena",
+    "38-arena-action-c":   "arena",
+    "39-arena-day":        "arena",
+    "40-arena-evening":    "arena",
+    "41-arena-evening-b":  "arena",
+    "42-arena-group":      "arena",
+    "43-arena-late":       "arena",
+    "44-arena-13a":        "arena",
+    "45-arena-13b":        "arena",
+    "46-arena-13c":        "arena",
+    "47-arena-307":        "arena",
+    "48-arena-1403":       "arena",
+    # Rest of old = TEAM BUILDING
+    "10-birthday-group":   "teambuild",
+    "11-players-action":   "teambuild",
+    "12-team-ready":       "teambuild",
+    "13-cosmic-kids":      "teambuild",
+    "14-bday-14-a":        "teambuild",
+    "15-bday-14-b":        "teambuild",
+    "16-bday-14-c":        "teambuild",
+    "17-bday-14-d":        "teambuild",
+    "18-bday-14-e":        "teambuild",
+    "19-bday-20-a":        "teambuild",
+    "20-bday-20-b":        "teambuild",
+    "21-bday-20-c":        "teambuild",
+    "23-cosmic-room-b":    "teambuild",
+    "24-cosmic-room-c":    "teambuild",
+    "26-cosmic-room-e":    "teambuild",
+    "27-cosmic-room-f":    "teambuild",
+    "28-team-13-a":        "teambuild",
+    "29-team-13-b":        "teambuild",
+    "30-team-13-c":        "teambuild",
+    "32-feb-a":            "teambuild",
+    "33-feb-b":            "teambuild",
+    "34-feb-14-a":         "teambuild",
+    "35-feb-14-b":         "teambuild",
+}
+
+# Videos — gallery-action-N → category
+VIDEO_CATEGORY = {
+    "1": "arena", "2": "arena", "3": "arena", "4": "arena",
+    "5": "arena", "6": "arena", "7": "arena",
+    "8": "arena",        # pro UV arena walkthrough
+    "9": "rodjendani",   # pro 77 s includes birthday scenes
+}
+
 # Page 1 (16): strongest mixed open — 2 new pro videos, new hero pics,
 # marquee old arena shots, a drustvo warm-up.
 _PAGE1 = [
@@ -148,7 +239,8 @@ ZOOM_SVG = (
 
 
 def photo_block(stem: str, label: str, caption: str) -> str:
-    return f"""        <div class="masonry-item" data-animate="fade-up" data-lb-type="image" data-lb-src="/assets/img/gallery/{stem}.jpg" data-lb-caption="{caption}">
+    category = CATEGORY.get(stem, "arena")
+    return f"""        <div class="masonry-item" data-animate="fade-up" data-category="{category}" data-lb-type="image" data-lb-src="/assets/img/gallery/{stem}.jpg" data-lb-caption="{caption}">
           <div class="masonry-media">
             <img src="/assets/img/gallery/{stem}.webp" alt="{caption}" loading="lazy">
             <div class="masonry-overlay"><span class="masonry-label">{label}</span></div>
@@ -168,7 +260,8 @@ def video_block(num: str, label: str, caption: str) -> str:
         if has_live else
         f'<span class="masonry-label">{label}</span>'
     )
-    return f"""        <div class="masonry-item masonry-item-video" data-animate="fade-up" data-lb-type="video" data-lb-src="/assets/video/gallery-action-{num}.mp4" data-lb-caption="{caption}">
+    category = VIDEO_CATEGORY.get(num, "arena")
+    return f"""        <div class="masonry-item masonry-item-video" data-animate="fade-up" data-category="{category}" data-lb-type="video" data-lb-src="/assets/video/gallery-action-{num}.mp4" data-lb-caption="{caption}">
           <div class="masonry-media">
             <video muted loop playsinline preload="metadata" poster="/assets/video/gallery-action-{num}-poster.webp">
               <source src="/assets/video/gallery-action-{num}.webm" type="video/webm">
