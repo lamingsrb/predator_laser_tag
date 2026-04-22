@@ -932,6 +932,14 @@ class ParticleSystem {
   }
 
   handleClick(e) {
+    // Gallery tiles, lightbox, buttons, links, form controls — any deliberate
+    // UI click should not trigger the shot SFX or particle flash.
+    const t = e.target;
+    if (t && t.closest && t.closest('.masonry-item, .lightbox, a, button, [data-lb-src], input, textarea, select')) {
+      return;
+    }
+    if (document.body.classList.contains('lightbox-open')) return;
+
     // Convert screen to normalized device coords
     this.mouseVec.x = (e.clientX / window.innerWidth) * 2 - 1;
     this.mouseVec.y = -(e.clientY / window.innerHeight) * 2 + 1;
