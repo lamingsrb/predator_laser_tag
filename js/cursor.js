@@ -29,7 +29,7 @@ class CustomCursor {
     });
 
     // Hover detection for interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, .package-card, .exp-card, .gallery-item, .birthday-card');
+    const interactiveElements = document.querySelectorAll('a, button, .package-card, .exp-card, .gallery-item, .masonry-item, .birthday-card, .gallery-filter');
     interactiveElements.forEach(el => {
       el.addEventListener('mouseenter', () => {
         this.isHovering = true;
