@@ -606,7 +606,8 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
   }
 
   function tick(ts) {
-    if (!paused && ts >= manualHoldUntil && !document.body.classList.contains('lightbox-open')) {
+    const isStatic = masonry.parentElement?.classList.contains('is-static');
+    if (!paused && !isStatic && ts >= manualHoldUntil && !document.body.classList.contains('lightbox-open')) {
       track.classList.remove('snap');
       offset -= speed;
       if (offset <= -halfWidth) offset += halfWidth;
@@ -647,11 +648,20 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
         const match = (cat === 'all') || (tile.dataset.category === cat);
         tile.classList.toggle('is-filtered-out', !match);
       });
-      // Track width changed — reset offset so visible tiles start at left and
-      // the seamless-loop math keeps working.
       offset = 0;
       applyOffset();
-      requestAnimationFrame(measure);
+      const stage = masonry.parentElement;
+      stage?.classList.remove('is-static');
+      requestAnimationFrame(() => {
+        measure();
+        // If filtered content is narrower than the viewport the marquee
+        // would scroll past empty space — switch to a centered static grid.
+        if (halfWidth > 0 && halfWidth < masonry.offsetWidth) {
+          stage?.classList.add('is-static');
+          offset = 0;
+          applyOffset();
+        }
+      });
     };
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {

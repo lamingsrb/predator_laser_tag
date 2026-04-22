@@ -60,15 +60,13 @@ CATEGORY = {
     "p46": "rodjendani", "p47": "rodjendani", "p48": "rodjendani",
 
     # ----- Old 'drustvo' (00a-00f) -----
-    # Owner wants TEAM BUILDING to show ADULTS ONLY. After reviewing each
-    # photo individually: only 00d, 00e, 00f are adult groups. The rest are
-    # kids despite the 'drustvo' name → move to ROĐENDANI.
-    "00a-drustvo-bday":   "rodjendani",  # mixed-age birthday party
-    "00b-drustvo-igrac":  "rodjendani",  # kid girl player
-    "00c-drustvo-dvoje":  "rodjendani",  # two kids in arena
-    "00d-drustvo-momci":  "teambuild",   # 4 adult men with equipment ✓
-    "00e-drustvo-mozaik": "teambuild",   # collage of adults ✓
-    "00f-drustvo-arena":  "teambuild",   # 5 adult men with equipment ✓
+    # Reviewed each photo. All six are adult-oriented groups/couples.
+    "00a-drustvo-bday":   "teambuild",   # adult family celebration (minor kid in frame)
+    "00b-drustvo-igrac":  "teambuild",   # adult woman with laser gun
+    "00c-drustvo-dvoje":  "teambuild",   # two adult women with gear
+    "00d-drustvo-momci":  "teambuild",   # 4 adult men with equipment
+    "00e-drustvo-mozaik": "teambuild",   # collage of adults
+    "00f-drustvo-arena":  "teambuild",   # 5 adult men with equipment
 
     # ----- Old 01-48 — arena shots stay ARENA, everything else with kids → ROĐENDANI -----
     "01-arena-neon":       "arena",

@@ -2593,6 +2593,21 @@ button:hover ~ #cursor-dot,
 .masonry-item.is-filtered-out {
   display: none !important;
 }
+/* Static mode: filtered set is narrower than viewport — center tiles, no scroll */
+.masonry-stage.is-static .masonry {
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+.masonry-stage.is-static .masonry-track {
+  transform: none !important;
+  margin: 0 auto;
+}
+.masonry-stage.is-static .masonry-item[aria-hidden="true"] {
+  display: none !important;
+}
+.masonry-stage.is-static .masonry-nav {
+  display: none;
+}
 @media (max-width: 640px) {
   .gallery-filter { padding: 0.55rem 0.8rem; font-size: 0.68rem; letter-spacing: 1.1px; }
 }
