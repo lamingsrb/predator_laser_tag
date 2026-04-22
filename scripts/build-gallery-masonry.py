@@ -42,10 +42,10 @@ CATEGORY = {
     "p37": "prostor", "p38": "prostor", "p49": "prostor", "p50": "prostor",
     "p51": "prostor", "p52": "prostor", "p53": "prostor", "p54": "prostor",
     "p55": "prostor", "p56": "prostor", "p57": "prostor", "p58": "prostor",
-    # ARENA I OPREMA — arena interiors, weapons, UV walls
+    # ARENA I OPREMA — arena interiors, weapons, UV walls (NO people-with-kids)
     "p07": "arena", "p08": "arena", "p09": "arena", "p10": "arena",
     "p11": "arena", "p12": "arena", "p13": "arena", "p14": "arena",
-    "p15": "arena", "p16": "arena", "p34": "arena", "p35": "arena",
+    "p15": "arena", "p16": "arena", "p35": "arena",
     "p36": "arena", "p43": "arena", "p44": "arena",
     # ROĐENDANI — everything with kids / parties / slavljenici
     "p03": "rodjendani", "p04": "rodjendani", "p17": "rodjendani",
@@ -54,19 +54,23 @@ CATEGORY = {
     "p24": "rodjendani", "p25": "rodjendani", "p26": "rodjendani",
     "p27": "rodjendani", "p28": "rodjendani", "p29": "rodjendani",
     "p30": "rodjendani", "p31": "rodjendani", "p32": "rodjendani",
-    "p33": "rodjendani", "p39": "rodjendani", "p40": "rodjendani",
+    "p33": "rodjendani", "p34": "rodjendani",  # kids eating at party, moved from arena
+    "p39": "rodjendani", "p40": "rodjendani",
     "p41": "rodjendani", "p42": "rodjendani", "p45": "rodjendani",
     "p46": "rodjendani", "p47": "rodjendani", "p48": "rodjendani",
 
-    # ----- Old 'drustvo' (00a-00f) — TEAM BUILDING per owner -----
-    "00a-drustvo-bday":   "teambuild",
-    "00b-drustvo-igrac":  "teambuild",
-    "00c-drustvo-dvoje":  "teambuild",
-    "00d-drustvo-momci":  "teambuild",
-    "00e-drustvo-mozaik": "teambuild",
-    "00f-drustvo-arena":  "teambuild",
+    # ----- Old 'drustvo' (00a-00f) -----
+    # Owner wants TEAM BUILDING to show ADULTS ONLY. After reviewing each
+    # photo individually: only 00d, 00e, 00f are adult groups. The rest are
+    # kids despite the 'drustvo' name → move to ROĐENDANI.
+    "00a-drustvo-bday":   "rodjendani",  # mixed-age birthday party
+    "00b-drustvo-igrac":  "rodjendani",  # kid girl player
+    "00c-drustvo-dvoje":  "rodjendani",  # two kids in arena
+    "00d-drustvo-momci":  "teambuild",   # 4 adult men with equipment ✓
+    "00e-drustvo-mozaik": "teambuild",   # collage of adults ✓
+    "00f-drustvo-arena":  "teambuild",   # 5 adult men with equipment ✓
 
-    # ----- Old 01-48 — arena shots stay as ARENA, rest → TEAM BUILDING -----
+    # ----- Old 01-48 — arena shots stay ARENA, everything else with kids → ROĐENDANI -----
     "01-arena-neon":       "arena",
     "02-arena-lasers":     "arena",
     "03-vojnik-neon":      "arena",
@@ -87,30 +91,31 @@ CATEGORY = {
     "46-arena-13c":        "arena",
     "47-arena-307":        "arena",
     "48-arena-1403":       "arena",
-    # Rest of old = TEAM BUILDING
-    "10-birthday-group":   "teambuild",
-    "11-players-action":   "teambuild",
-    "12-team-ready":       "teambuild",
-    "13-cosmic-kids":      "teambuild",
-    "14-bday-14-a":        "teambuild",
-    "15-bday-14-b":        "teambuild",
-    "16-bday-14-c":        "teambuild",
-    "17-bday-14-d":        "teambuild",
-    "18-bday-14-e":        "teambuild",
-    "19-bday-20-a":        "teambuild",
-    "20-bday-20-b":        "teambuild",
-    "21-bday-20-c":        "teambuild",
-    "23-cosmic-room-b":    "teambuild",
-    "24-cosmic-room-c":    "teambuild",
-    "26-cosmic-room-e":    "teambuild",
-    "27-cosmic-room-f":    "teambuild",
-    "28-team-13-a":        "teambuild",
-    "29-team-13-b":        "teambuild",
-    "30-team-13-c":        "teambuild",
-    "32-feb-a":            "teambuild",
-    "33-feb-b":            "teambuild",
-    "34-feb-14-a":         "teambuild",
-    "35-feb-14-b":         "teambuild",
+    # Old kids photos (verified) — these WERE teambuild, now ROĐENDANI because
+    # they're kid-group shots. Owner: 'nema dece u team building'.
+    "10-birthday-group":   "rodjendani",
+    "11-players-action":   "rodjendani",
+    "12-team-ready":       "rodjendani",
+    "13-cosmic-kids":      "rodjendani",
+    "14-bday-14-a":        "rodjendani",
+    "15-bday-14-b":        "rodjendani",
+    "16-bday-14-c":        "rodjendani",
+    "17-bday-14-d":        "rodjendani",
+    "18-bday-14-e":        "rodjendani",
+    "19-bday-20-a":        "rodjendani",
+    "20-bday-20-b":        "rodjendani",
+    "21-bday-20-c":        "rodjendani",
+    "23-cosmic-room-b":    "rodjendani",
+    "24-cosmic-room-c":    "rodjendani",
+    "26-cosmic-room-e":    "rodjendani",
+    "27-cosmic-room-f":    "rodjendani",
+    "28-team-13-a":        "rodjendani",
+    "29-team-13-b":        "rodjendani",
+    "30-team-13-c":        "rodjendani",
+    "32-feb-a":            "rodjendani",
+    "33-feb-b":            "rodjendani",
+    "34-feb-14-a":         "rodjendani",
+    "35-feb-14-b":         "rodjendani",
 }
 
 # Videos — gallery-action-N → category
