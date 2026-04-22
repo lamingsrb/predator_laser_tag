@@ -68,27 +68,28 @@ CATEGORY = {
     "00e-drustvo-mozaik": "teambuild",   # collage of adults
     "00f-drustvo-arena":  "teambuild",   # 5 adult men with equipment
 
-    # ----- Old 01-48 — arena shots stay ARENA, everything else with kids → ROĐENDANI -----
-    "01-arena-neon":       "arena",
-    "02-arena-lasers":     "arena",
-    "03-vojnik-neon":      "arena",
-    "04-weapons-red":      "arena",
-    "05-weapons-green":    "arena",
-    "07-arena-long":       "arena",
-    "09-vojnik-2":         "arena",
-    "36-arena-action-a":   "arena",
-    "37-arena-action-b":   "arena",
-    "38-arena-action-c":   "arena",
-    "39-arena-day":        "arena",
-    "40-arena-evening":    "arena",
-    "41-arena-evening-b":  "arena",
-    "42-arena-group":      "arena",
-    "43-arena-late":       "arena",
-    "44-arena-13a":        "arena",
-    "45-arena-13b":        "arena",
-    "46-arena-13c":        "arena",
-    "47-arena-307":        "arena",
-    "48-arena-1403":       "arena",
+    # ----- Old 01-48 — empty arena / UV art / equipment stays ARENA;
+    # anything with kids in it moves to ROĐENDANI (verified by visual review).
+    "01-arena-neon":       "arena",   # empty arena
+    "02-arena-lasers":     "arena",   # empty arena with laser beams
+    "03-vojnik-neon":      "arena",   # UV soldier art (no person)
+    "04-weapons-red":      "arena",   # weapons rack
+    "05-weapons-green":    "arena",   # weapons rack
+    "07-arena-long":       "arena",   # empty arena corridor
+    "09-vojnik-2":         "arena",   # UV soldier art (no person)
+    "42-arena-group":      "arena",   # empty arena
+    "36-arena-action-a":   "rodjendani",  # kids at party room
+    "37-arena-action-b":   "rodjendani",  # kids with lasers
+    "38-arena-action-c":   "rodjendani",  # kids with birthday cake
+    "39-arena-day":        "rodjendani",  # kids birthday party
+    "40-arena-evening":    "rodjendani",  # teen girls
+    "41-arena-evening-b":  "rodjendani",  # teen girls with lasers
+    "43-arena-late":       "rodjendani",  # solo kid birthday
+    "44-arena-13a":        "rodjendani",  # kids group
+    "45-arena-13b":        "rodjendani",  # kids group
+    "46-arena-13c":        "rodjendani",  # kids group
+    "47-arena-307":        "rodjendani",  # solo kid birthday
+    "48-arena-1403":       "rodjendani",  # kids group
     # Old kids photos (verified) — these WERE teambuild, now ROĐENDANI because
     # they're kid-group shots. Owner: 'nema dece u team building'.
     "10-birthday-group":   "rodjendani",
@@ -240,9 +241,19 @@ ZOOM_SVG = (
     '<path d="M11 8v6M8 11h6"/></svg>'
 )
 
+# Owner (2026-04-22): non-arena tile labels must match the filter name so
+# a visitor clicking 'Rođendani' sees the word 'ROĐENDANI' on every tile,
+# etc. Arena tiles keep their curated sub-labels (ARENA / OPREMA / EKIPA).
+_CATEGORY_LABEL_OVERRIDE = {
+    "prostor":    "PROSTOR",
+    "teambuild":  "TIM BILDING",
+    "rodjendani": "ROĐENDANI",
+}
+
 
 def photo_block(stem: str, label: str, caption: str) -> str:
     category = CATEGORY.get(stem, "arena")
+    label = _CATEGORY_LABEL_OVERRIDE.get(category, label)
     return f"""        <div class="masonry-item" data-animate="fade-up" data-category="{category}" data-lb-type="image" data-lb-src="/assets/img/gallery/{stem}.jpg" data-lb-caption="{caption}">
           <div class="masonry-media">
             <img src="/assets/img/gallery/{stem}.webp" alt="{caption}" loading="lazy">
@@ -257,13 +268,14 @@ def photo_block(stem: str, label: str, caption: str) -> str:
 
 
 def video_block(num: str, label: str, caption: str) -> str:
+    category = VIDEO_CATEGORY.get(num, "arena")
+    label = _CATEGORY_LABEL_OVERRIDE.get(category, label)
     has_live = "LIVE" in label.upper()
     label_html = (
         f'<span class="masonry-label"><span class="live-dot"></span> {label}</span>'
         if has_live else
         f'<span class="masonry-label">{label}</span>'
     )
-    category = VIDEO_CATEGORY.get(num, "arena")
     return f"""        <div class="masonry-item masonry-item-video" data-animate="fade-up" data-category="{category}" data-lb-type="video" data-lb-src="/assets/video/gallery-action-{num}.mp4" data-lb-caption="{caption}">
           <div class="masonry-media">
             <video muted loop playsinline preload="metadata" poster="/assets/video/gallery-action-{num}-poster.webp">
