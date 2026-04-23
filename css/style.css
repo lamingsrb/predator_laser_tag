@@ -3474,6 +3474,25 @@ body.lightbox-open #navbar {
   background: rgba(255, 0, 136, 0.03);
 }
 
+/* Whole-box message links (Viber / WhatsApp) share contact-item's layout
+   but are clickable anywhere in the row. */
+.contact-item-link {
+  text-decoration: none;
+  cursor: pointer;
+}
+.contact-item-viber:hover {
+  border-color: rgba(115, 96, 242, 0.45);
+  background: rgba(115, 96, 242, 0.05);
+  box-shadow: 0 3px 18px rgba(115, 96, 242, 0.25);
+}
+.contact-item-wa:hover {
+  border-color: rgba(37, 211, 102, 0.45);
+  background: rgba(37, 211, 102, 0.05);
+  box-shadow: 0 3px 18px rgba(37, 211, 102, 0.25);
+}
+.contact-icon-viber { border-color: rgba(115, 96, 242, 0.35); }
+.contact-icon-wa    { border-color: rgba(37, 211, 102, 0.35); }
+
 .contact-icon {
   flex-shrink: 0;
   width: 50px;
