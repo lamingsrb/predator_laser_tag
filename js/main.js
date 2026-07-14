@@ -4,6 +4,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 // ===================================
+// LETNJA AKCIJA — automatski istek posle 31.08.2026 (ponoć, Beograd)
+// Posle isteka: nema popup-a, Standard kartica se vraća na regularnu cenu,
+// typewriter linija ispada iz rotacije.
+// ===================================
+const PROMO_END_MS = new Date('2026-09-01T00:00:00+02:00').getTime();
+const PROMO_ACTIVE = Date.now() < PROMO_END_MS;
+
+// ===================================
 // NAVBAR
 // ===================================
 const navbar = document.getElementById('navbar');
@@ -220,7 +228,7 @@ class Typewriter {
 }
 
 new Typewriter(document.getElementById('typewriter'), [
-  'LETNJA AKCIJA: Standard rođendan 25.000 RSD (jul i avgust).',
+  ...(PROMO_ACTIVE ? ['LETNJA AKCIJA: Standard rođendan 25.000 RSD (jul i avgust).'] : []),
   'PARKING obezbeđen za SVE posetioce.',
   'Najmodernija laser tag arena u Beogradu.',
   'Pozovite nas: +381 64 525 7777',
@@ -965,6 +973,17 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
 (() => {
   const modal = document.getElementById('promo-modal');
   if (!modal) return;
+
+  if (!PROMO_ACTIVE) {
+    // Akcija istekla — skloni popup i vrati Standard karticu na regularnu cenu
+    modal.remove();
+    const tag = document.querySelector('#pkg-birthdays .birthday-tag.promo');
+    if (tag) { tag.textContent = 'STANDARD'; tag.classList.remove('promo'); }
+    const price = document.querySelector('#pkg-birthdays .bp-old')?.closest('.birthday-price');
+    if (price) price.innerHTML = '31.000 <span class="bp-unit">RSD</span>';
+    document.querySelector('#pkg-birthdays .bp-promo-note')?.remove();
+    return;
+  }
 
   const SEEN_KEY = 'promoSummer2026Seen';
   let seen = false;

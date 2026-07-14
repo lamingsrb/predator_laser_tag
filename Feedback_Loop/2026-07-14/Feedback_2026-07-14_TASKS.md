@@ -44,7 +44,7 @@
 
 ## 📋 NAPOMENE / FOLLOW-UP
 
-- **Istek akcije:** akcija važi do **31.08.2026**. Početkom septembra skinuti popup + vratiti staru cenu na kartici (revert commit-a je dovoljan). Zapisano ovde kao podsetnik — nema auto-expire logike (namerno: Rada može poželeti produžetak, a tvrdi datum u kodu bi tiho ugasio baner).
+- **Istek akcije — AUTO-EXPIRE ugrađen** (na Lazarov zahtev, 2026-07-14): `PROMO_END_MS` u [js/main.js](../../js/main.js) = 01.09.2026 00:00 (Beograd). Posle isteka JS sam: uklanja popup iz DOM-a, vraća Standard karticu na 31.000 RSD + tag "STANDARD", izbacuje typewriter liniju. Verifikovano simulacijom datuma ([scripts/promo-expire-test.mjs](../../scripts/promo-expire-test.mjs)): aktivna danas ✓, aktivna 31.08. u 23h ✓, ugašena 05.09. ✓. **Ako Rada produži akciju** — samo pomeriti `PROMO_END_MS` datum. U septembru počistiti promo markup/CSS iz koda (do tada ga JS gasi sam).
 - Rada je poslala i svoju Instagram grafiku ("pa ti uklopi nekako") — sajt popup ne kopira njen dizajn nego prenosi istu poruku u vizuelnom identitetu sajta. Ako bude tražila da izgleda baš kao IG grafika, tražiti da pošalje fajl.
 - Posle implementacije javiti Radi da baci pogled (Laki je obećao: *"stavljam veceras pa ti javljam da bacis pogled"*).
 
