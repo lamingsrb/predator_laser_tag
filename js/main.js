@@ -220,6 +220,7 @@ class Typewriter {
 }
 
 new Typewriter(document.getElementById('typewriter'), [
+  'LETNJA AKCIJA: Standard rođendan 25.000 RSD (jul i avgust).',
   'PARKING obezbeđen za SVE posetioce.',
   'Najmodernija laser tag arena u Beogradu.',
   'Pozovite nas: +381 64 525 7777',
@@ -955,6 +956,50 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
       close();
     }
   });
+})();
+
+// ===================================
+// PROMO MODAL — Letnja akcija (jul & avgust)
+// Shows right after load, once per session.
+// ===================================
+(() => {
+  const modal = document.getElementById('promo-modal');
+  if (!modal) return;
+
+  const SEEN_KEY = 'promoSummer2026Seen';
+  let seen = false;
+  try { seen = sessionStorage.getItem(SEEN_KEY) === '1'; } catch {}
+  if (seen) return;
+
+  let lastFocus = null;
+
+  function open() {
+    lastFocus = document.activeElement;
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('promo-open');
+    modal.querySelector('.promo-close')?.focus();
+    try { sessionStorage.setItem(SEEN_KEY, '1'); } catch {}
+  }
+
+  function close() {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('promo-open');
+    lastFocus?.focus?.();
+  }
+
+  // X i backdrop zatvaraju; CTA linkovi takođe — da skrol/poziv ne ostane iza overlay-a
+  modal.addEventListener('click', (e) => {
+    if (e.target.closest('[data-promo-close]') || e.target.closest('a')) close();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) close();
+  });
+
+  // Kratka pauza da hero animacija krene pre popup-a
+  setTimeout(open, 1100);
 })();
 
 // ===================================

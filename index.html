@@ -222,9 +222,10 @@
             <div class="birthday-card-header">
               <span class="birthday-number">01</span>
               <h3>Standard</h3>
-              <div class="birthday-tag">STANDARD</div>
+              <div class="birthday-tag promo">LETNJA AKCIJA</div>
             </div>
-            <div class="birthday-price">31.000 <span class="bp-unit">RSD</span></div>
+            <div class="birthday-price"><span class="bp-old">31.000</span> 25.000 <span class="bp-unit">RSD</span></div>
+            <div class="bp-promo-note">važi za termine u julu i avgustu</div>
             <div class="birthday-card-body">
               <ul class="birthday-features birthday-features-plain">
                 <li><span class="bf-icon">🥤</span><span class="bf-text"><strong>NEOGRANIČENO</strong> piće za decu</span></li>
@@ -2020,6 +2021,28 @@
       </div>
     </div>
   </footer>
+
+  <!-- PROMO MODAL — Letnja akcija: Standard rođendan 31.000 → 25.000 (jul & avgust) -->
+  <div id="promo-modal" class="promo-modal" role="dialog" aria-modal="true" aria-labelledby="promo-title" aria-hidden="true">
+    <div class="promo-backdrop" data-promo-close></div>
+    <div class="promo-card">
+      <button class="promo-close" data-promo-close aria-label="Zatvori">&times;</button>
+      <span class="promo-tag">// LETNJA AKCIJA</span>
+      <h3 id="promo-title" class="promo-title">JUL <span class="promo-amp">&amp;</span> AVGUST</h3>
+      <p class="promo-sub">STANDARD ROĐENDANSKI PAKET</p>
+      <div class="promo-price-row">
+        <span class="promo-old">31.000 <small>RSD</small></span>
+        <span class="promo-arrow" aria-hidden="true">&#9656;</span>
+        <span class="promo-new">25.000 <small>RSD</small></span>
+      </div>
+      <div class="promo-save">UŠTEDA 6.000 RSD</div>
+      <p class="promo-note">Popust važi za sve rođendanske termine u <strong>julu</strong> i <strong>avgustu</strong>.</p>
+      <div class="promo-cta-group">
+        <a href="tel:+381645257777" class="btn btn-primary pulse-glow promo-cta">REZERVIŠI TERMIN</a>
+        <a href="#packages" class="btn btn-outline promo-cta">POGLEDAJ PAKET</a>
+      </div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script type="module" src="/js/particles.js"></script>
