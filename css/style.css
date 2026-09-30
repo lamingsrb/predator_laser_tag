@@ -3721,6 +3721,13 @@ body.lightbox-open #navbar {
   font-size: 0.8rem;
   color: rgba(255,255,255,0.3);
 }
+.footer-credit {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.52);
+}
+.footer-credit a { color: rgba(255,255,255,0.72); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: color .2s, text-decoration-color .2s; }
+.footer-credit a:hover, .footer-credit a:focus-visible { color: #fff; text-decoration-color: currentColor; }
 
 /* Animations handled entirely by GSAP — no CSS opacity hiding */
 
