@@ -1,5 +1,5 @@
 {
-  "_comment": "20 pravih Google recenzija za Rodjendaonicu Laser Tag Beograd Predator. Izvuceno iz share.google/QBswSIrIHwkwG3YBV. Menjati po potrebi kad stignu nove.",
+  "_comment": "Ne menjati rucno: .github/workflows/update-reviews.yml svaki dan povlaci najnovije Google recenzije (4-5 zvezdica, sa tekstom) + ocenu i broj preko SerpAPI (scripts/update-reviews.mjs). Sajt sam racuna 'pre X dana' iz isoDate.",
   "businessName": "Rođendaonica Laser Tag Beograd Predator",
   "kgmid": "/g/11h0334qwl",
   "placeId": "ChIJOwZcgiN7WkcRmm9_z6gRLOE",

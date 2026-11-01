@@ -1,14 +1,23 @@
-name: Update Google review count
+name: Update Google reviews
 
-# Runs once per day at 04:15 UTC (≈ 05:15/06:15 Belgrade time) and can also
-# be triggered manually from the Actions tab via "Run workflow".
+# Pulls the newest Google reviews + rating/count into public/reviews.json.
+# Runs once per day at 04:15 UTC (≈ 05:15/06:15 Belgrade time), right after the
+# updater itself changes on main, and on demand from the Actions tab via "Run workflow".
 on:
   schedule:
     - cron: '15 4 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/update-reviews.mjs'
+      - '.github/workflows/update-reviews.yml'
   workflow_dispatch:
 
 permissions:
   contents: write  # needed to commit reviews.json back to main
+
+concurrency:
+  group: update-reviews
 
 jobs:
   fetch-and-commit:
@@ -20,10 +29,10 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Fetch current review count from SerpAPI
+      - name: Fetch newest reviews + rating/count from SerpAPI
         env:
           SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
-        run: node scripts/update-review-count.mjs
+        run: node scripts/update-reviews.mjs
 
       - name: Commit and push if changed
         run: |
@@ -34,5 +43,5 @@ jobs:
           git config user.name  "predator-review-bot"
           git config user.email "noreply@github.com"
           git add public/reviews.json
-          git commit -m "chore(reviews): auto-update Google review count ($(date -u +%Y-%m-%d))"
+          git commit -m "chore(reviews): auto-update Google reviews ($(date -u +%Y-%m-%d))"
           git push
