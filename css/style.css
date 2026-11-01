@@ -3293,6 +3293,23 @@ body.lightbox-open #navbar {
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Static mode: too few reviews to fill the strip — center them, no scroll */
+.reviews-stage.is-static .reviews-marquee {
+  mask-image: none;
+  -webkit-mask-image: none;
+  padding-bottom: 1rem;
+}
+.reviews-stage.is-static .reviews-track {
+  transform: none !important;
+  margin: 0 auto;
+}
+.reviews-stage.is-static .review-card[aria-hidden="true"] {
+  display: none;
+}
+.reviews-stage.is-static .reviews-nav {
+  display: none;
+}
+
 .review-card {
   flex: 0 0 360px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));

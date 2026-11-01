@@ -795,10 +795,20 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
   let speed = 0.35; // px per frame ~ 21 px/sec at 60fps
   let paused = false;
   let manualHoldUntil = 0;
+  const stage = marquee.parentElement;
 
   function measure() {
+    stage.classList.remove('is-static'); // clones must be laid out to measure
+    const half = track.scrollWidth / 2;
+    if (!half) return;
     // half = width of original (non-clone) set
-    halfWidth = track.scrollWidth / 2;
+    halfWidth = half;
+    // Too few reviews to fill the strip — center them instead of scrolling past empty space
+    if (halfWidth < marquee.offsetWidth) {
+      stage.classList.add('is-static');
+      offset = 0;
+      applyOffset();
+    }
   }
 
   function applyOffset() {
@@ -806,7 +816,7 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
   }
 
   function tick(ts) {
-    if (!paused && ts >= manualHoldUntil) {
+    if (!paused && !stage.classList.contains('is-static') && ts >= manualHoldUntil) {
       track.classList.remove('snap');
       offset -= speed;
       if (offset <= -halfWidth) offset += halfWidth;
@@ -839,10 +849,7 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
 
   // initial measurement (wait a frame so layout settles)
   requestAnimationFrame(() => { measure(); requestAnimationFrame(tick); });
-  window.addEventListener('resize', () => {
-    const newHalf = track.scrollWidth / 2;
-    if (newHalf && newHalf !== halfWidth) halfWidth = newHalf;
-  });
+  window.addEventListener('resize', measure);
 })();
 
 // ===================================

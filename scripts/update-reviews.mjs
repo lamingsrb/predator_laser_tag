@@ -6,16 +6,21 @@
  * always shows the latest reviews without anyone editing the JSON by hand.
  *
  * - Reviews come from engine=google_maps_reviews, sort_by=newestFirst.
- * - Only reviews with rating >= MIN_RATING and real text are kept; the newest
- *   MAX_REVIEWS of them are stored, sorted by date (newest first).
- * - When newestFirst cannot fill the list (Google may end that sort early, and
- *   many new reviews are stars only), the rest is topped up from the most
- *   relevant reviews (sort_by=qualityScore). Newer reviews push those out later.
+ * - Only reviews with rating >= MIN_RATING and real text are kept, newest first.
+ *   The site shows the ones from the last MAX_AGE_DAYS (at most MAX_REVIEWS); an
+ *   older one stays only while fewer than MIN_REVIEWS newer ones exist, so the
+ *   section never goes empty in a quiet month, but never shows "pre 3 meseca"
+ *   next to fresher reviews either.
+ * - Reviews from earlier runs stay in reviews.json until they age out, so a run
+ *   only has to see what arrived since the previous one. That matters because
+ *   since 2026-10-21 SerpAPI returns just 5 reviews per search and no next page
+ *   (https://github.com/serpapi/public-roadmap/issues/4483): the daily run still
+ *   catches every new review unless more than 5 arrive in one day.
  * - Each review keeps its ISO date; the site turns it into "pre 3 dana" in the
  *   browser, so the label never goes stale between runs.
  * - Steady state is 1 SerpAPI search per run (rating + count come in the same
- *   response). More are made only while the list is short or when more new
- *   reviews arrived since the last run than fit on one page.
+ *   response), about 30 a month of the free plan's 250. A second page is asked
+ *   for only when more new reviews arrived since the last run than fit on one.
  * - In GitHub Actions every step is also posted as a run annotation: readable
  *   by anyone on the run page / API, while the raw job log needs admin rights.
  *
@@ -31,11 +36,13 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const MAX_REVIEWS = 10;     // how many cards the site shows
+const MAX_REVIEWS = 10;     // most cards the site shows
+const MIN_REVIEWS = 2;      // fewest: while fewer recent reviews exist, the newest older ones fill up to this
+const MAX_AGE_DAYS = 60;    // "recent" — the site says "pre 2 meseca" from day 60 on
 const MIN_RATING = 4;       // never show 1-3★ reviews on the site
 const MIN_TEXT_LENGTH = 10; // skip rating-only / one-word reviews
 const PAGE_SIZE = 20;       // reviews per SerpAPI search (API maximum)
-const NEWEST_PAGES = 2;     // newestFirst pages per run; +1 qualityScore page only if the list is still short
+const NEWEST_PAGES = 2;     // newestFirst pages per run at most
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REVIEWS_PATH = resolve(__dirname, '..', 'public', 'reviews.json');
@@ -95,48 +102,47 @@ function toReview(r) {
   };
 }
 
+const NOW = Date.now();
 const time = r => Date.parse(r.isoDate);
+const recent = r => NOW - time(r) <= MAX_AGE_DAYS * 864e5;
 const qualifies = r => r.rating >= MIN_RATING && r.text.length >= MIN_TEXT_LENGTH && !Number.isNaN(time(r));
 
 // Hand-copied legacy entries have no id/isoDate — they are dropped on the first run
 const stored = (current.reviews || []).filter(r => r.id && !Number.isNaN(time(r)));
-const newestStored = Math.max(0, ...stored.map(time));
 const byId = new Map(stored.map(r => [r.id, r]));
-let placeInfo;
+const newestStored = Math.max(0, ...stored.map(time));
+// Paging stops at reviews an earlier run already saw or too old to show
+const seenUntil = Math.max(newestStored, NOW - MAX_AGE_DAYS * 864e5);
+let placeInfo, token;
 
-// Pages through one sort order until enough(oldestInBatch) says stop, Google has no next page or maxPages is reached
-async function collect(sortBy, maxPages, enough) {
-  let token;
-  for (let page = 1; page <= maxPages; page++) {
-    const data = await serpapi({
-      engine: 'google_maps_reviews',
-      data_id: current.ftid,
-      sort_by: sortBy,
-      num: PAGE_SIZE,
-      ...(token && { next_page_token: token }),
-    });
-    placeInfo ??= data.place_info;  // only first pages carry it
-    const batch = Array.isArray(data.reviews) ? data.reviews.map(toReview) : [];
-    const usable = batch.filter(qualifies);
-    usable.forEach(r => byId.set(r.id, r));
-    token = data.serpapi_pagination?.next_page_token;
+for (let page = 1; page <= NEWEST_PAGES; page++) {
+  const data = await serpapi({
+    engine: 'google_maps_reviews',
+    data_id: current.ftid,
+    sort_by: 'newestFirst',
+    num: PAGE_SIZE,
+    ...(token && { next_page_token: token }),
+  });
+  placeInfo ??= data.place_info;  // only the first page carries it
+  const batch = Array.isArray(data.reviews) ? data.reviews.map(toReview) : [];
+  const usable = batch.filter(qualifies);
+  const added = usable.filter(r => time(r) > newestStored).length;
+  usable.forEach(r => byId.set(r.id, r));
+  token = data.serpapi_pagination?.next_page_token;
 
-    const count = test => batch.filter(test).length;
-    report(
-      `${sortBy} page ${page}: ${batch.length} reviews, ${usable.length} usable ` +
-      `(${count(r => r.text.length < MIN_TEXT_LENGTH)} without text, ${count(r => !(r.rating >= MIN_RATING))} under ${MIN_RATING}★, ` +
-      `${count(r => Number.isNaN(time(r)))} undated), next page: ${token ? 'yes' : 'no'}`
-    );
-    if (!token || enough(Math.min(...batch.map(r => time(r) || Infinity)))) return;
-  }
+  const count = test => batch.filter(test).length;
+  report(
+    `newestFirst page ${page}: ${batch.length} reviews, ${usable.length} usable, ${added} new ` +
+    `(${count(r => r.text.length < MIN_TEXT_LENGTH)} without text, ${count(r => !(r.rating >= MIN_RATING))} under ${MIN_RATING}★, ` +
+    `${count(r => Number.isNaN(time(r)))} undated), next page: ${token ? 'yes' : 'no'}`
+  );
+  if (!token || Math.min(...batch.map(r => time(r) || 0)) <= seenUntil) break;
 }
 
-// 1) Newest first, until every review since the last run is seen and the list is full
-await collect('newestFirst', NEWEST_PAGES, oldest => byId.size >= MAX_REVIEWS && (!stored.length || oldest <= newestStored));
-// 2) Still short — fill the remaining slots from the most relevant reviews
-if (byId.size < MAX_REVIEWS) await collect('qualityScore', 1, () => true);
-
-const reviews = [...byId.values()].sort((a, b) => time(b) - time(a)).slice(0, MAX_REVIEWS);
+// Newest first; reviews older than MAX_AGE_DAYS only fill up to MIN_REVIEWS
+const all = [...byId.values()].sort((a, b) => time(b) - time(a));
+const fresh = all.filter(recent);
+const reviews = (fresh.length >= MIN_REVIEWS ? fresh : all.slice(0, MIN_REVIEWS)).slice(0, MAX_REVIEWS);
 if (!reviews.length) fail('no review passed the filter — keeping the existing list', 2);
 
 // Rating + count come with the reviews; fall back to the place endpoint if that block is missing
@@ -154,8 +160,8 @@ if (typeof total === 'number') next.totalReviews = total;
 else report(`review count missing — keeping ${current.totalReviews}`, 'warning');
 if (typeof rating === 'number') next.averageRating = Number(rating.toFixed(1));
 
-const summary = `${reviews.length} reviews (${reviews[0].isoDate.slice(0, 10)} … ${reviews.at(-1).isoDate.slice(0, 10)}), ` +
-  `${searches} SerpAPI searches`;
+const summary = `${reviews.length} reviews (${reviews[0].isoDate.slice(0, 10)} … ${reviews.at(-1).isoDate.slice(0, 10)}, ` +
+  `${all.length - reviews.length} older left out), ${searches} SerpAPI searches`;
 if (JSON.stringify(next) === JSON.stringify(current)) {
   report(`no change — ${summary}, ${next.totalReviews} total, ${next.averageRating}★`);
   process.exit(0);
