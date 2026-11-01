@@ -8,11 +8,16 @@
  * - Reviews come from engine=google_maps_reviews, sort_by=newestFirst.
  * - Only reviews with rating >= MIN_RATING and real text are kept; the newest
  *   MAX_REVIEWS of them are stored, sorted by date (newest first).
+ * - When newestFirst cannot fill the list (Google may end that sort early, and
+ *   many new reviews are stars only), the rest is topped up from the most
+ *   relevant reviews (sort_by=qualityScore). Newer reviews push those out later.
  * - Each review keeps its ISO date; the site turns it into "pre 3 dana" in the
  *   browser, so the label never goes stale between runs.
  * - Steady state is 1 SerpAPI search per run (rating + count come in the same
- *   response). More pages are fetched only to seed an empty list or when more
- *   new reviews arrived since the last run than fit on the first page.
+ *   response). More are made only while the list is short or when more new
+ *   reviews arrived since the last run than fit on one page.
+ * - In GitHub Actions every step is also posted as a run annotation: readable
+ *   by anyone on the run page / API, while the raw job log needs admin rights.
  *
  * Usage:
  *   SERPAPI_KEY=... node scripts/update-reviews.mjs
@@ -29,34 +34,38 @@ import { fileURLToPath } from 'node:url';
 const MAX_REVIEWS = 10;     // how many cards the site shows
 const MIN_RATING = 4;       // never show 1-3★ reviews on the site
 const MIN_TEXT_LENGTH = 10; // skip rating-only / one-word reviews
-const MAX_PAGES = 3;        // hard cap on SerpAPI searches per run
+const PAGE_SIZE = 20;       // reviews per SerpAPI search (API maximum)
+const NEWEST_PAGES = 2;     // newestFirst pages per run; +1 qualityScore page only if the list is still short
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REVIEWS_PATH = resolve(__dirname, '..', 'public', 'reviews.json');
 
-const KEY = process.env.SERPAPI_KEY;
-if (!KEY) {
-  console.error('[err] SERPAPI_KEY env var is not set');
-  process.exit(1);
+const IN_ACTIONS = process.env.GITHUB_ACTIONS === 'true';
+function report(msg, level = 'notice') {
+  if (IN_ACTIONS) console.log(`::${level}::${msg.replace(/%/g, '%25').replace(/\r?\n/g, '%0A')}`);
+  else console[level === 'error' ? 'error' : 'log'](`[${level}] ${msg}`);
 }
+function fail(msg, code) {
+  report(msg, 'error');
+  process.exit(code);
+}
+
+const KEY = process.env.SERPAPI_KEY;
+if (!KEY) fail('SERPAPI_KEY env var is not set', 1);
 
 // ftid (Google Maps data_id) and placeId from reviews.json — canonical IDs for Rođendaonica Laser Tag Beograd Predator
 const current = JSON.parse(readFileSync(REVIEWS_PATH, 'utf8'));
-if (!current.ftid || !current.placeId) {
-  console.error('[err] ftid / placeId missing from reviews.json');
-  process.exit(2);
-}
+if (!current.ftid || !current.placeId) fail('ftid / placeId missing from reviews.json', 2);
 
 // Endpoint docs: https://serpapi.com/google-maps-reviews-api
+let searches = 0;
 async function serpapi(params) {
   const url = new URL('https://serpapi.com/search.json');
   for (const [k, v] of Object.entries({ ...params, hl: 'sr', api_key: KEY })) url.searchParams.set(k, v);
+  searches++;
   const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
   const data = await res.json().catch(() => ({}));
-  if (!res.ok || data.error) {
-    console.error(`[err] SerpAPI ${res.status}: ${data.error || ''}`);
-    process.exit(1);
-  }
+  if (!res.ok || data.error) fail(`SerpAPI ${res.status} (${params.engine} ${params.sort_by || ''}): ${data.error || ''}`, 1);
   return data;
 }
 
@@ -81,7 +90,7 @@ function toReview(r) {
     id: r.review_id || `${r.user?.name}|${r.iso_date}`,
     author: toLatin(r.user?.name || 'Google korisnik').trim(),
     rating: Number(r.rating),
-    isoDate: r.iso_date,
+    isoDate: r.iso_date || r.iso_date_of_last_edit,
     text: toLatin(text).replace(/\s+/g, ' ').trim(),
   };
 }
@@ -93,46 +102,48 @@ const qualifies = r => r.rating >= MIN_RATING && r.text.length >= MIN_TEXT_LENGT
 const stored = (current.reviews || []).filter(r => r.id && !Number.isNaN(time(r)));
 const newestStored = Math.max(0, ...stored.map(time));
 const byId = new Map(stored.map(r => [r.id, r]));
+let placeInfo;
 
-console.log('[info] querying SerpAPI reviews for place:', current.ftid);
-let placeInfo = {};
-let token;
-for (let page = 1; page <= MAX_PAGES; page++) {
-  const data = await serpapi({
-    engine: 'google_maps_reviews',
-    data_id: current.ftid,
-    sort_by: 'newestFirst',
-    ...(token && { next_page_token: token, num: 20 }),
-  });
-  if (page === 1) placeInfo = data.place_info || {};
+// Pages through one sort order until enough(oldestInBatch) says stop, Google has no next page or maxPages is reached
+async function collect(sortBy, maxPages, enough) {
+  let token;
+  for (let page = 1; page <= maxPages; page++) {
+    const data = await serpapi({
+      engine: 'google_maps_reviews',
+      data_id: current.ftid,
+      sort_by: sortBy,
+      num: PAGE_SIZE,
+      ...(token && { next_page_token: token }),
+    });
+    placeInfo ??= data.place_info;  // only first pages carry it
+    const batch = Array.isArray(data.reviews) ? data.reviews.map(toReview) : [];
+    const usable = batch.filter(qualifies);
+    usable.forEach(r => byId.set(r.id, r));
+    token = data.serpapi_pagination?.next_page_token;
 
-  const batch = Array.isArray(data.reviews) ? data.reviews.map(toReview) : [];
-  if (page === 1 && !batch.length) {
-    console.error('[err] response has no reviews. keys:', Object.keys(data));
-    process.exit(2);
+    const count = test => batch.filter(test).length;
+    report(
+      `${sortBy} page ${page}: ${batch.length} reviews, ${usable.length} usable ` +
+      `(${count(r => r.text.length < MIN_TEXT_LENGTH)} without text, ${count(r => !(r.rating >= MIN_RATING))} under ${MIN_RATING}★, ` +
+      `${count(r => Number.isNaN(time(r)))} undated), next page: ${token ? 'yes' : 'no'}`
+    );
+    if (!token || enough(Math.min(...batch.map(r => time(r) || Infinity)))) return;
   }
-  const usable = batch.filter(qualifies);
-  usable.forEach(r => byId.set(r.id, r));
-  console.log(`[info] page ${page}: ${batch.length} reviews, ${usable.length} usable`);
-
-  token = data.serpapi_pagination?.next_page_token;
-  const oldestInBatch = Math.min(...batch.map(r => time(r) || Infinity));
-  // Done once this page reaches reviews we already had (or, when seeding, once the list is full)
-  const caughtUp = stored.length ? oldestInBatch <= newestStored : byId.size >= MAX_REVIEWS;
-  if (caughtUp || !token) break;
 }
+
+// 1) Newest first, until every review since the last run is seen and the list is full
+await collect('newestFirst', NEWEST_PAGES, oldest => byId.size >= MAX_REVIEWS && (!stored.length || oldest <= newestStored));
+// 2) Still short — fill the remaining slots from the most relevant reviews
+if (byId.size < MAX_REVIEWS) await collect('qualityScore', 1, () => true);
 
 const reviews = [...byId.values()].sort((a, b) => time(b) - time(a)).slice(0, MAX_REVIEWS);
-if (!reviews.length) {
-  console.error('[err] no review passed the filter — keeping the existing list');
-  process.exit(2);
-}
+if (!reviews.length) fail('no review passed the filter — keeping the existing list', 2);
 
 // Rating + count come with the reviews; fall back to the place endpoint if that block is missing
-let total = placeInfo.reviews;
-let rating = placeInfo.rating;
+let total = placeInfo?.reviews;
+let rating = placeInfo?.rating;
 if (typeof total !== 'number') {
-  console.log('[info] place_info has no review count — asking the google_maps place endpoint');
+  report('place_info has no review count — asking the google_maps place endpoint', 'warning');
   const place = (await serpapi({ engine: 'google_maps', type: 'place', place_id: current.placeId })).place_results || {};
   total = place.reviews ?? place.user_ratings_total;
   rating = place.rating;
@@ -140,16 +151,18 @@ if (typeof total !== 'number') {
 
 const next = { ...current, reviews };
 if (typeof total === 'number') next.totalReviews = total;
-else console.warn('[warn] review count missing — keeping', current.totalReviews);
+else report(`review count missing — keeping ${current.totalReviews}`, 'warning');
 if (typeof rating === 'number') next.averageRating = Number(rating.toFixed(1));
 
+const summary = `${reviews.length} reviews (${reviews[0].isoDate.slice(0, 10)} … ${reviews.at(-1).isoDate.slice(0, 10)}), ` +
+  `${searches} SerpAPI searches`;
 if (JSON.stringify(next) === JSON.stringify(current)) {
-  console.log(`[ok] no change — ${reviews.length} reviews, ${next.totalReviews} total, ${next.averageRating}★`);
+  report(`no change — ${summary}, ${next.totalReviews} total, ${next.averageRating}★`);
   process.exit(0);
 }
 
 writeFileSync(REVIEWS_PATH, JSON.stringify(next, null, 2) + '\n', 'utf8');
-console.log(
-  `[updated] ${reviews.length} reviews (newest ${reviews[0].isoDate.slice(0, 10)}, oldest ${reviews.at(-1).isoDate.slice(0, 10)}), ` +
-  `count ${current.totalReviews} → ${next.totalReviews}, rating ${current.averageRating} → ${next.averageRating}`
+report(
+  `updated — ${summary}, count ${current.totalReviews} → ${next.totalReviews}, ` +
+  `rating ${current.averageRating} → ${next.averageRating}`
 );
