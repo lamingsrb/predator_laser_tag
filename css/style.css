@@ -3343,6 +3343,10 @@ body.lightbox-open #navbar {
   gap: 0.8rem;
 }
 
+.review-head > div {
+  min-width: 0;
+}
+
 .review-avatar {
   width: 42px;
   height: 42px;
@@ -3367,6 +3371,7 @@ body.lightbox-open #navbar {
   line-height: 1.2;
   margin-bottom: 0.2rem;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
 }
 
 .review-date {
@@ -3400,6 +3405,7 @@ body.lightbox-open #navbar {
   -webkit-box-orient: vertical;
   position: relative;
   padding-left: 0.5rem;
+  overflow-wrap: anywhere;
 }
 
 .review-text::before {

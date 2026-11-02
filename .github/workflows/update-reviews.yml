@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}  # the branch tip, not the commit that queued this run
 
       - uses: actions/setup-node@v4
         with:
@@ -44,4 +46,9 @@ jobs:
           git config user.email "noreply@github.com"
           git add public/reviews.json
           git commit -m "chore(reviews): auto-update Google reviews ($(date -u +%Y-%m-%d))"
-          git push
+          # Something else landed on the branch meanwhile -> replay this commit on top of it and push again
+          for attempt in 1 2 3; do
+            git push && exit 0
+            git pull --rebase origin "$GITHUB_REF_NAME" || exit 1
+          done
+          exit 1

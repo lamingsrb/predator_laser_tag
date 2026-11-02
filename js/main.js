@@ -779,10 +779,11 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
   // Newest first (reviews.json is refreshed daily from Google by .github/workflows/update-reviews.yml)
   data.reviews.sort((a, b) => (Date.parse(b.isoDate) || 0) - (Date.parse(a.isoDate) || 0));
 
-  // Render reviews twice for seamless loop
+  // Render reviews three times (the real set + two aria-hidden clone sets) for a seamless loop; the third copy
+  // keeps the strip covered after a click lands up to one card step past the wrap point
   const frag = document.createDocumentFragment();
   data.reviews.forEach((r, i) => frag.appendChild(renderCard(r, i)));
-  data.reviews.forEach((r, i) => {
+  for (let copy = 0; copy < 2; copy++) data.reviews.forEach((r, i) => {
     const clone = renderCard(r, i);
     clone.setAttribute('aria-hidden', 'true');
     frag.appendChild(clone);
@@ -799,12 +800,16 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
 
   function measure() {
     stage.classList.remove('is-static'); // clones must be laid out to measure
-    const half = track.scrollWidth / 2;
+    // half = distance from the first card to its first clone: the original set plus the gap after it,
+    // so wrapping by it lands on the identical spot (scrollWidth / 2 was half a gap short)
+    const clone = track.children[data.reviews.length];
+    const half = clone ? clone.offsetLeft - track.children[0].offsetLeft : 0;
     if (!half) return;
-    // half = width of original (non-clone) set
     halfWidth = half;
     // Too few reviews to fill the strip — center them instead of scrolling past empty space
-    if (halfWidth < marquee.offsetWidth) {
+    // (a set is measured without the gap after it: a set that fits must not scroll, three copies could not cover it)
+    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    if (halfWidth - gap <= marquee.offsetWidth) {
       stage.classList.add('is-static');
       offset = 0;
       applyOffset();
@@ -826,14 +831,26 @@ if (heroVideoWrap && heroSection && window.matchMedia('(min-width: 769px)').matc
   }
 
   function jump(direction) {
-    const card = track.querySelector('.review-card');
-    if (!card) return;
-    const step = card.offsetWidth + 20; // card + gap
+    const first = track.children[0];
+    const second = track.children[1];
+    if (!second || !halfWidth) return;
+    const step = second.offsetLeft - first.offsetLeft; // card + gap
+    // Wrap to the identical spot one set away *before* the animated step, so a click never sweeps across all cards
+    // and the strip stays covered. The painted position is wrapped (a snap transition may still be running),
+    // the logical offset moves with it.
+    const target = offset + direction * step;
+    let shift = 0;
+    if (target > 0) shift = -halfWidth;
+    if (target < marquee.clientWidth - track.scrollWidth) shift = halfWidth;
+    if (shift) {
+      const painted = new DOMMatrixReadOnly(getComputedStyle(track).transform).m41;
+      track.classList.remove('snap');
+      track.style.transform = `translate3d(${painted + shift}px, 0, 0)`;
+      void track.offsetWidth; // commit the wrap without a transition
+      offset += shift;
+    }
     track.classList.add('snap');
     offset += direction * step;
-    // normalize offset into [-halfWidth, 0]
-    if (offset > 0) offset -= halfWidth;
-    if (offset <= -halfWidth) offset += halfWidth;
     applyOffset();
     manualHoldUntil = performance.now() + 4000; // pause auto 4s
   }
