@@ -8,8 +8,36 @@
   "mapsUrl": "https://www.google.com/search?hl=en-RS&sxsrf=ANbL-n7gTCzc9v6u6MrF8nuVLF17pa6vBQ:1776320184280&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOUTQP3UtqX6Y4VENq9ojIHE0OjqA95Jr7VQu8fJ3H5Myl5y5I8HjXhoQR581dCp5b9B--ErJrrwD1AvEvCDzfrRIzoWCkb95Bj20Xwm7w7-CFcyPSp-_QhHt0Fm-i-21npu9KZI%3D&q=Ro%C4%91endaonica+Laser+Tag+Beograd+Predator+Reviews",
   "writeReviewUrl": "https://search.google.com/local/writereview?placeid=ChIJOwZcgiN7WkcRmm9_z6gRLOE",
   "averageRating": 4.9,
-  "totalReviews": 306,
+  "totalReviews": 311,
   "reviews": [
+    {
+      "id": "Ci9DQUlRQUNvZENodHljRjlvT205VFV6bFhZVlpZWTJ4VE1sTnBPSEpGU1RsQlVVRRAB",
+      "author": "Branko Dobrosavljevic",
+      "rating": 5,
+      "isoDate": "2026-11-08T21:48:00Z",
+      "text": "Sve je super,deca zadovoljna,odlična zabava,osoblje fenomenalno nasmejano prijatno. Sve preporuke"
+    },
+    {
+      "id": "Ci9DQUlRQUNvZENodHljRjlvT2sxV2RtSXRjV3R2YlUwMVNFTkNNR3h5T0hwVVJIYxAB",
+      "author": "Sasa Batalovic",
+      "rating": 5,
+      "isoDate": "2026-11-08T20:23:36Z",
+      "text": "Profesionalno, ljubazno, ispostovan svaki dogovor. Svaka cast, hvala."
+    },
+    {
+      "id": "Ci9DQUlRQUNvZENodHljRjlvT2poTVRqUkhlVGxUYkhKdGRFdENNREIzUzBkdk5tYxAB",
+      "author": "jovana savic",
+      "rating": 5,
+      "isoDate": "2026-11-08T12:37:03Z",
+      "text": "Imamo samo reči hvale! Oduševljeni smo celokupnim iskustvom – od prelepog prostora, preko izuzetno ljubaznog, profesionalnog i predusretljivog osoblja, do savršene organizacije svakog detalja. Igraonica za svaku preporuku❤️"
+    },
+    {
+      "id": "Ci9DQUlRQUNvZENodHljRjlvT2pKUE4xQmlWWGRRUVRCaE5XMXBaa2R1TTNJM2JuYxAB",
+      "author": "Deki copy",
+      "rating": 5,
+      "isoDate": "2026-11-08T12:01:59Z",
+      "text": "Sve pohvale za Laser tag Predator. Odličan prostor, jako ljubazno osoblje. Juče smo proslavili sinu 8 rođendan u laser tag i oduševljen je bio kao i drugari. Preporuka 😊"
+    },
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT25sNlMwWXdhSFJTUjBoYVkwSXRha2wzZVZnNU5XYxAB",
       "author": "Marko",
@@ -121,38 +149,10 @@
       "rating": 5,
       "isoDate": "2026-08-29T19:18:21Z",
       "text": "Super rodjendani i super ljudi sve preporuke.😁"
-    },
-    {
-      "id": "Ci9DQUlRQUNvZENodHljRjlvT2w5TVkyTkxTSHBNZFMxSVRGSnhXV3BwYlVOTmFGRRAB",
-      "author": "Mihajlo Pavlovic",
-      "rating": 5,
-      "isoDate": "2026-08-29T17:08:48Z",
-      "text": "Sve preporuke odlicni rodjendani!"
-    },
-    {
-      "id": "Ci9DQUlRQUNvZENodHljRjlvT25sb1JrRlJXRUpQWWtkVWF6WnVjekZLYWtwblMzYxAB",
-      "author": "Marko Milutinovic",
-      "rating": 5,
-      "isoDate": "2026-08-29T17:07:13Z",
-      "text": "Super atmosfera, veoma prijatni ljudi i odlicna zabava za decu sve preporuke!"
-    },
-    {
-      "id": "Ci9DQUlRQUNvZENodHljRjlvT2pKcGVVRlNjbWs1VUZOTGNtNVFPR2hDTTBFMmRIYxAB",
-      "author": "Marina Kosutic",
-      "rating": 5,
-      "isoDate": "2026-08-22T18:50:00Z",
-      "text": "Prejako iskustvo! 🔥 Odlična atmosfera, zanimljiva arena i baš dobra zabava za društvo. Sve preporuke za PREDATOR Laser Tag, sigurno dolazimo opet! 😍"
-    },
-    {
-      "id": "Ci9DQUlRQUNvZENodHljRjlvT2xWbmQwcHNabGxZV2poMExVTTVSbFZyWXpsVmEwRRAB",
-      "author": "Bratislav Matovic",
-      "rating": 5,
-      "isoDate": "2026-08-17T16:44:46Z",
-      "text": "Bili smo na team building . Odlično organizovano Veliki prostor Ljubazno osoblje Odlična ventilacija Ponovićemo ponovo Super ste"
     }
   ],
   "reviewCounts": {
-    "place_info": 306
+    "place_info": 311
   },
   "lastFill": "2026-11-02T09:12:17.285Z"
 }
